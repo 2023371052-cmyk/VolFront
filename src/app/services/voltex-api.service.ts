@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 })
 export class VoltexApiService {
   
- private apiUrl = environment.apiUrl; // Puerto de tu backend de NestJS
+private apiUrl = 'https://volback-production.up.railway.app';
 
   constructor(private http: HttpClient) {}
 
