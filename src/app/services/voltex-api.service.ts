@@ -8,9 +8,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class VoltexApiService {
-  post(arg0: string, arg1: { name: string; email: string; password: string; }) {
-      throw new Error('Method not implemented.');
-  }
+  
  private apiUrl = environment.apiUrl; // Puerto de tu backend de NestJS
 
   constructor(private http: HttpClient) {}
