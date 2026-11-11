@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +11,7 @@ export class VoltexApiService {
   post(arg0: string, arg1: { name: string; email: string; password: string; }) {
       throw new Error('Method not implemented.');
   }
-  private apiUrl = 'http://localhost:3000/api'; // Puerto de tu backend de NestJS
+ private apiUrl = environment.apiUrl; // Puerto de tu backend de NestJS
 
   constructor(private http: HttpClient) {}
 

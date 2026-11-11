@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ComparadorService } from './comparar.service';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment.prod';
+
 
 @Component({
   selector: 'app-comparar',
@@ -31,7 +33,7 @@ export class CompararComponent implements OnInit {
   cargarDatosComparacion(ids: number[]): void {
     const idsString = ids.join(',');
     // Petición directa al endpoint de tu backend en NestJS
-    this.http.get(`http://localhost:3000/api/productos/comparar/lista?ids=${idsString}`)
+    this.http.get(`${environment.apiUrl}/productos/comparar/lista?ids=${idsString}`)
       .subscribe({
         next: (data: any) => {
           // Aseguramos que la respuesta se extraiga correctamente como arreglo
