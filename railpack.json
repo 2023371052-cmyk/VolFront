@@ -1,0 +1,6 @@
+{
+  "deploy": {
+    "staticRoot": "dist/voltex-frontend/browser",
+    "spaFallback": true
+  }
+}
