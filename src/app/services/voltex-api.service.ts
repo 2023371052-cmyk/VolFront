@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 })
 export class VoltexApiService {
   
-private apiUrl = 'https://volback-production.up.railway.app';
+private apiUrl = 'https://volback-production.up.railway.app/api';
 
   constructor(private http: HttpClient) {}
 
