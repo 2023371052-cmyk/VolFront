@@ -1,0 +1,223 @@
+/* ==========================================================================
+   ESTILOS DE LA BARRA DE CORE ADMIN (PALETA 7VOLTEX)
+   ========================================================================== */
+.admin-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0B1D3A;
+  border-bottom: 2px solid #3B82B8;
+  padding: 15px 30px;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.admin-logo {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #F8FAFC;
+  letter-spacing: 1px;
+}
+
+.admin-logo .brand-v {
+  color: #93C5FD;
+}
+
+.admin-logo .panel-tag {
+  color: #DBEAFE;
+  font-size: 0.9rem;
+  margin-left: 8px;
+  opacity: 0.8;
+}
+
+.admin-nav-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.server-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #93C5FD;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.dot-online {
+  width: 8px;
+  height: 8px;
+  background-color: #3B82B8;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #93C5FD;
+}
+
+.logout-btn-nav {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.logout-btn-nav:hover {
+  background: rgba(239, 68, 68, 0.3);
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+}
+
+/* ==========================================================================
+   ESTILOS DE LA BARRA DE NAVEGACIÓN GENERAL (TIENDA / LANDING)
+   ========================================================================== */
+.navbar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #0B1D3A;
+  border-bottom: 2px solid rgba(147, 197, 253, 0.2);
+  padding: 12px 30px;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: inherit;
+  gap: 20px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+
+.logo-text {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #F8FAFC;
+  letter-spacing: 1px;
+}
+
+.brand-v {
+  color: #93C5FD;
+}
+
+/* Barra de búsqueda adaptada a la nueva paleta */
+.search-bar {
+  position: relative;
+  flex: 0 1 320px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #93C5FD;
+  font-size: 0.9rem;
+}
+
+.search-bar input {
+  width: 100%;
+  background: #1E3A8A;
+  border: 1px solid rgba(147, 197, 253, 0.3);
+  padding: 10px 15px 10px 38px;
+  border-radius: 8px;
+  color: #F8FAFC;
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.search-bar input::placeholder {
+  color: #DBEAFE;
+  opacity: 0.6;
+}
+
+.search-bar input:focus {
+  border-color: #93C5FD;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+  background: #0B1D3A;
+}
+
+/* Enlaces de modalidades (Karting, Rally, Fórmula, Drifting) */
+.nav-links {
+  display: flex;
+  gap: 22px;
+}
+
+.nav-link {
+  color: #DBEAFE;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover, .active-link {
+  color: #93C5FD;
+  text-shadow: 0 0 10px rgba(147, 197, 253, 0.4);
+}
+
+/* Botón de sesión / cuenta estilo glassmorphism azul */
+.cart-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(59, 130, 246, 0.15);
+  color: #93C5FD;
+  border: 1px solid rgba(147, 197, 253, 0.3);
+  padding: 9px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.cart-btn:hover {
+  background: rgba(59, 130, 246, 0.3);
+  box-shadow: 0 0 15px rgba(147, 197, 253, 0.3);
+  color: #F8FAFC;
+}
+
+/* ==========================================================================
+   ADAPTACIÓN MÓVIL RESPONSIVA PARA LA NAVBAR
+   ========================================================================== */
+@media screen and (max-width: 991px) {
+  .navbar-header {
+    flex-wrap: wrap;
+    padding: 12px 15px;
+    gap: 12px;
+  }
+
+  .search-bar {
+    order: 3;
+    flex: 1 1 100%;
+  }
+
+  .nav-links {
+    gap: 12px;
+    overflow-x: auto;
+    width: 100%;
+    padding-bottom: 4px;
+    justify-content: space-between;
+  }
+
+  .nav-link {
+    font-size: 0.8rem;
+  }
+}

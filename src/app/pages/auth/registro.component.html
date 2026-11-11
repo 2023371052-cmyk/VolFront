@@ -1,0 +1,82 @@
+<div class="auth-wrapper">
+  <div class="auth-glow-bg"></div>
+
+  <div class="auth-card">
+    
+    <div class="auth-header">
+      <span class="auth-badge"><i class="pi pi-user-plus"></i> NUEVO PILOTO</span>
+      <h2>REGISTRO DE ESCUDERÍA</h2>
+      <p>Crea tu cuenta para acceder a la tienda y comparativa pro</p>
+    </div>
+
+    <!-- CAJA DE ALERTA -->
+    <div class="auth-alert" *ngIf="errorMessage">
+      <span class="alert-icon"><i class="pi pi-exclamation-triangle"></i></span>
+      <span>{{ errorMessage }}</span>
+    </div>
+
+    <form class="auth-form-container" (ngSubmit)="registrarPiloto()">
+      
+      <div class="form-group">
+        <label for="name">Nombre Completo del Piloto</label>
+        <div class="input-icon-wrapper">
+          <i class="pi pi-user"></i>
+          <input 
+            id="name"
+            type="text" 
+            [(ngModel)]="name" 
+            name="name" 
+            placeholder="Tu nombre nuevo piloto" 
+            required 
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Correo Electrónico</label>
+        <div class="input-icon-wrapper">
+          <i class="pi pi-envelope"></i>
+          <input 
+            id="email"
+            type="email" 
+            [(ngModel)]="email" 
+            name="email" 
+            placeholder="piloto@voltex.com" 
+            required 
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña de Telemetría</label>
+        <div class="input-icon-wrapper">
+          <i class="pi pi-lock"></i>
+          <input 
+            id="password"
+            type="password" 
+            [(ngModel)]="password" 
+            name="password" 
+            placeholder="••••••••" 
+            minlength="8"
+            maxlength="15"
+            required 
+          />
+        </div>
+      </div>
+
+      <button type="submit" class="auth-submit-btn">
+        <span>REGISTRARSE EN PITS</span>
+        <i class="pi pi-check-circle"></i>
+      </button>
+
+    </form>
+
+    <div class="auth-toggle">
+      <p>
+        ¿Ya tienes cuenta en la escudería? 
+        <span class="toggle-link" routerLink="/login">Inicia sesión aquí</span>
+      </p>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,46 @@
+<div class="quick-pay-overlay">
+  @if (productoAComprar) {
+    <div class="quick-pay-card">
+      <div class="security-badge">
+        <i class="pi pi-shield"></i> PAGO RÁPIDO DE PITS (SMARTWATCH LINK)
+      </div>
+
+      <h2>CONFIRMAR ADQUISICIÓN</h2>
+      <p class="subtitle">Estás a un paso de inyectar el componente a tu escudería.</p>
+
+      <!-- Resumen del producto a comprar -->
+      <div class="product-mini-summary">
+        <img [src]="productoAComprar.imagen" [alt]="productoAComprar.nombre" class="mini-img">
+        <div class="mini-details">
+          <span class="mini-brand">{{ productoAComprar.marca }}</span>
+          <h4>{{ productoAComprar.nombre }}</h4>
+          <span class="mini-price">${{ productoAComprar.precio | number }} USD</span>
+        </div>
+      </div>
+
+      <!-- Tarjeta predeterminada guardada -->
+      <div class="saved-card-box">
+        <div class="card-icon"><i class="pi pi-credit-card"></i></div>
+        <div class="card-info">
+          <span class="card-label">Tarjeta predeterminada en Billetera</span>
+<span class="card-number">{{ state.tarjetaGuardada()?.numero || '•••• •••• •••• ••••' }}</span>
+        </div>
+        <span class="badge-ready">✓ Lista</span>
+      </div>
+
+      <div class="action-buttons">
+        <!-- Nombre del método corregido con 's' al final -->
+        <button class="btn-confirm" (click)="ejecutarCompraRapidas()">
+          <i class="pi pi-check"></i> Sí, Confirmar y Comprar
+        </button>
+        <button class="btn-cancel" routerLink="/tienda">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  } @else {
+    <div class="loading-state" style="text-align: center; padding: 40px; color: #5A7898;">
+      <p>Sincronizando telemetría del Smartwatch...</p>
+    </div>
+  }
+</div>

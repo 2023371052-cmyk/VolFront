@@ -1,0 +1,73 @@
+<div class="perfil-container">
+  
+  <header class="perfil-header">
+    <button class="btn-back" routerLink="/usuario" type="button">
+      <i class="pi pi-arrow-left"></i> Volver al Panel
+    </button>
+    <h1>CONFIGURACIÓN DEL PILOTO</h1>
+  </header>
+
+  <div class="perfil-layout">
+    
+    <!-- Tarjeta lateral (Sin la sección de rol) -->
+    <aside class="perfil-card">
+      <div class="avatar-container">
+        <i class="pi pi-user user-avatar-icon"></i>
+      </div>
+      <div class="profile-info-group">
+        <label>ESTADO DEL SENSOR</label>
+        <span class="badge-online">● SISTEMA ACTIVO</span>
+      </div>
+      
+      <!-- Mostramos el nombre real del usuario -->
+      <div class="profile-info-group">
+        <label>NOMBRE DE PILOTO</label>
+        <p class="profile-value">{{ nombrePiloto || 'Piloto Voltex' }}</p>
+      </div>
+
+      <div class="profile-info-group">
+        <label>CORREO ELECTRÓNICO</label>
+        <p class="profile-value">{{ usuarioEmail || 'invitado@voltex.com' }}</p>
+      </div>
+
+      <!-- Botón de Cerrar Sesión -->
+      <div class="profile-actions" style="margin-top: 30px;">
+        <button type="button" class="btn-logout" (click)="cerrarSesion()">
+          <i class="pi pi-sign-out"></i> Cerrar Sesión
+        </button>
+      </div>
+    </aside>
+
+    <!-- Panel principal de edición -->
+    <main class="historial-panel">
+      <h2><i class="pi pi-user-edit"></i> Editar Credenciales de Piloto</h2>
+      <p class="subtitle">Actualiza tu nombre de usuario, correo electrónico o contraseña de acceso.</p>
+
+      <form class="editar-perfil-form" (ngSubmit)="guardarCambiosPerfil()">
+        
+        <div class="form-group">
+          <label>Nombre de Piloto / Usuario</label>
+          <input type="text" [(ngModel)]="nombrePiloto" name="nombrePiloto" class="form-control" placeholder="Tu nombre completo" required>
+        </div>
+
+        <div class="form-group">
+          <label>Correo Electrónico (Credencial de Acceso)</label>
+          <input type="email" [(ngModel)]="usuarioEmail" name="usuarioEmail" class="form-control" placeholder="correo@voltex.com" required>
+        </div>
+
+        <div class="form-group">
+          <label>Nueva Contraseña (Opcional - Entre 8 y 15 caracteres)</label>
+          <input type="password" [(ngModel)]="nuevaPassword" name="nuevaPassword" class="form-control" placeholder="••••••••" minlength="8" maxlength="15">
+        </div>
+
+        <div class="form-actions" style="margin-top: 25px;">
+          <button type="submit" class="btn-submit-changes">
+            <i class="pi pi-save"></i> Guardar Cambios de Perfil
+          </button>
+        </div>
+
+      </form>
+    </main>
+
+  </div>
+</div>

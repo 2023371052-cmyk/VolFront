@@ -1,0 +1,124 @@
+@import "primeicons/primeicons.css";
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #080E1A; /* Azul noche profundo */
+  color: #EDF2FF;          /* Blanco azulado */
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* ==========================================================================
+   DISEÑO RESPONSIVO GLOBAL (Mobile First)
+   ========================================================================== */
+
+/* 1. Base para Celulares (Pantalla pequeña) */
+.main-layout {
+  display: flex;
+  flex-direction: column; /* Apilamos los filtros arriba de los productos */
+  padding: 15px;
+  gap: 20px;
+}
+
+.sidebar-filters {
+  width: 100%;
+  max-height: none;
+  overflow-y: visible;
+}
+
+.products-grid {
+  grid-template-columns: 1fr; /* Una sola tarjeta por fila en celular */
+}
+
+/* 2. Para Tablets y Laptops (Pantalla mediana/grande) */
+@media (min-width: 992px) {
+  .main-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr; /* Volvemos a las dos columnas originales */
+    padding: 30px 40px;
+  }
+  
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  }
+}
+
+/* 3. Ajuste de imágenes para que no se deformen en ninguna pantalla */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ==========================================================================
+   CORRECCIÓN RESPONSIVA MÓVIL CRÍTICA
+   ========================================================================== */
+
+/* Asegurar que las cajas no rebasen la pantalla y usen border-box */
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+/* Forzar ancho fluido y apilar elementos en pantallas menores a 992px */
+@media screen and (max-width: 991px) {
+  .main-layout, 
+  .shop-layout, 
+  .catalog-container, 
+  .admin-container {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 10px !important;
+  }
+
+  .sidebar-filters, 
+  .products-grid, 
+  .product-card, 
+  .card {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Evitar que la barra de navegación superior se salga de la pantalla */
+  header, nav, .navbar {
+    flex-wrap: wrap !important;
+    padding: 10px !important;
+    width: 100% !important;
+  }
+}
+
+/* ==========================================================================
+   ADAPTACIÓN MÓVIL IDÉNTICA AL FOOTER
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* Forzamos al contenedor principal de la tienda a una sola columna */
+  .main-layout, 
+  .shop-layout, 
+  .catalog-container {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    padding: 10px !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+  }
+
+  /* Aseguramos que la sección de filtros y la grilla de productos ocupen todo el ancho */
+  .sidebar-filters, 
+  .products-grid, 
+  .product-card {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Evitamos desbordamientos en la barra de navegación superior */
+  header, nav, .navbar {
+    flex-wrap: wrap !important;
+    width: 100% !important;
+    padding: 8px !important;
+  }
+}

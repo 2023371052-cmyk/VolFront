@@ -1,0 +1,45 @@
+<!-- Si estamos en la ruta de administrador, muestra la barra exclusiva de Core Admin -->
+@if (router.url.includes('/admin')) {
+  <nav class="admin-navbar">
+    <div class="admin-logo">
+      <span class="brand-v">7</span>VOLTEX <span class="panel-tag">// CORE ADMIN</span>
+    </div>
+    <div class="admin-nav-info">
+      <span class="server-status"><span class="dot-online"></span> TELEMETRÍA ACTIVA</span>
+      <button class="logout-btn-nav" (click)="cerrarSesion()"><i class="pi pi-power-off"></i> Apagar Canal</button>
+    </div>
+  </nav>
+}
+ <!-- Si estamos en la ruta de administrador o de login, ocultamos esta barra -->
+@if (!router.url.includes('/admin') && !router.url.includes('/login')) {
+  <header class="navbar-header">
+    <div class="logo" routerLink="/tienda" style="cursor: pointer;">
+      <img src="logo.png" alt="7VOLTEX Motorsport" class="logo-img" />
+      <span class="logo-text"><span class="brand-v">7</span>VOLTEX</span>
+    </div>
+
+    <div class="search-bar">
+      <i class="pi pi-search search-icon"></i>
+      <input type="text" placeholder="Buscar kits de supercargadores..." />
+    </div>
+
+    <nav class="nav-links">
+      <a routerLink="/karting" routerLinkActive="active-link" class="nav-link">KARTING</a>
+      <a routerLink="/rally" routerLinkActive="active-link" class="nav-link">RALLY</a>
+      <a routerLink="/formula" routerLinkActive="active-link" class="nav-link">FÓRMULA</a>
+      <a routerLink="/drifting" routerLinkActive="active-link" class="nav-link">DRIFTING</a>
+    </nav>
+
+    @if (!state.usuarioActual()?.email) {
+      <div class="cart-btn" routerLink="/login" style="cursor: pointer;">
+        <i class="pi pi-sign-in"></i> 
+        <span class="cart-text">Iniciar sesión</span>
+      </div>
+    } @else {
+      <div class="cart-btn" routerLink="/perfil" style="cursor: pointer;">
+        <i class="pi pi-user"></i> 
+        <span class="cart-text">Mi Cuenta</span>
+      </div>
+    }
+  </header>
+}

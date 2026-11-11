@@ -1,0 +1,289 @@
+/* ==========================================================================
+   ESTILOS DE LA VISTA DE CATEGORÍA (FÓRMULA)
+   ========================================================================== */
+.category-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 40px 30px;
+  background-color: #0B1D3A;
+  min-height: 100vh;
+  color: #F8FAFC;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+/* Botón de volver inteligente */
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(219, 234, 254, 0.1);
+  color: #DBEAFE;
+  border: 1px solid rgba(147, 197, 253, 0.3);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  margin-bottom: 25px;
+  transition: all 0.3s ease;
+}
+
+.btn-back:hover {
+  background: rgba(59, 130, 246, 0.3);
+  border-color: #93C5FD;
+  color: #F8FAFC;
+  transform: translateX(-3px);
+}
+
+/* Banner / Encabezado de la categoría */
+.category-header {
+  margin-bottom: 35px;
+  border-bottom: 1px solid rgba(147, 197, 253, 0.2);
+  padding-bottom: 20px;
+}
+
+.category-header .badge {
+  display: inline-block;
+  background: rgba(59, 130, 246, 0.2);
+  color: #93C5FD;
+  border: 1px solid rgba(147, 197, 253, 0.3);
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 5px 12px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.category-header h1 {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #F8FAFC;
+  margin: 0 0 8px 0;
+  letter-spacing: 0.5px;
+}
+
+.category-header p {
+  color: #DBEAFE;
+  font-size: 1rem;
+  opacity: 0.85;
+  margin: 0;
+  max-width: 800px;
+}
+
+/* Estados de carga y vacío */
+.loading-state,
+.empty-state {
+  background: #1E3A8A;
+  border: 1px solid rgba(147, 197, 253, 0.2);
+  border-radius: 14px;
+  margin: 40px 0;
+  box-shadow: 0 10px 25px rgba(11, 29, 58, 0.4);
+  padding: 40px;
+  text-align: center;
+  color: #DBEAFE;
+}
+
+.loading-state i,
+.empty-state i {
+  font-size: 2.5rem;
+  color: #93C5FD;
+  margin-bottom: 12px;
+}
+
+.loading-state p,
+.empty-state p {
+  color: #DBEAFE;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Grid de productos */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+/* Tarjeta de producto individual */
+.product-card {
+  background: #1E3A8A;
+  border: 1px solid rgba(147, 197, 253, 0.2);
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 25px rgba(11, 29, 58, 0.5);
+}
+
+.product-card:hover {
+  border-color: #93C5FD;
+  transform: translateY(-6px);
+  box-shadow: 0 15px 35px rgba(59, 130, 246, 0.25);
+}
+
+/* Card Badge (Insignia superior derecha) */
+.product-card .card-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(11, 29, 58, 0.85);
+  color: #93C5FD;
+  border: 1px solid rgba(147, 197, 253, 0.3);
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 5px 10px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  z-index: 2;
+  backdrop-filter: blur(4px);
+}
+
+/* Contenedor de la imagen */
+.card-image {
+  height: 200px;
+  background: #0B1D3A;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.product-card:hover .card-image img {
+  transform: scale(1.08);
+}
+
+/* Contenido de la tarjeta */
+.card-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.category-tag {
+  color: #93C5FD;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.card-content h3 {
+  color: #F8FAFC;
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin: 6px 0 8px 0;
+}
+
+.card-content p {
+  color: #DBEAFE;
+  font-size: 0.85rem;
+  margin-bottom: 20px;
+  height: 3.2em;
+  overflow: hidden;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+/* Pie de tarjeta */
+.card-footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(147, 197, 253, 0.15);
+}
+
+.price {
+  font-weight: 900;
+  color: #93C5FD;
+  font-size: 1.25rem;
+}
+
+/* Contenedor horizontal para los botones */
+.actions {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+/* Botón de detalle (icono de ojo) */
+.btn-detail {
+  background: rgba(219, 234, 254, 0.1);
+  color: #DBEAFE;
+  border: 1px solid rgba(147, 197, 253, 0.3);
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.btn-detail:hover {
+  background: rgba(59, 130, 246, 0.3);
+  border-color: #93C5FD;
+  color: #F8FAFC;
+}
+
+/* Botón de agregar con flex: 1 para ocupar el espacio restante */
+.cart-btn-card {
+  flex: 1;
+  background: linear-gradient(135deg, #3B82B8, #1E3A8A);
+  color: #F8FAFC;
+  border: 1px solid rgba(147, 197, 253, 0.4);
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(11, 29, 58, 0.4);
+}
+
+.cart-btn-card:hover {
+  background: linear-gradient(135deg, #93C5FD, #3B82B8);
+  color: #0B1D3A;
+  border-color: #93C5FD;
+  box-shadow: 0 0 15px rgba(147, 197, 253, 0.5);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   ADAPTACIÓN MÓVIL RESPONSIVA
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+  .category-container {
+    padding: 20px 16px;
+  }
+
+  .category-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .category-header p {
+    font-size: 0.9rem;
+  }
+
+  .products-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}

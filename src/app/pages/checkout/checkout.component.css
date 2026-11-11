@@ -1,0 +1,389 @@
+/* --- CONTENEDOR GENERAL DE CHECKOUT --- */
+.checkout-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+  color: #ffffff;
+  font-family: inherit;
+}
+
+.checkout-container h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 25px;
+  color: #ffffff;
+  border-bottom: 2px solid #e11d48;
+  padding-bottom: 10px;
+}
+
+/* --- GRID DE DOS COLUMNAS --- */
+.checkout-grid {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 30px;
+  align-items: start;
+}
+
+/* --- BOTÓN VOLVER --- */
+.btn-back {
+  background: rgba(225, 29, 72, 0.1);
+  border: 1px solid rgba(225, 29, 72, 0.4);
+  color: #f43f5e;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-back:hover {
+  background: rgba(225, 29, 72, 0.2);
+  border-color: #f43f5e;
+}
+
+/* --- FORMULARIO Y RESUMEN (TARJETAS) --- */
+.checkout-form, .order-summary {
+  background: #111827;
+  border: 1px solid #1f2937;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.checkout-form h3, .order-summary h3 {
+  font-size: 1.2rem;
+  color: #f43f5e;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #374151;
+  padding-bottom: 8px;
+}
+
+/* --- CAMPOS DEL FORMULARIO --- */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  color: #9ca3af;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.form-control {
+  width: 100%;
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #fff;
+  font-size: 0.95rem;
+  box-sizing: border-box; /* Evita que se salgan del contenedor */
+  transition: border-color 0.2s;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #f43f5e;
+  box-shadow: 0 0 8px rgba(244, 63, 94, 0.3);
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+.error-msg {
+  color: #f87171;
+  font-size: 0.75rem;
+  margin-top: 4px;
+}
+
+/* --- BOTÓN DE CONFIRMAR Y PAGAR --- */
+.btn-submit {
+  width: 100%;
+  background: #e11d48;
+  color: #ffffff;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background 0.3s;
+}
+
+.btn-submit:hover {
+  background: #be123c;
+}
+
+/* --- RESUMEN DEL PEDIDO Y CONTROLES --- */
+.summary-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 0;
+  border-bottom: 1px solid #1f2937;
+  gap: 8px;
+}
+
+.item-details {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.item-price {
+  color: #38bdf8;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.btn-qty {
+  background: #1f2937;
+  border: 1px solid #374151;
+  color: #fff;
+  width: 26px;
+  height: 26px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-qty:hover {
+  background: #374151;
+}
+
+.qty-number {
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.btn-remove {
+  background: transparent;
+  border: none;
+  color: #f87171;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 2px;
+}
+
+.btn-remove:hover {
+  color: #ef4444;
+}
+
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+  font-size: 0.9rem;
+  color: #9ca3af;
+}
+
+.summary-line.total {
+  font-size: 1.15rem;
+  font-weight: bold;
+  color: #ffffff;
+  border-top: 1px solid #374151;
+  padding-top: 12px;
+  margin-top: 12px;
+}
+
+.summary-line.total span:last-child {
+  color: #38bdf8;
+}
+
+.empty-cart-msg {
+  text-align: center;
+  padding: 20px 0;
+  color: #9ca3af;
+}
+
+.btn-store-link {
+  display: inline-block;
+  margin-top: 10px;
+  background: #38bdf8;
+  color: #000;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* --- VENTANA MODAL DE TICKET EXITO --- */
+.ticket-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(11, 15, 25, 0.92);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  backdrop-filter: blur(8px);
+}
+
+.ticket-card {
+  background: #0f172a;
+  color: #fff;
+  width: 90%;
+  max-width: 480px;
+  padding: 30px;
+  border-radius: 16px;
+  border: 2px solid #e11d48;
+  box-shadow: 0 0 30px rgba(225, 29, 72, 0.4);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.ticket-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.success-icon {
+  font-size: 45px;
+  color: #10b981;
+  margin-bottom: 8px;
+}
+
+.ticket-header h2 {
+  color: #f43f5e;
+  font-size: 1.4rem;
+  margin: 0;
+  border: none;
+}
+
+.ticket-header p {
+  color: #9ca3af;
+  font-size: 0.85rem;
+  margin-top: 5px;
+}
+
+.ticket-info p {
+  margin: 4px 0;
+  font-size: 0.85rem;
+  color: #d1d5db;
+}
+
+.ticket-divider {
+  border: 0;
+  border-top: 1px dashed #334155;
+  margin: 15px 0;
+}
+
+.ticket-body h4 {
+  font-size: 0.95rem;
+  color: #f3f4f6;
+  margin-bottom: 8px;
+}
+
+.ticket-item-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+  color: #9ca3af;
+}
+
+.ticket-totals .row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  margin: 4px 0;
+  color: #9ca3af;
+}
+
+.ticket-totals .row.total {
+  font-weight: bold;
+  color: #ffffff;
+  font-size: 1.1rem;
+  margin-top: 8px;
+  border-top: 1px solid #334155;
+  padding-top: 8px;
+}
+
+.ticket-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.btn-download-pdf {
+  flex: 1;
+  background: #e11d48;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-download-pdf:hover {
+  background: #be123c;
+}
+
+.btn-finish {
+  flex: 1;
+  background: #374151;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-finish:hover {
+  background: #4b5563;
+}
+
+/* --- ESTILO DE IMPRESIÓN PARA PDF --- */
+@media print {
+  body * { visibility: hidden; }
+  .ticket-card, .ticket-card * { visibility: visible; }
+  .ticket-card {
+    position: absolute;
+    left: 0; top: 0;
+    width: 100%;
+    background: white !important;
+    color: black !important;
+    border: none;
+    box-shadow: none;
+  }
+  .ticket-card h2, .ticket-card p, .ticket-card span, .ticket-card h4 {
+    color: black !important;
+  }
+  .ticket-actions { display: none !important; }
+}

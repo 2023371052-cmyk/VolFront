@@ -1,0 +1,201 @@
+/* ==========================================================================
+   ESTILOS MODERNOS DEL FOOTER - 7VOLTEX MOTORSPORT
+   ========================================================================== */
+.main-footer {
+  background: linear-gradient(180deg, #0B1D3A 0%, #071224 100%);
+  border-top: 1px solid rgba(147, 197, 253, 0.2);
+  color: #DBEAFE;
+  font-family: inherit;
+  padding: 60px 20px 20px 20px;
+  margin-top: 60px;
+}
+
+.footer-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+  gap: 40px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgba(147, 197, 253, 0.1);
+}
+
+/* Columna de Marca */
+.footer-brand .logo {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #F8FAFC;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+}
+
+.footer-brand .logo .brand-v {
+  color: #93C5FD;
+  text-shadow: 0 0 10px rgba(147, 197, 253, 0.4);
+}
+
+.footer-brand p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #DBEAFE;
+  opacity: 0.85;
+  margin-bottom: 20px;
+}
+
+.phone-footer {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #93C5FD;
+  font-weight: 700;
+  font-size: 0.9rem;
+  background: rgba(59, 130, 246, 0.1);
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(147, 197, 253, 0.2);
+}
+
+/* Columnas de Enlaces y Soporte */
+.footer-links h3,
+.footer-newsletter h3 {
+  font-size: 0.85rem;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  color: #93C5FD;
+  margin-bottom: 18px;
+  text-transform: uppercase;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-links a {
+  color: #DBEAFE;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  opacity: 0.8;
+}
+
+.footer-links a:hover {
+  color: #93C5FD;
+  opacity: 1;
+  padding-left: 5px; /* Sutil efecto de deslizamiento al pasar el cursor */
+}
+
+/* Redes Sociales */
+.social-tags {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.social-tags a {
+  background: rgba(30, 58, 138, 0.4);
+  color: #DBEAFE;
+  border: 1px solid rgba(147, 197, 253, 0.2);
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.social-tags a:hover {
+  background: #3B82B8;
+  color: #0B1D3A;
+  border-color: #93C5FD;
+  box-shadow: 0 0 12px rgba(147, 197, 253, 0.4);
+}
+
+/* Newsletter Box */
+.newsletter-box {
+  display: flex;
+  gap: 8px;
+  background: #1E3A8A;
+  padding: 5px;
+  border-radius: 8px;
+  border: 1px solid rgba(147, 197, 253, 0.3);
+  transition: all 0.3s ease;
+}
+
+.newsletter-box:focus-within {
+  border-color: #93C5FD;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+}
+
+.newsletter-box input {
+  background: transparent;
+  border: none;
+  padding: 8px 12px;
+  color: #F8FAFC;
+  font-size: 0.85rem;
+  outline: none;
+  width: 100%;
+}
+
+.newsletter-box input::placeholder {
+  color: #DBEAFE;
+  opacity: 0.5;
+}
+
+.newsletter-box button {
+  background: linear-gradient(135deg, #3B82B8, #1E3A8A);
+  color: #F8FAFC;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.newsletter-box button:hover {
+  background: linear-gradient(135deg, #93C5FD, #3B82B8);
+  color: #0B1D3A;
+}
+
+/* Franja inferior de Copyright */
+.footer-bottom {
+  max-width: 1300px;
+  margin: 30px auto 0 auto;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #DBEAFE;
+  opacity: 0.6;
+  letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   ADAPTACIÓN MÓVIL RESPONSIVA PARA EL FOOTER
+   ========================================================================== */
+@media screen and (max-width: 991px) {
+  .footer-container {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+  
+  .footer-brand {
+    grid-column: span 2;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .footer-brand {
+    grid-column: span 1;
+  }
+}

@@ -1,0 +1,79 @@
+<div class="product-detail-container">
+  
+  <!-- BOTÓN DE VOLVER INTELIGENTE -->
+  <button class="btn-back" (click)="volverSegunSesion()" type="button">
+    <i class="pi pi-arrow-left"></i> Volver
+  </button>
+
+  @if (producto) {
+    <div class="detail-grid">
+      <div class="detail-image-box">
+        <img [src]="producto.image || producto.imageUrl || producto.imagen || 'assets/img/supercargador-default.jpg'" [alt]="producto.name || producto.nombre" class="detail-img" />
+        <span class="card-badge" [style.background-color]="producto.colorEtiqueta || '#00D4FF'">
+          {{ producto.category || producto.categoria || producto.etiqueta || 'karting' }}
+        </span>
+      </div>
+
+      <div class="detail-content">
+        <span class="card-brand">{{ producto.marca || 'Voltex Pro' }}</span>
+        <h1 class="detail-title">{{ producto.name || producto.nombre }}</h1>
+        <p class="detail-subtitle">{{ producto.subtitulo || producto.description || 'Componente de alto rendimiento para escudería' }}</p>
+
+        <!-- PRECIO UNIFICADO A MXN -->
+        <div class="price-box-large">
+          <span class="price-amount">{{ (producto.price || producto.precio) | currency:'MXN' }}</span>
+        </div>
+
+        <div class="specs-box">
+          <h3>Especificaciones Técnicas</h3>
+          <div class="spec-row">
+            <span class="spec-label">Presión Boost:</span>
+            <span class="spec-value highlight-cyan">{{ producto.presionBoost || '35 PSI' }}</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Stock Disponible:</span>
+            <span class="spec-value">{{ producto.stock ?? 10 }} pzas</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Modalidad:</span>
+            <span class="spec-value">{{ producto.modalidad || 'Inducción Forzada' }}</span>
+          </div>
+        </div>
+
+        <div class="action-box">
+          <button class="buy-btn-large" (click)="agregarAlCarrito(producto)" type="button">
+            <i class="pi pi-shopping-cart"></i> Añadir a la Línea de Ensamblaje
+          </button>
+          
+          <button class="btn-favorite" (click)="agregarAFavoritos(producto)" type="button">
+           <i class="pi pi-heart"></i> Favoritos
+          </button>
+
+          <!-- 🌐 URL PREASIGNADA (Proveedor externo) -->
+          <div class="external-supplier-box">
+            <a [href]="producto.urlExterna || 'https://www.procharger.com/racing-supercharger/'" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="btn-external-link">
+              <i class="pi pi-external-link"></i> Comprar con Proveedor Externo (Procharger)
+            </a>
+          </div>
+
+          <!-- TOAST DE NOTIFICACIÓN FLOTANTE -->
+          @if (mostrarToast) {
+            <div class="voltex-toast">
+              <i class="pi pi-check-circle"></i>
+              <span>{{ mensajeToast }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="loading-state">
+      <i class="pi pi-spin pi-spinner"></i>
+      <p>Sincronizando especificaciones del módulo con el servidor de Pits...</p>
+    </div>
+  }
+
+</div>

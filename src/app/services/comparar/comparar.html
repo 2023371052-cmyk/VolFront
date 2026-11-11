@@ -1,0 +1,47 @@
+<div class="container mx-auto p-6">
+  <h2 class="text-2xl font-bold mb-4 text-gray-800">Comparativa de Supercargadores (Side-by-Side)</h2>
+
+  <!-- Mensaje si no hay productos con botón estilizado -->
+  <div *ngIf="productosParaComparar.length === 0" class="text-center py-12 bg-white rounded-xl border border-gray-200 shadow-sm">
+    <p class="text-gray-500 mb-4 text-base font-medium">Selecciona de 2 a 3 supercargadores desde el catálogo para compararlos cara a cara.</p>
+    <a routerLink="/tienda" class="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-lg text-sm font-semibold hover:from-blue-700 hover:to-indigo-700 shadow-md hover:shadow-lg transition-all duration-200">
+      <i class="pi pi-shopping-bag text-base"></i> Ir al Catálogo de Pits
+    </a>
+  </div>
+
+  <!-- Tabla comparativa en columnas paralelas -->
+  <div *ngIf="productosParaComparar.length > 0" class="overflow-x-auto">
+    <table class="min-w-full bg-white border border-gray-200 shadow-md rounded-lg">
+      <thead>
+        <tr class="bg-gray-100 border-b">
+          <th class="p-4 text-left font-semibold text-gray-700 w-1/4">Atributo Técnico</th>
+          <th *ngFor="let prod of productosParaComparar" class="p-4 text-center w-1/4 relative border-l">
+            <button (click)="eliminarDeLista(prod.id)" class="absolute top-2 right-2 text-red-500 hover:text-red-700 font-bold px-2 py-1" title="Quitar de la comparativa">✕</button>
+            <img [src]="prod.imageUrl || prod.imagen || 'assets/img/supercargador-default.jpg'" alt="{{ prod.name || prod.nombre }}" class="h-24 mx-auto object-contain mb-2">
+            <h3 class="font-bold text-lg text-gray-800">{{ prod.name || prod.nombre }}</h3>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="border-b">
+          <td class="p-4 font-medium bg-gray-50">Precio</td>
+          <td *ngFor="let prod of productosParaComparar" class="p-4 text-center text-green-600 font-bold border-l">
+            ${{ prod.price || prod.precio }} USD
+          </td>
+        </tr>
+        <tr class="border-b">
+          <td class="p-4 font-medium bg-gray-50">Categoría / Motor</td>
+          <td *ngFor="let prod of productosParaComparar" class="p-4 text-center text-sm text-gray-600 border-l">
+            {{ prod.category || prod.categoria }}
+          </td>
+        </tr>
+        <tr class="border-b">
+          <td class="p-4 font-medium bg-gray-50">Descripción Técnica</td>
+          <td *ngFor="let prod of productosParaComparar" class="p-4 text-center text-sm text-gray-600 border-l">
+            {{ prod.description || prod.descripcion || 'Componente de alto rendimiento para escudería.' }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,63 @@
+<div class="store-container">
+  
+  <header class="store-header">
+    <button class="btn-back" routerLink="/usuario">
+      <i class="pi pi-arrow-left"></i> Volver al Panel
+    </button>
+    <h1>Historial de Pedidos y Pits</h1>
+    <p>Consulta el estatus de tus órdenes, telemetría de entrega y componentes adquiridos.</p>
+  </header>
+
+  @if (cargando) {
+    <div class="loading-state">
+      <p>Conectando con la base de datos de Pits...</p>
+    </div>
+  } @else if (pedidos.length === 0) {
+    <div class="empty-state">
+      <i class="pi pi-box empty-icon"></i>
+      <h3>No hay órdenes registradas</h3>
+      <p>Aún no cuentas con pedidos activos en la línea de ensamblaje de la escudería.</p>
+      <button class="btn-explore" routerLink="/usuario">Ir al Catálogo</button>
+    </div>
+  } @else {
+    <div class="pedidos-grid">
+      <div class="pedido-card" *ngFor="let pedido of pedidos">
+        
+        <div class="pedido-header">
+          <span class="pedido-id">Orden #{{ pedido.id || pedido._id }}</span>
+          <span class="pedido-status" [ngClass]="(pedido.estado || pedido.status)?.toLowerCase() || 'proceso'">
+            {{ pedido.estado || pedido.status || 'En Pits (Proceso)' }}
+          </span>
+        </div>
+
+        <div class="pedido-body">
+          <p class="pedido-fecha">
+            <i class="pi pi-calendar"></i> Fecha: {{ (pedido.fecha || pedido.createdAt || pedido.created_at) | date:'medium' }}
+          </p>
+          <p class="pedido-total">
+            <strong>Total:</strong> {{ (pedido.total || pedido.precioTotal || pedido.totalAmount || 0) | currency:'MXN' }}
+          </p>
+          
+          <!-- Productos o detalles internos de la orden -->
+          <div class="productos-resumen" *ngIf="(pedido.productos && pedido.productos.length > 0) || (pedido.items && pedido.items.length > 0)">
+            <h4>Componentes en esta orden:</h4>
+            <ul>
+              <li *ngFor="let item of (pedido.productos || pedido.items)">
+                {{ item.nombre || item.name || item.product?.name }} (x{{ item.cantidad || item.quantity || 1 }})
+              </li>
+            </ul>
+          </div>
+
+          <!-- 🌟 Botón para descargar el Ticket en PDF individual -->
+          <div class="pedido-actions" style="margin-top: 15px; text-align: right;">
+            <button class="btn-pdf" (click)="descargarTicketPdf(pedido)">
+              <i class="pi pi-file-pdf"></i> Descargar Ticket PDF
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  }
+
+</div>

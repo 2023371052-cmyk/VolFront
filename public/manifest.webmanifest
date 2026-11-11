@@ -1,0 +1,17 @@
+{
+  "id": "/",
+  "name": "7VOLTEX Motorsport PWA",
+  "short_name": "7VOLTEX",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#231F20",
+  "theme_color": "#3ABEF9",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,166 @@
+.quick-pay-overlay {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 0 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #EDF2FF;
+}
+
+.quick-pay-card {
+  background-color: #0D1525;
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 16px;
+  padding: 35px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+}
+
+.security-badge {
+  font-size: 11px;
+  color: #00FFCC;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.quick-pay-card h1, .quick-pay-card h2 {
+  font-size: 22px;
+  font-weight: 900;
+  color: #FFFFFF;
+  margin: 0 0 5px 0;
+}
+
+.subtitle {
+  color: #5A7898;
+  font-size: 13px;
+  margin-bottom: 25px;
+}
+
+.product-mini-summary {
+  display: flex;
+  gap: 15px;
+  background-color: #080E1A;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 212, 255, 0.1);
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.mini-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.mini-brand {
+  font-size: 10px;
+  color: #00D4FF;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.mini-details h4 {
+  font-size: 14px;
+  margin: 2px 0;
+  color: #FFF;
+}
+
+.mini-price {
+  font-size: 13px;
+  color: #00FFCC;
+  font-weight: 700;
+  font-family: monospace;
+}
+
+.saved-card-box {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background-color: #080E1A;
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 30px;
+}
+
+.card-icon {
+  font-size: 1.5rem;
+  color: #00D4FF;
+}
+
+.card-info {
+  flex-grow: 1;
+}
+
+.card-label {
+  display: block;
+  font-size: 10px;
+  color: #5A7898;
+  text-transform: uppercase;
+}
+
+.card-number {
+  font-size: 14px;
+  color: #EDF2FF;
+  font-weight: 700;
+  font-family: monospace;
+}
+
+.badge-ready {
+  background-color: rgba(0, 255, 204, 0.15);
+  color: #00FFCC;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.btn-confirm {
+  flex: 2;
+  background-color: #00D4FF;
+  color: #080E1A;
+  border: none;
+  font-weight: 900;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background-color 0.2s;
+}
+
+.btn-confirm:hover {
+  background-color: #00FFCC;
+}
+
+.btn-cancel {
+  flex: 1;
+  background-color: transparent;
+  color: #5A7898;
+  border: 1px solid rgba(90, 120, 152, 0.3);
+  font-weight: 700;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.btn-cancel:hover {
+  color: #EDF2FF;
+  border-color: #EDF2FF;
+}

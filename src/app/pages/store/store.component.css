@@ -1,0 +1,377 @@
+/* ==========================================================================
+   ESTILOS GENERALES Y PALETA DE AZULES 7VOLTEX
+   ========================================================================== */
+.store-landing-wrapper {
+  background-color: #0B1D3A;
+  min-height: 100vh;
+  color: #F8FAFC;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* ==========================================================================
+   CARRUSEL HERO DINÁMICO & MODERNO
+   ========================================================================== */
+.hero-carousel-section {
+  position: relative;
+  width: 100%;
+  padding: 50px 20px;
+  background: linear-gradient(135deg, #0B1D3A 0%, #1E3A8A 100%);
+  border-bottom: 1px solid rgba(147, 197, 253, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.carousel-container {
+  max-width: 1200px;
+  width: 100%;
+}
+
+.carousel-slide {
+  position: relative;
+  background: linear-gradient(135deg, #1E3A8A 0%, #0B1D3A 100%);
+  border: 1px solid rgba(147, 197, 253, 0.3);
+  border-radius: 20px;
+  padding: 50px 40px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(11, 29, 58, 0.6);
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+/* Imagen de fondo de los assets para el carrusel */
+.carousel-bg-img {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 45%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  opacity: 0.25; /* Suave para no perder legibilidad */
+  mask-image: linear-gradient(to left, rgba(0,0,0,1), transparent);
+}
+
+/* Gradiente para fundir la imagen de asset con la paleta de azules */
+.carousel-gradient-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #0B1D3A 30%, rgba(11, 29, 58, 0.85) 70%, transparent 100%);
+  z-index: 2;
+}
+
+.carousel-content {
+  position: relative;
+  z-index: 3;
+  max-width: 700px;
+}
+
+.badge-tag {
+  background-color: rgba(59, 130, 246, 0.2);
+  color: #93C5FD;
+  border: 1px solid #3B82B8;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.carousel-slide h1 {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #F8FAFC;
+  margin: 15px 0;
+}
+
+.carousel-slide p {
+  color: #DBEAFE;
+  font-size: 1.05rem;
+  max-width: 650px;
+  margin-bottom: 25px;
+}
+
+.carousel-actions {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.btn-primary-glow {
+  background: linear-gradient(90deg, #3B82B8, #1E3A8A);
+  color: #F8FAFC;
+  padding: 12px 26px;
+  border-radius: 10px;
+  font-weight: 700;
+  text-decoration: none;
+  border: 1px solid #93C5FD;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+  transition: all 0.3s ease;
+}
+
+.btn-secondary-glass {
+  background: rgba(219, 234, 254, 0.1);
+  color: #DBEAFE;
+  border: 1px solid rgba(147, 197, 253, 0.3);
+  padding: 12px 26px;
+  border-radius: 10px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* Indicadores de puntos */
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.carousel-dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(147, 197, 253, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.carousel-dots span.active {
+  background-color: #93C5FD;
+  width: 25px;
+  border-radius: 5px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   LAYOUT PRINCIPAL DE TIENDA
+   ========================================================================== */
+.store-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 30px;
+  padding: 40px 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+.catalog-header h2 {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #F8FAFC;
+  margin-bottom: 5px;
+}
+
+.catalog-header p {
+  color: #93C5FD;
+  font-size: 0.95rem;
+}
+
+.comparison-btn-modern {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #1E3A8A, #3B82B8);
+  color: #F8FAFC;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  border: 1px solid rgba(147, 197, 253, 0.3);
+  box-shadow: 0 4px 15px rgba(11, 29, 58, 0.4);
+  transition: all 0.3s ease;
+}
+
+.comparison-btn-modern:hover {
+  background: linear-gradient(135deg, #3B82B8, #93C5FD);
+  color: #0B1D3A;
+  transform: translateY(-2px);
+}
+/* ==========================================================================
+   TARJETAS DE PRODUCTO CON NUEVA PALETA
+   ========================================================================== */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+  margin-top: 25px;
+}
+
+.product-card {
+  background: #1E3A8A;
+  border: 1px solid rgba(147, 197, 253, 0.2);
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 25px rgba(11, 29, 58, 0.5);
+}
+
+.product-card:hover {
+  border-color: #93C5FD;
+  transform: translateY(-6px);
+  box-shadow: 0 15px 35px rgba(59, 130, 246, 0.25);
+}
+
+.product-image-container {
+  height: 200px;
+  background: #0B1D3A;
+  position: relative;
+  overflow: hidden;
+}
+
+.product-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-img {
+  transform: scale(1.08);
+}
+
+.product-details {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.product-category {
+  color: #93C5FD;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.product-title {
+  color: #F8FAFC;
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin: 6px 0 10px 0;
+}
+
+.product-description {
+  color: #DBEAFE;
+  font-size: 0.85rem;
+  margin-bottom: 15px;
+  height: 3.2em;
+  overflow: hidden;
+  line-height: 1.5;
+}
+
+/* Pie de tarjeta / Contenedor de precio y botones */
+.product-footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.product-price {
+  font-weight: 900;
+  color: #93C5FD;
+  font-size: 1.2rem;
+}
+
+/* Botones de tarjeta en línea horizontal simétrica */
+.btn-add-pit {
+  flex: 1;
+  background: #3B82B8;
+  color: #0B1D3A;
+  border: none;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.btn-add-pit:hover {
+  background: #93C5FD;
+  box-shadow: 0 0 15px rgba(147, 197, 253, 0.5);
+}
+
+.btn-compare {
+  flex: 1;
+  background: rgba(219, 234, 254, 0.1);
+  color: #DBEAFE;
+  border: 1px solid rgba(147, 197, 253, 0.3);
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.btn-compare:hover {
+  background: rgba(59, 130, 246, 0.3);
+  border-color: #93C5FD;
+  color: #F8FAFC;
+}
+
+/* Animación de entrada suave */
+@keyframes slideInFade {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   ADAPTACIÓN MÓVIL RESPONSIVA
+   ========================================================================== */
+@media screen and (max-width: 991px) {
+  .store-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 20px 10px !important;
+    gap: 20px !important;
+  }
+
+  .carousel-slide {
+    padding: 30px 20px;
+  }
+
+  .carousel-slide h1 {
+    font-size: 2rem;
+  }
+
+  .sidebar-section, 
+  .catalog-section, 
+  .products-grid {
+    width: 100% !important;
+  }
+}

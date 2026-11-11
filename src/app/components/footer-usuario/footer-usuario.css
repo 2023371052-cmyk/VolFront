@@ -1,0 +1,100 @@
+.footer-user-container {
+  background-color: #0f172a;
+  border-top: 2px solid #1e293b;
+  color: #94a3b8;
+  padding: 30px 20px 15px 20px;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* Alineación horizontal para el logo y la marca */
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-brand-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-img {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+}
+
+.logo-text {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #ffffff;
+  letter-spacing: 1px;
+}
+
+.footer-brand .tech-dot {
+  color: #00ffcc;
+}
+
+.brand-desc {
+  font-size: 0.85rem;
+  margin: 5px 0 0 0;
+  color: #64748b;
+}
+
+/* Grid de botones / enlaces */
+.footer-links-grid {
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.footer-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.95rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.footer-item i {
+  font-size: 1.1rem;
+}
+
+/* Efectos hover */
+.footer-item:hover {
+  color: #00ffcc;
+  background-color: #1e293b;
+}
+
+/* Estilo especial para cerrar sesión */
+.btn-logout:hover {
+  color: #ff4d4d !important;
+}
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 20px auto 0 auto;
+  padding-top: 15px;
+  border-top: 1px solid #1e293b;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #64748b;
+}

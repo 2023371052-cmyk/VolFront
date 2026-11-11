@@ -1,0 +1,54 @@
+.pwa-status-banner {
+  background: linear-gradient(135deg, #3B82B8, #1E3A8A); /* Azul dinámico degradado */
+  color: #F8FAFC;                                         /* Texto claro institucional */
+  border-bottom: 1px solid rgba(147, 197, 253, 0.3);
+  text-align: center;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+  box-shadow: 0 4px 15px rgba(11, 29, 58, 0.5);
+  animation: slideDown 0.3s ease-in-out;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+/* Evita que cualquier tarjeta o sección desborde la pantalla en móviles */
+.container, .main-content, section {
+  max-width: 100vw;
+  box-sizing: border-box;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+/* Asegura que las imágenes y grids se adapten al ancho del celular */
+img, video {
+  max-width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Elimina el conflicto de ancho que causa el hueco */
+.container, .main-content {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Asegura que todas las secciones tengan el mismo fondo continuo de la paleta */
+section, .store-landing-wrapper, .main-footer {
+  background-color: #0B1D3A;
+  box-sizing: border-box;
+}
+
+/* Asegura que las imágenes y grids se adapten sin romper contenedores */
+img, video {
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+}

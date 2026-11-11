@@ -1,0 +1,55 @@
+<div class="store-container">
+  
+  <!-- BOTÓN DE VOLVER INTELIGENTE -->
+  <button class="btn-back" (click)="volverSegunSesion()" type="button">
+    <i class="pi pi-arrow-left"></i> Volver
+  </button>
+
+  <section class="store-header">
+    <h1>Categoría: Karting & Competición</h1>
+    <p>Componentes de inducción y supercargadores optimizados para alto rendimiento en karting.</p>
+  </section>
+
+  <!-- ESTADO DE CARGA -->
+  @if (cargando) {
+    <div class="loading-state" style="text-align: center; padding: 50px; color: #00D4FF;">
+      <i class="pi pi-spin pi-spinner" style="font-size: 2.5rem; margin-bottom: 10px;"></i>
+      <p>Sincronizando componentes de Karting...</p>
+    </div>
+  } @else if (!productosKarting || productosKarting.length === 0) {
+    <!-- ESTADO VACÍO -->
+    <div class="empty-state" style="text-align: center; padding: 40px; color: #94a3b8;">
+      <i class="pi pi-info-circle" style="font-size: 2rem; margin-bottom: 10px; color: #00D4FF;"></i>
+      <p>No hay componentes de karting disponibles en este momento.</p>
+    </div>
+  } @else {
+    <!-- GRID DE PRODUCTOS -->
+    <div class="products-grid">
+      @for (product of productosKarting; track product.id) {
+        <div class="product-card">
+          <div class="badge">{{ product.category || product.categoria || 'Karting' }}</div>
+          <img [src]="product.imageUrl || product.image || product.imagen || 'assets/img/supercargador-default.jpg'" [alt]="product.name || product.nombre" class="product-image">
+          
+          <div class="product-info">
+            <h3>{{ product.name || product.nombre }}</h3>
+            <p class="description">{{ product.description || product.descripcion }}</p>
+            
+            <div class="product-footer">
+              <span class="price">{{ (product.price || product.precio) | currency:'MXN':'symbol':'1.2-2' }}</span>
+              
+              <!-- Botones ordenados en fila con espacio flexible -->
+              <div class="actions">
+                <button class="btn-detail" [routerLink]="['/producto', product.id]" title="Ver detalles">
+                  <i class="pi pi-eye"></i>
+                </button>
+                <button class="btn-add" (click)="agregarAlCarrito(product)" type="button">
+                  <i class="pi pi-shopping-cart"></i> Agregar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

@@ -1,0 +1,70 @@
+<div class="auth-wrapper">
+  
+  <!-- Fondo dinámico con partículas o brillos de escudería -->
+  <div class="auth-glow-bg"></div>
+
+  <div class="auth-card">
+    
+    <div class="auth-header">
+      <span class="auth-badge"><i class="pi pi-shield"></i> ACCESO SEGURO PITS</span>
+      <h2>INGRESO A PITS</h2>
+      <p>Introduce tus credenciales de piloto para sincronizar telemetría</p>
+    </div>
+
+    <!-- CAJA DE ALERTA PERSONALIZADA -->
+    <div class="auth-alert" *ngIf="errorMessage">
+      <span class="alert-icon"><i class="pi pi-exclamation-triangle"></i></span>
+      <span>{{ errorMessage }}</span>
+    </div>
+
+    <form class="auth-form-container" (ngSubmit)="encenderMotor()">
+      
+      <div class="form-group">
+        <label for="email">Correo Electrónico</label>
+        <div class="input-icon-wrapper">
+          <i class="pi pi-envelope"></i>
+          <input 
+            id="email"
+            type="email" 
+            [(ngModel)]="email" 
+            name="email" 
+            placeholder="piloto@voltex.com" 
+            required 
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña de Telemetría</label>
+        <div class="input-icon-wrapper">
+          <i class="pi pi-lock"></i>
+          <input 
+            id="password"
+            type="password" 
+            [(ngModel)]="password" 
+            name="password" 
+            placeholder="••••••••" 
+            minlength="8"
+            maxlength="15"
+            required 
+          />
+        </div>
+      </div>
+
+      <button type="submit" class="auth-submit-btn">
+        <span>ENCENDER MOTOR</span>
+        <i class="pi pi-bolt"></i>
+      </button>
+
+    </form>
+
+    <div class="auth-toggle">
+      <p>
+        ¿No tienes cuenta de escudería? 
+        <!-- Cambiamos el span por un <a> para que routerLink funcione de forma nativa -->
+        <a routerLink="/registro" class="toggle-link">Regístrate aquí</a>
+      </p>
+    </div>
+
+  </div>
+</div>

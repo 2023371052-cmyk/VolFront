@@ -1,0 +1,50 @@
+<div class="grid-container">
+  @for (item of listaProductos; track item.id) {
+    <div class="product-card">
+      
+      <div class="card-image-box">
+        <img [src]="item.imagen" [alt]="item.nombre" class="card-img" />
+        <span class="card-badge" [style.background-color]="item.colorEtiqueta">
+          {{ item.etiqueta }}
+        </span>
+      </div>
+
+      <div class="card-content">
+        <span class="card-brand">{{ item.marca }}</span>
+        <h3 class="card-title">{{ item.nombre }}</h3>
+        <p class="card-subtitle">{{ item.subtitulo }}</p>
+
+        <div class="specs-box">
+          <div class="spec-row">
+            <span class="spec-label">Presión Boost:</span>
+            <span class="spec-value highlight-cyan">{{ item.presionBoost }}</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Entrega Potencia:</span>
+            <span class="spec-value">{{ item.entregaPotencia }}</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Conexión:</span>
+            <span class="spec-value">{{ item.conexionMecanica }}</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Espacio Capó:</span>
+            <span class="spec-value">{{ item.espacioRequerido }}</span>
+          </div>
+        </div>
+
+        <div class="card-footer-box">
+          <div class="price-box">
+            <span class="price-currency">USD</span>
+            <span class="price-amount">${{ item.precio | number }}</span>
+          </div>
+          <!-- Añadimos el evento click para la lógica de añadir al carrito -->
+          <button class="buy-btn" (click)="agregarAlCarrito(item)" type="button">
+            <i class="pi pi-plus"></i> Añadir
+          </button>
+        </div>
+      </div>
+
+    </div>
+  }
+</div>

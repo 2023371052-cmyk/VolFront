@@ -1,0 +1,177 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.sidebar-container {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Encabezado móvil y botón ocultos por defecto en escritorio */
+.sidebar-header-mobile,
+.mobile-filter-toggle {
+  display: none;
+}
+
+/* Secciones de filtros con diseño de tarjeta en azul profundo */
+.filter-section {
+  background-color: #1E3A8A;
+  border: 1px solid rgba(147, 197, 253, 0.2);
+  padding: 18px;
+  border-radius: 12px;
+  margin-bottom: 18px;
+  box-shadow: 0 8px 20px rgba(11, 29, 58, 0.4);
+  transition: all 0.3s ease;
+}
+
+.filter-section:hover {
+  border-color: rgba(147, 197, 253, 0.4);
+  box-shadow: 0 10px 25px rgba(59, 130, 246, 0.2);
+}
+
+.filter-section h3 {
+  font-size: 0.8rem;
+  letter-spacing: 1.5px;
+  color: #93C5FD;
+  margin-top: 0;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(147, 197, 253, 0.2);
+  padding-bottom: 8px;
+  font-weight: 800;
+}
+
+.filter-option {
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  color: #DBEAFE;
+  display: flex;
+  align-items: center;
+}
+
+.filter-option:last-child {
+  margin-bottom: 0;
+}
+
+.filter-option input[type="checkbox"] {
+  margin-right: 12px;
+  accent-color: #3B82B8;
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+
+.filter-option label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  user-select: none;
+  transition: color 0.2s ease;
+}
+
+.filter-option label:hover {
+  color: #F8FAFC;
+}
+
+/* ==========================================================================
+   COMPORTAMIENTO PARA COMPUTADORA (ESCRITORIO - min 992px)
+   ========================================================================== */
+@media screen and (min-width: 992px) {
+  :host {
+    width: 280px;
+    min-width: 280px;
+    flex-shrink: 0;
+  }
+  .sidebar-container {
+    width: 280px;
+  }
+  .sidebar-header-mobile,
+  .mobile-filter-toggle {
+    display: none !important;
+  }
+  .filters-wrapper {
+    display: block !important;
+  }
+}
+
+/* ==========================================================================
+   COMPORTAMIENTO PARA DISPOSITIVOS MÓVILES (max 991px)
+   ========================================================================== */
+@media screen and (max-width: 991px) {
+  :host {
+    width: 100% !important;
+    min-width: 100% !important;
+  }
+
+  .sidebar-container {
+    width: 100% !important;
+    padding: 0 5px !important;
+    box-sizing: border-box !important;
+  }
+
+  .sidebar-header-mobile {
+    display: block !important;
+    margin-bottom: 12px;
+    padding: 0 4px;
+  }
+
+  .sidebar-header-mobile h2 {
+    font-size: 1.1rem;
+    color: #F8FAFC;
+    margin: 0 0 2px 0;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .sidebar-header-mobile p {
+    font-size: 0.85rem;
+    color: #DBEAFE;
+    opacity: 0.8;
+    margin: 0;
+  }
+
+  /* Botón desplegable moderno con cristal azul */
+  .mobile-filter-toggle {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background: linear-gradient(135deg, #1E3A8A, #0B1D3A);
+    border: 1px solid #3B82B8;
+    color: #93C5FD;
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 15px rgba(11, 29, 58, 0.4);
+    transition: all 0.3s ease;
+  }
+
+  .mobile-filter-toggle:hover {
+    background: linear-gradient(135deg, #3B82B8, #1E3A8A);
+    color: #F8FAFC;
+    border-color: #93C5FD;
+  }
+
+  .filters-wrapper {
+    display: none !important;
+  }
+
+  .filters-wrapper.mobile-open {
+    display: block !important;
+    animation: fadeIn 0.4s ease-in-out;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}

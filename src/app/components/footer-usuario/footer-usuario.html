@@ -1,0 +1,46 @@
+<footer class="footer-user-container">
+  <div class="footer-content">
+    
+    <!-- Sección de marca/identificación -->
+    <div class="footer-brand">
+      <img src="logo.png" alt="7VOLTEX Motorsport" class="logo-img" />
+      <span class="logo-text">VOLTEX <span class="tech-dot">.</span></span>
+      <p class="brand-desc">Ingeniería en Sobrealimentación y Kits de Supercargadores de Alto Rendimiento.</p>
+    </div>
+
+    <!-- Enlaces exclusivos de navegación del usuario -->
+    <div class="footer-links-grid">
+      
+      <a class="footer-item" [routerLink]="['/perfil']">
+        <i class="pi pi-user-edit"></i>
+        <span>Mi Perfil</span>
+      </a>
+
+      <a class="footer-item" [routerLink]="['/deseos']">
+        <i class="pi pi-heart"></i>
+        <span>Lista de Deseos</span>
+      </a>
+
+      <a class="footer-item" [routerLink]="['/checkout']">
+        <i class="pi pi-shopping-cart"></i>
+        <span>Ver Carrito</span>
+      </a>
+
+      <a class="footer-item" [routerLink]="['/pedidos']">
+        <i class="pi pi-box"></i>
+        <span>Mis Pedidos</span>
+      </a>
+
+      <button class="footer-item btn-logout" (click)="cerrarSesion()" type="button">
+        <i class="pi pi-power-off"></i>
+        <span>Cerrar Sesión</span>
+      </button>
+
+    </div>
+
+  </div>
+  
+  <div class="footer-bottom">
+    <p>&copy; 2026 7VOLTEX Motorsport. Todos los derechos reservados.</p>
+  </div>
+</footer>

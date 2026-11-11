@@ -1,0 +1,112 @@
+/* Contenedor principal de la vista de comparación */
+.container {
+  max-width: 1300px;
+  margin: 0 auto;
+  color: #fff;
+  font-family: inherit;
+}
+
+/* Estilo futurista para el título */
+h2 {
+  color: #fff;
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  border-left: 4px solid #00D4FF;
+  padding-left: 12px;
+  margin-bottom: 25px;
+}
+
+/* Mensaje cuando no hay elementos */
+.bg-gray-50 {
+  background: rgba(15, 23, 42, 0.8) !important;
+  border: 1px dashed rgba(0, 212, 255, 0.3);
+  border-radius: 12px;
+  padding: 40px;
+}
+
+.text-gray-500 {
+  color: #94a3b8 !important;
+}
+
+/* Estilo futurista para la tabla comparativa */
+table {
+  width: 100%;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 12px;
+  border-collapse: collapse;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Cabecera de la tabla */
+th {
+  background: rgba(30, 41, 59, 0.9);
+  color: #fff;
+  padding: 20px;
+  border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+  vertical-align: middle;
+}
+
+/* Celdas de la tabla */
+td {
+  padding: 16px 20px;
+  color: #e2e8f0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  vertical-align: middle;
+}
+
+/* Primera columna fija con los nombres de los atributos */
+td:first-child, th:first-child {
+  background: rgba(15, 23, 42, 1);
+  font-weight: 700;
+  color: #00D4FF;
+  width: 220px;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Líneas divisorias entre columnas de productos */
+.border-l {
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Imágenes de los supercargadores en la tabla */
+th img {
+  max-height: 100px;
+  object-fit: contain;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 4px 8px rgba(0, 212, 255, 0.2));
+}
+
+/* Botón flotante para eliminar un producto de la comparativa */
+th button {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+th button:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
+/* Precios destacados */
+td.text-green-600 {
+  color: #00D4FF !important;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* Efecto hover en las filas para mejor lectura */
+tbody tr:hover {
+  background: rgba(0, 212, 255, 0.03);
+}

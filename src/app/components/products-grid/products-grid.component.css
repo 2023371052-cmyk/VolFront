@@ -1,0 +1,188 @@
+/* ==========================================================================
+   GRID DE PRODUCTOS Y TARJETAS TÉCNICAS - 7VOLTEX MOTORSPORT
+   ========================================================================== */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 25px;
+  width: 100%;
+}
+
+.product-card {
+  background: linear-gradient(145deg, #1E3A8A 0%, #0B1D3A 100%);
+  border: 1px solid rgba(147, 197, 253, 0.25);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 30px rgba(11, 29, 58, 0.5);
+}
+
+.product-card:hover {
+  border-color: #93C5FD;
+  transform: translateY(-6px);
+  box-shadow: 0 15px 35px rgba(59, 130, 246, 0.3);
+}
+
+/* Contenedor de la imagen del producto */
+.card-image-box {
+  position: relative;
+  height: 210px;
+  background: #0B1D3A;
+  overflow: hidden;
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.product-card:hover .card-img {
+  transform: scale(1.08);
+}
+
+/* Badge o etiqueta flotante sobre la imagen */
+.card-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  color: #0B1D3A;
+  font-size: 0.7rem;
+  font-weight: 900;
+  padding: 5px 10px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Contenido de la tarjeta */
+.card-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.card-brand {
+  color: #93C5FD;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.card-title {
+  color: #F8FAFC;
+  font-size: 1.2rem;
+  font-weight: 900;
+  margin: 0 0 4px 0;
+}
+
+.card-subtitle {
+  color: #DBEAFE;
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin-bottom: 15px;
+  min-height: 2.4em;
+}
+
+/* Caja de especificaciones técnicas estilo panel de pits */
+.specs-box {
+  background: rgba(11, 29, 58, 0.6);
+  border: 1px solid rgba(147, 197, 253, 0.15);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+}
+
+.spec-label {
+  color: #DBEAFE;
+  opacity: 0.75;
+}
+
+.spec-value {
+  color: #F8FAFC;
+  font-weight: 700;
+}
+
+.highlight-cyan {
+  color: #93C5FD !important;
+  text-shadow: 0 0 8px rgba(147, 197, 253, 0.4);
+}
+
+/* Pie de tarjeta (Precio y Botón) */
+.card-footer-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 15px;
+  border-top: 1px solid rgba(147, 197, 253, 0.15);
+}
+
+.price-box {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.price-currency {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #93C5FD;
+}
+
+.price-amount {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #F8FAFC;
+}
+
+/* Botón de compra / añadir */
+.buy-btn {
+  background: linear-gradient(135deg, #3B82B8, #1E3A8A);
+  color: #F8FAFC;
+  border: 1px solid rgba(147, 197, 253, 0.4);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(11, 29, 58, 0.4);
+}
+
+.buy-btn:hover {
+  background: linear-gradient(135deg, #93C5FD, #3B82B8);
+  color: #0B1D3A;
+  border-color: #93C5FD;
+  box-shadow: 0 0 15px rgba(147, 197, 253, 0.5);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   ADAPTACIÓN MÓVIL RESPONSIVA
+   ========================================================================== */
+@media screen and (max-width: 600px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+  }
+}

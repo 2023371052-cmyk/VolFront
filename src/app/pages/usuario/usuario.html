@@ -1,0 +1,98 @@
+<div class="store-container">
+  
+  <!-- CONTENEDOR RETRÁCTIL (Se oculta al hacer scroll hacia abajo) -->
+  <div class="dashboard-collapsible-wrapper" [class.collapsed]="isScrolled">
+    
+    <div class="welcome-banner" *ngIf="usuarioEmail">
+      <div class="banner-content">
+        <h2>¡Bienvenido de vuelta, Piloto!</h2>
+        <p>Sesión activa: <span class="user-badge">{{ usuarioEmail }}</span></p>
+      </div>
+      <div class="banner-status-pulse"></div>
+    </div>
+
+    <section class="store-header">
+      <h1>Panel de Control del Piloto</h1>
+      <p>Gestiona tus configuraciones, revisa tu historial de escudería y consulta tus componentes guardados.</p>
+    </section>
+
+    <!-- TARJETAS DE ACCESOS DIRECTOS -->
+    <div class="user-dashboard-grid">
+      
+      <div class="dashboard-card" routerLink="/pedidos">
+        <div class="card-icon"><i class="pi pi-box"></i></div>
+        <div class="card-info">
+          <h3>Historial de Pedidos y Pits</h3>
+          <p>Consulta el estatus de tus órdenes y entregas pasadas.</p>
+        </div>
+        <i class="pi pi-chevron-right arrow-icon"></i>
+      </div>
+
+      <div class="dashboard-card" routerLink="/deseos">
+        <div class="card-icon"><i class="pi pi-heart"></i></div>
+        <div class="card-info">
+          <h3>Lista de Deseos</h3>
+          <p>Administra los supercargadores y kits guardados en la mira.</p>
+        </div>
+        <i class="pi pi-chevron-right arrow-icon"></i>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CATÁLOGO DE COMPONENTES DE LA ESCUDERÍA -->
+  <section class="store-header catalog-title">
+    <h1>Catálogo de Componentes Voltex</h1>
+    <p>Selecciona los módulos de telemetría y energía para tu configuración técnica.</p>
+  </section>
+
+  <!-- ESTADO DE CARGA Y VALIDACIÓN DE DATOS VACÍOS -->
+  @if (cargando) {
+    <div class="loading-state">
+      <i class="pi pi-spin pi-spinner"></i>
+      <p>Sincronizando inventario de pits con el servidor...</p>
+    </div>
+  } @else if (!products || products.length === 0) {
+    <div class="empty-state">
+      <i class="pi pi-info-circle"></i>
+      <p>No hay componentes disponibles en este momento en la base de datos.</p>
+    </div>
+  } @else {
+    <!-- GRID DE PRODUCTOS REALES -->
+    <div class="products-grid">
+      @for (product of products; track product.id) {
+        <div class="product-card">
+          <div class="badge">{{ product.category || product.categoria }}</div>
+          <img [src]="product.image || product.imageUrl || product.imagen" [alt]="product.name || product.nombre" class="product-image">
+          
+          <div class="product-info">
+            <h3>{{ product.name || product.nombre }}</h3>
+            <p class="description">{{ product.description || product.descripcion }}</p>
+            
+            <div class="product-footer">
+              <span class="price">{{ (product.price || product.precio) | currency:'MXN' }}</span>
+              
+              <div class="actions">
+                <button class="btn-detail" [routerLink]="['/producto', product.id]" title="Ver detalles">
+                  <i class="pi pi-eye"></i>
+                </button>
+                <button class="btn-add" (click)="agregarAlCarrito(product)">
+                  <i class="pi pi-shopping-cart"></i> Agregar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- TOAST FLOTANTE GLOBAL (Fuera del bucle para evitar duplicados visuales) -->
+  @if (mostrarToast) {
+    <div class="voltex-toast-floating">
+      <i class="pi pi-check-circle"></i>
+      <span>{{ mensajeToast }}</span>
+    </div>
+  }
+
+</div>

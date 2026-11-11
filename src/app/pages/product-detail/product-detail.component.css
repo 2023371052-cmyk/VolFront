@@ -1,0 +1,146 @@
+/* ==========================================================================
+   ESTILOS DE HISTORIAL DE PEDIDOS - 7VOLTEX
+   ========================================================================== */
+.pedidos-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background-color: #0B1D3A;
+  min-height: 100vh;
+  color: #F8FAFC;
+  box-sizing: border-box;
+}
+
+/* Encabezado */
+.pedidos-header {
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(219, 234, 254, 0.1);
+  color: #DBEAFE;
+  border: 1px solid rgba(147, 197, 253, 0.3);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  width: fit-content;
+  transition: all 0.3s ease;
+}
+
+.btn-back:hover {
+  background: rgba(59, 130, 246, 0.3);
+  border-color: #93C5FD;
+  color: #F8FAFC;
+  transform: translateX(-3px);
+}
+
+.pedidos-header h1 {
+  font-size: 2.2rem;
+  font-weight: 900;
+  margin: 0;
+  color: #F8FAFC;
+  letter-spacing: 0.5px;
+}
+
+.subtitle {
+  color: #DBEAFE;
+  font-size: 0.95rem;
+  margin: 0;
+  opacity: 0.85;
+}
+
+/* Contenedor central tipo tarjeta de Pits */
+.pedidos-content-wrapper {
+  background: #1E3A8A;
+  border: 1px solid rgba(147, 197, 253, 0.2);
+  border-radius: 20px;
+  padding: 45px 30px;
+  box-shadow: 0 15px 35px rgba(11, 29, 58, 0.6);
+}
+
+/* Estado Vacío (Sin órdenes) */
+.empty-state-card {
+  text-align: center;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.empty-icon-wrapper {
+  width: 80px;
+  height: 80px;
+  background: rgba(11, 29, 58, 0.8);
+  border: 2px solid rgba(147, 197, 253, 0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  box-shadow: 0 0 25px rgba(147, 197, 253, 0.2);
+}
+
+.empty-icon-wrapper i {
+  font-size: 2.2rem;
+  color: #93C5FD;
+}
+
+.empty-state-card h3 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #F8FAFC;
+  margin: 0 0 10px 0;
+}
+
+.empty-state-card p {
+  color: #DBEAFE;
+  font-size: 0.95rem;
+  margin-bottom: 30px;
+  opacity: 0.85;
+  line-height: 1.5;
+}
+
+/* Botón de ir al catálogo */
+.btn-catalog {
+  background: linear-gradient(135deg, #3B82B8, #1E3A8A);
+  color: #F8FAFC;
+  border: 1px solid rgba(147, 197, 253, 0.4);
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 900;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(11, 29, 58, 0.4);
+}
+
+.btn-catalog:hover {
+  background: linear-gradient(135deg, #93C5FD, #3B82B8);
+  color: #0B1D3A;
+  border-color: #93C5FD;
+  box-shadow: 0 0 20px rgba(147, 197, 253, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .pedidos-container {
+    padding: 15px;
+  }
+  .pedidos-content-wrapper {
+    padding: 25px 15px;
+  }
+}

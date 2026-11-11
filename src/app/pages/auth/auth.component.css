@@ -1,0 +1,234 @@
+/* ==========================================================================
+   ESTILOS DE LOGIN - 7VOLTEX GLASSMORPHISM
+   ========================================================================== */
+.auth-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 70px);
+  background: radial-gradient(circle at center, #1E3A8A 0%, #0B1D3A 70%, #080E1A 100%);
+  padding: 30px 20px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Círculos de brillo difuminado de fondo */
+.auth-glow-bg {
+  position: absolute;
+  width: 450px;
+  height: 450px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.4), rgba(147, 197, 253, 0.15));
+  filter: blur(80px);
+  border-radius: 50%;
+  z-index: 1;
+  animation: pulseGlow 6s ease-in-out infinite alternate;
+}
+
+@keyframes pulseGlow {
+  0% { transform: scale(1) translate(-30px, -30px); }
+  100% { transform: scale(1.2) translate(30px, 30px); }
+}
+
+/* Tarjeta de Login con Efecto Vidrio (Glassmorphism) */
+.auth-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 440px;
+  background: rgba(30, 58, 138, 0.45); /* Transparente con tono azul institucional */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(147, 197, 253, 0.3);
+  border-radius: 20px;
+  padding: 40px 30px;
+  box-shadow: 0 20px 45px rgba(11, 29, 58, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  box-sizing: border-box;
+  animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Encabezado */
+.auth-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.auth-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(59, 130, 246, 0.25);
+  color: #93C5FD;
+  border: 1px solid rgba(147, 197, 253, 0.4);
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 5px 12px;
+  border-radius: 6px;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.auth-header h2 {
+  color: #F8FAFC;
+  font-size: 1.8rem;
+  font-weight: 900;
+  margin: 0 0 8px 0;
+  letter-spacing: 0.5px;
+}
+
+.auth-header p {
+  color: #DBEAFE;
+  font-size: 0.88rem;
+  margin: 0;
+  opacity: 0.9;
+}
+
+/* Alerta de error */
+.auth-alert {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  color: #FCA5A5;
+  padding: 12px 15px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* Formulario */
+.auth-form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  color: #DBEAFE;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.input-icon-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon-wrapper i {
+  position: absolute;
+  left: 14px;
+  color: #93C5FD;
+  font-size: 1rem;
+}
+
+.input-icon-wrapper input {
+  width: 100%;
+  background: rgba(11, 29, 58, 0.6);
+  border: 1px solid rgba(147, 197, 253, 0.3);
+  padding: 12px 14px 12px 42px;
+  border-radius: 10px;
+  color: #F8FAFC;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.input-icon-wrapper input::placeholder {
+  color: rgba(219, 234, 254, 0.4);
+}
+
+.input-icon-wrapper input:focus {
+  outline: none;
+  border-color: #93C5FD;
+  background: rgba(11, 29, 58, 0.85);
+  box-shadow: 0 0 15px rgba(147, 197, 253, 0.3);
+}
+
+/* Botón de envío */
+.auth-submit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: linear-gradient(135deg, #3B82B8, #1E3A8A);
+  color: #F8FAFC;
+  border: 1px solid rgba(147, 197, 253, 0.5);
+  padding: 14px;
+  border-radius: 10px;
+  font-weight: 900;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(11, 29, 58, 0.5);
+  margin-top: 5px;
+}
+
+.auth-submit-btn:hover {
+  background: linear-gradient(135deg, #93C5FD, #3B82B8);
+  color: #0B1D3A;
+  border-color: #93C5FD;
+  box-shadow: 0 0 25px rgba(147, 197, 253, 0.6);
+  transform: translateY(-2px);
+}
+
+/* Toggle de Registro */
+.auth-toggle {
+  text-align: center;
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(147, 197, 253, 0.15);
+}
+
+.auth-toggle p {
+  color: #DBEAFE;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.toggle-link {
+  color: #93C5FD;
+  font-weight: 800;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.toggle-link:hover {
+  color: #F8FAFC;
+}
+
+/* ==========================================================================
+   ADAPTACIÓN MÓVIL
+   ========================================================================== */
+@media screen and (max-width: 480px) {
+  .auth-card {
+    padding: 30px 20px;
+  }
+
+  .auth-header h2 {
+    font-size: 1.5rem;
+  }
+}

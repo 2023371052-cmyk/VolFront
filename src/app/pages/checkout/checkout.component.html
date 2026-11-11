@@ -1,0 +1,175 @@
+<div class="checkout-container">
+
+  <!-- BOTÓN DE VOLVER HACIA LA VISTA DE USUARIO -->
+  <button class="btn-back" routerLink="/usuario">
+    <i class="pi pi-arrow-left"></i> Volver al Panel de Usuario
+  </button>
+
+  <h2>Finalizar Compra</h2>
+  
+  <div class="checkout-grid">
+    <!-- Formulario de Pago y Envío -->
+    <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()" class="checkout-form">
+      <h3>1. Información de Envío</h3>
+      
+      <div class="form-group">
+        <label>Nombre Completo</label>
+        <input type="text" formControlName="fullName" class="form-control" placeholder="Itzel Rodríguez">
+        <div *ngIf="submitted && checkoutForm.get('fullName')?.errors" class="error-msg">El nombre es requerido.</div>
+      </div>
+
+      <div class="form-group">
+        <label>Correo Electrónico</label>
+        <input type="email" formControlName="email" class="form-control" placeholder="correo@ejemplo.com">
+        <div *ngIf="submitted && checkoutForm.get('email')?.errors" class="error-msg">Ingresa un correo válido.</div>
+      </div>
+
+      <div class="form-group">
+        <label>Dirección</label>
+        <input type="text" formControlName="address" class="form-control" placeholder="Calle y número">
+        <div *ngIf="submitted && checkoutForm.get('address')?.errors" class="error-msg">La dirección es requerida.</div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Ciudad</label>
+          <input type="text" formControlName="city" class="form-control">
+          <div *ngIf="submitted && checkoutForm.get('city')?.errors" class="error-msg">La ciudad es requerida.</div>
+        </div>
+        <div class="form-group">
+          <label>Código Postal</label>
+          <input type="text" formControlName="postalCode" class="form-control" maxlength="5">
+          <div *ngIf="submitted && checkoutForm.get('postalCode')?.errors" class="error-msg">Código postal no válido (5 dígitos).</div>
+        </div>
+      </div>
+
+      <h3>2. Datos de Pago</h3>
+      <div class="form-group">
+        <label>Número de Tarjeta</label>
+        <input type="text" formControlName="cardNumber" class="form-control" placeholder="4532XXXXXXXXXXXX" maxlength="16">
+        <div *ngIf="submitted && checkoutForm.get('cardNumber')?.errors" class="error-msg">Ingresa los 16 dígitos de tu tarjeta.</div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Vencimiento (MM/YY)</label>
+          <input type="text" formControlName="expiryDate" class="form-control" placeholder="MM/YY" maxlength="5">
+          <div *ngIf="submitted && checkoutForm.get('expiryDate')?.errors" class="error-msg">Fecha de vencimiento requerida.</div>
+        </div>
+        <div class="form-group">
+          <label>CVV</label>
+          <input type="password" formControlName="cvv" class="form-control" maxlength="4">
+          <div *ngIf="submitted && checkoutForm.get('cvv')?.errors" class="error-msg">CVV requerido.</div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit">Confirmar y Pagar ${{ total }}</button>
+    </form>
+
+    <!-- Resumen del Carrito Manipulable -->
+    <div class="order-summary">
+      <h3>Resumen del Pedido</h3>
+
+      <!-- Estado si el carrito está vacío -->
+      <div *ngIf="cartItems.length === 0" class="empty-cart-msg">
+        <p>No hay componentes en la línea de pits.</p>
+        <button routerLink="/usuario" class="btn-store-link">Ir a la Tienda</button>
+      </div>
+
+      <!-- Lista de elementos manipulables -->
+      <ul class="summary-list" *ngIf="cartItems.length > 0">
+        <li *ngFor="let item of cartItems; let i = index" class="summary-item">
+          <div class="item-details">
+            <span class="item-name">{{ item.name || item.nombre }}</span>
+            <span class="item-price">${{ item.price || item.precio }} c/u</span>
+          </div>
+
+          <!-- Controles de cantidad (+ / - / eliminar) -->
+          <div class="quantity-controls">
+            <button type="button" class="btn-qty" (click)="disminuirCantidad(i)">-</button>
+            <span class="qty-number">{{ item.quantity || 1 }}</span>
+            <button type="button" class="btn-qty" (click)="aumentarCantidad(i)">+</button>
+            <button type="button" class="btn-remove" (click)="eliminarItem(i)" title="Quitar componente">
+              <i class="pi pi-trash"></i>
+            </button>
+          </div>
+        </li>
+      </ul>
+
+      <hr *ngIf="cartItems.length > 0">
+      
+      <div class="summary-line" *ngIf="cartItems.length > 0">
+        <span>Subtotal</span>
+        <span>${{ subtotal }}</span>
+      </div>
+      <div class="summary-line" *ngIf="cartItems.length > 0">
+        <span>Envío (Pits)</span>
+        <span>${{ shipping }}</span>
+      </div>
+      <div class="summary-line total" *ngIf="cartItems.length > 0">
+        <span>Total a Pagar</span>
+        <span>${{ total }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🌟 VENTANA MODAL CON RESUMEN DE TICKET Y DESCARGA EN PDF -->
+  <div *ngIf="pagoExitoso && ticketData" class="ticket-modal-overlay">
+    <div class="ticket-card" id="ticketImprimible">
+      
+      <div class="ticket-header">
+        <i class="pi pi-check-circle success-icon"></i>
+        <h2>¡PAGO EXITOSO EN PITS! 🏎️✨</h2>
+        <p>Tu orden se ha registrado correctamente en la base de datos.</p>
+      </div>
+
+      <div class="ticket-body">
+        <div class="ticket-info">
+          <p><strong>Folio de Orden:</strong> #{{ ticketData.orderId }}</p>
+          <p><strong>Fecha y Hora:</strong> {{ ticketData.fecha }}</p>
+          <p><strong>Piloto / Cliente:</strong> {{ ticketData.comprador }}</p>
+          <p><strong>Correo:</strong> {{ ticketData.email }}</p>
+          <p><strong>Dirección de Entrega:</strong> {{ ticketData.direccion }}</p>
+        </div>
+
+        <hr class="ticket-divider">
+
+        <h4>Componentes Adquiridos</h4>
+        <div class="ticket-items-list">
+          <div *ngFor="let item of ticketData.items" class="ticket-item-row">
+            <span>{{ item.name || item.nombre }} (x{{ item.quantity }})</span>
+            <span>${{ (item.price || item.precio) * item.quantity }}</span>
+          </div>
+        </div>
+
+        <hr class="ticket-divider">
+
+        <div class="ticket-totals">
+          <div class="row">
+            <span>Subtotal:</span>
+            <span>${{ ticketData.subtotal }}</span>
+          </div>
+          <div class="row">
+            <span>Logística Pits:</span>
+            <span>${{ ticketData.shipping }}</span>
+          </div>
+          <div class="row total">
+            <span>Total Pagado:</span>
+            <span>${{ ticketData.total }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ticket-actions">
+        <button type="button" class="btn-download-pdf" (click)="descargarPdfTicket()">
+          <i class="pi pi-file-pdf"></i> Descargar Ticket PDF
+        </button>
+        <button type="button" class="btn-finish" (click)="finalizarYSalir()">
+          Volver al Panel
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

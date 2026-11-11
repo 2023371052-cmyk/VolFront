@@ -1,0 +1,243 @@
+<div class="admin-wrapper">
+  
+  <section class="metrics-grid">
+    <div class="metric-card">
+      <span class="m-label">🎯 CATEGORÍA LÍDER</span>
+      <h3 class="m-value" style="color: #00D4FF;">Centrífugos (90%)</h3>
+      <p class="m-desc">Mayor índice de descarga en pits.</p>
+    </div>
+    <div class="metric-card">
+      <span class="m-label">💳 TRANSACCIONES SIMULADAS</span>
+      <h3 class="m-value" style="color: #00FFCC;">$45,800 USD</h3>
+      <p class="m-desc">Pasarela de pagos PayPal activa.</p>
+    </div>
+    <div class="metric-card">
+      <span class="m-label">📢 ALERTAS EMITIDAS</span>
+      <h3 class="m-value">{{ state.notificaciones().length }} Push</h3>
+      <p class="m-desc">Sincronizado con Apple Watch 44mm.</p>
+    </div>
+  </section>
+
+  <div class="admin-grid">
+    
+    <!-- COLUMNA IZQUIERDA: FORMULARIOS -->
+    <div class="left-column-admin">
+      
+      <!-- INYECTAR COMPRESOR AL STOCK -->
+      <section class="admin-card">
+        <h3>🔧 INYECTAR COMPRESOR AL STOCK</h3>
+        <form (ngSubmit)="crearProducto()">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Modelo del Supercargador</label>
+              <input type="text" [(ngModel)]="nuevoNombre" name="nombre" placeholder="Ej. ProCharger F-4X" required />
+            </div>
+            <div class="form-group">
+              <label>Marca Fabricante</label>
+              <input type="text" [(ngModel)]="nuevaMarca" name="marca" placeholder="Ej. ProCharger" required />
+            </div>
+          </div>
+
+          <!-- CATEGORÍA Y PRECIO -->
+          <div class="form-row">
+          <div class="form-group">
+  <label>Categoría de Escudería</label>
+  <select [(ngModel)]="nuevaCategoria" name="categoria" required style="width: 100%; background: #1f2937; border: 1px solid #374151; border-radius: 8px; padding: 12px 15px; color: #fff;">
+    <option value="" disabled selected style="background: #111827; color: #9ca3af;">Selecciona una categoría</option>
+    <option value="karting" style="background: #111827; color: #fff;">Karting</option>
+    <option value="rally" style="background: #111827; color: #fff;">Rally</option>
+    <option value="formula" style="background: #111827; color: #fff;">Fórmula</option>
+    <option value="drifting" style="background: #111827; color: #fff;">Drifting</option>
+  </select>
+</div>
+            <div class="form-group">
+              <label>Precio de Lista ($ MXN)</label>
+              <input type="number" [(ngModel)]="nuevoPrecio" name="precio" placeholder="6500" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Presión Máxima (Boost)</label>
+              <input type="text" [(ngModel)]="nuevoBoost" name="boost" placeholder="Ej. 45 PSI" required />
+            </div>
+            <div class="form-group">
+              <label>Stock Inicial</label>
+              <input type="number" [(ngModel)]="nuevoStock" name="stock" placeholder="10" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group" style="grid-column: span 2;">
+              <label>URL de la Imagen</label>
+              <input type="text" [(ngModel)]="nuevaImagen" name="imagen" placeholder="assets/img/supercargador.jpg" />
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top: 12px;">
+            <label>Descripción del Kit</label>
+            <input type="text" [(ngModel)]="nuevoDescripcion" name="descripcion" placeholder="Ej. Kit de inducción forzada..." />
+          </div>
+
+          <button type="submit" class="admin-btn cyan-glow" style="margin-top: 15px;">Subir Kit al Sistema</button>
+        </form>
+      </section>
+        
+      <!-- PROGRAMAR NOTIFICACIÓN PUSH -->
+      <section class="admin-card" style="margin-top: 30px;">
+        <h3>📢 PROGRAMAR NOTIFICACIÓN PUSH</h3>
+        <form (ngSubmit)="enviarAlertaPush()">
+          <div class="form-group">
+            <label>Título de la Alerta</label>
+            <input type="text" [(ngModel)]="notifTitulo" name="ntitulo" placeholder="Ej. ¡VENTA NOCTURNA DE PITS!" required />
+          </div>
+          <div class="form-row">
+            <div class="form-group" style="flex: 2;">
+              <label>Cuerpo del Mensaje (Se verá en el Reloj)</label>
+              <input type="text" [(ngModel)]="notifMensaje" name="nmensaje" placeholder="Descuento del 15%..." required />
+            </div>
+            <div class="form-group" style="flex: 1;">
+              <label>Hora de Envío</label>
+              <input type="text" [(ngModel)]="notifHora" name="nhora" placeholder="10:30" required />
+            </div>
+          </div>
+          <button type="submit" class="admin-btn green-glow">Programar Alerta Inalámbrica</button>
+        </form>
+      </section>
+
+    </div>
+
+    <!-- COLUMNA DERECHA: INVENTARIO Y CONSOLA -->
+    <div class="right-column-admin">
+      
+      <section class="admin-card visual-inventory">
+        <h3>📦 INVENTARIO ACTUAL DE LA ESCUDERÍA ({{ state.productos().length }})</h3>
+        
+        <div class="inventory-scroll">
+          @for (prod of state.productos(); track prod.id) {
+            <div class="inventory-item-card" style="display: flex; flex-direction: column; gap: 10px; background: rgba(15,23,42,0.6); border: 1px solid rgba(0,212,255,0.15); border-radius: 10px; padding: 12px; margin-bottom: 10px;">
+              
+              <div style="display: flex; align-items: center; gap: 12px; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <img [src]="$any(prod).imageUrl || 'assets/img/supercargador-default.jpg'" class="item-thumb" alt="compresor" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;" />
+                  <div class="item-info">
+                    <span class="item-brand" style="font-size: 0.7rem; color: #00D4FF; text-transform: uppercase;">{{ $any(prod).marca }}</span>
+                    <h4 style="margin: 0; font-size: 0.95rem; color: #fff;">{{ $any(prod).name }}</h4>
+                    <p style="font-size: 0.75rem; color: #a0aec0; margin: 2px 0;">{{ $any(prod).description }}</p>
+                  </div>
+                </div>
+
+                <div style="text-align: right;">
+                  <span class="badge-meta b-price" style="display: block; font-weight: bold; color: #00FFCC; font-size: 0.9rem;">${{ $any(prod).price | number }} USD</span>
+                  <span class="badge-meta" [style.background]="$any(prod).stock > 0 ? 'rgba(0,212,255,0.1)' : 'rgba(255,77,77,0.1)'" [style.color]="$any(prod).stock > 0 ? '#00D4FF' : '#ff4d4d'" style="padding: 2px 6px; border-radius: 4px; font-size: 0.7rem;">
+                    Stock: {{ $any(prod).stock }} pzas
+                  </span>
+                </div>
+              </div>
+
+              <!-- Botones de Acción Horizontal -->
+              <div style="display: flex; gap: 8px; justify-content: flex-end; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px;">
+                <button (click)="abrirModalEdicion(prod)" style="background: rgba(0,212,255,0.1); color: #00D4FF; border: 1px solid rgba(0,212,255,0.3); padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold;">
+                  ✏️ Editar
+                </button>
+                
+                <button (click)="alternarEstadoKit(prod)" [style.background]="$any(prod).stock > 0 ? 'rgba(255,165,0,0.1)' : 'rgba(0,255,204,0.1)'" [style.color]="$any(prod).stock > 0 ? '#ffa500' : '#00FFCC'" [style.border]="$any(prod).stock > 0 ? '1px solid rgba(255,165,0,0.3)' : '1px solid rgba(0,255,204,0.3)'" style="padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold;">
+                  {{ $any(prod).stock > 0 ? '🚫 Deshabilitar' : '✅ Habilitar' }}
+                </button>
+
+                <button (click)="confirmarEliminacion($any(prod).id)" style="background: rgba(255,77,77,0.1); color: #ff4d4d; border: 1px solid rgba(255,77,77,0.3); padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold;">
+                  🗑️ Eliminar
+                </button>
+              </div>
+
+            </div>
+          }
+        </div>
+      </section>
+
+      <section class="admin-card logs-card" style="margin-top: 25px;">
+        <h3>📊 CONSOLA DE ALERTAS EMITIDAS</h3>
+        <div class="logs-container">
+          @for (alert of state.notificaciones(); track alert.id) {
+            <div class="log-item" [className]="'log-item ' + alert.tipo">
+              <span class="log-time">[{{ alert.horaProgramada }}]</span>
+              <strong>{{ alert.titulo }}:</strong>
+              <span class="log-text">{{ alert.mensaje }}</span>
+            </div>
+          }
+        </div>
+      </section>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL FLOTANTE DE EDICIÓN (ACTUALIZADO CON TODOS LOS CAMPOS) -->
+@if (editando) {
+  <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 1000;">
+    <div style="background: #111827; border: 1px solid #00D4FF; border-radius: 12px; padding: 25px; width: 450px; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,212,255,0.2);">
+      <h3 style="color: #00D4FF; margin-top: 0;">✏️ EDITAR COMPONENTE DE PITS</h3>
+      
+      <div class="form-group" style="margin-bottom: 12px;">
+        <label style="font-size: 0.8rem; color: #a0aec0;">Modelo</label>
+        <input type="text" [(ngModel)]="editNombre" style="width: 100%; padding: 8px; background: #1f2937; border: 1px solid #374151; color: #fff; border-radius: 6px;" />
+      </div>
+
+      <div class="form-group" style="margin-bottom: 12px;">
+        <label style="font-size: 0.8rem; color: #a0aec0;">Marca Fabricante</label>
+        <input type="text" [(ngModel)]="editMarca" style="width: 100%; padding: 8px; background: #1f2937; border: 1px solid #374151; color: #fff; border-radius: 6px;" />
+      </div>
+
+      <div class="form-group" style="margin-bottom: 12px;">
+        <label style="font-size: 0.8rem; color: #a0aec0;">Categoría de Escudería</label>
+        <select [(ngModel)]="editCategoria" style="width: 100%; padding: 8px; background: #1f2937; border: 1px solid #374151; color: #fff; border-radius: 6px;">
+          <option value="karting">Karting</option>
+          <option value="rally">Rally</option>
+          <option value="formula">Fórmula</option>
+          <option value="drifting">Drifting</option>
+        </select>
+      </div>
+
+      <div class="form-group" style="margin-bottom: 12px;">
+        <label style="font-size: 0.8rem; color: #a0aec0;">Precio (USD)</label>
+        <input type="number" [(ngModel)]="editPrecio" style="width: 100%; padding: 8px; background: #1f2937; border: 1px solid #374151; color: #fff; border-radius: 6px;" />
+      </div>
+
+      <div class="form-group" style="margin-bottom: 12px;">
+        <label style="font-size: 0.8rem; color: #a0aec0;">Stock</label>
+        <input type="number" [(ngModel)]="editStock" style="width: 100%; padding: 8px; background: #1f2937; border: 1px solid #374151; color: #fff; border-radius: 6px;" />
+      </div>
+
+      <div class="form-group" style="margin-bottom: 12px;">
+        <label style="font-size: 0.8rem; color: #a0aec0;">URL de la Imagen</label>
+        <input type="text" [(ngModel)]="editImagen" style="width: 100%; padding: 8px; background: #1f2937; border: 1px solid #374151; color: #fff; border-radius: 6px;" />
+      </div>
+
+      <div class="form-group" style="margin-bottom: 15px;">
+        <label style="font-size: 0.8rem; color: #a0aec0;">Descripción</label>
+        <input type="text" [(ngModel)]="editDescripcion" style="width: 100%; padding: 8px; background: #1f2937; border: 1px solid #374151; color: #fff; border-radius: 6px;" />
+      </div>
+
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button (click)="cancelarEdicion()" style="background: #374151; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer;">Cancelar</button>
+        <button (click)="guardarEdicion()" style="background: #00D4FF; color: #000; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: bold;">Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- MODAL DE CONFIRMACIÓN DE ELIMINACIÓN -->
+@if (mostrandoConfirmacion) {
+  <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 1000;">
+    <div style="background: #111827; border: 1px solid #ff4d4d; border-radius: 12px; padding: 25px; width: 350px; text-align: center; box-shadow: 0 10px 25px rgba(255,77,77,0.2);">
+      <h3 style="color: #ff4d4d; margin-top: 0;">⚠️ BAJA PERMANENTE</h3>
+      <p style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 20px;">¿Estás segura de dar de baja este kit del inventario de Pits?</p>
+      
+      <div style="display: flex; gap: 10px; justify-content: center;">
+        <button (click)="cancelarEliminacion()" style="background: #374151; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer;">Cancelar</button>
+        <button (click)="ejecutarEliminacion()" style="background: #ff4d4d; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: bold;">Sí, Eliminar</button>
+      </div>
+    </div>
+  </div>
+}

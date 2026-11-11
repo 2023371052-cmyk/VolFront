@@ -1,0 +1,18 @@
+<div class="voltex-app">
+  
+  <app-the-navbar *ngIf="!esRutaAuth()"></app-the-navbar>
+
+  <!-- Banner global de estado de red PWA -->
+  <div class="pwa-status-banner" *ngIf="mensajeConexion">
+    <span>⚠️ {{ mensajeConexion }}</span>
+  </div>
+
+  <div class="router-viewport" style="min-height: 75vh;">
+    <div class="pwa-wrapper" [ngClass]="{'offline-mode': !isOnline}">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+
+<app-the-footer *ngIf="!esRutaAuth()"></app-the-footer>
+
+</div>

@@ -1,0 +1,60 @@
+<div class="category-container">
+
+  <!-- BOTÓN DE VOLVER INTELIGENTE -->
+  <button class="btn-back" (click)="volverSegunSesion()">
+    <i class="pi pi-arrow-left"></i> Volver
+  </button>
+
+  <!-- Banner principal de Rally -->
+  <section class="category-header">
+    <span class="badge">ALL-TERRAIN INDUCTION</span>
+    <h1>SUPERCARGADORES PARA RALLY</h1>
+    <p>Kits reforzados para soportar condiciones extremas de terracería, impactos y alta exigencia térmica en tramos cronometrados.</p>
+  </section>
+
+  <!-- ESTADOS DE CARGA / VACÍO -->
+  @if (cargando) {
+    <div class="loading-state">
+      <i class="pi pi-spin pi-spinner"></i>
+      <p>Sincronizando telemetría de módulos Rally...</p>
+    </div>
+  } @else if (productosRally.length === 0) {
+    <div class="empty-state">
+      <i class="pi pi-info-circle"></i>
+      <h3>No hay módulos de Rally registrados</h3>
+      <p>Aún no se han dado de alta componentes de categoría Rally en la base de datos.</p>
+    </div>
+  } @else {
+    <!-- GRID DINÁMICO DE PRODUCTOS REALES -->
+    <section class="products-grid">
+      <div class="product-card" *ngFor="let product of productosRally">
+        <div class="card-badge">{{ product.category || product.categoria || 'RALLY' }}</div>
+        
+        <div class="card-image" [routerLink]="['/producto', product.id]">
+          <img [src]="product.image || product.imageUrl || product.imagen" [alt]="product.name || product.nombre" />
+        </div>
+
+        <div class="card-content">
+          <span class="category-tag">{{ product.marca || 'RALLY SPEC' }}</span>
+          <h3>{{ product.name || product.nombre }}</h3>
+          <p>{{ product.description || product.descripcion }}</p>
+          
+         <div class="card-footer">
+            <span class="price">{{ (product.price || product.precio) | currency:'MXN' }}</span>
+            
+            <!-- Contenedor para alinear el botón de detalle y el de agregar -->
+            <div class="actions">
+              <button class="btn-detail" [routerLink]="['/producto', product.id]" title="Ver detalles">
+                <i class="pi pi-eye"></i>
+              </button>
+              <button class="cart-btn-card" (click)="agregarAlCarrito(product)" type="button">
+                <i class="pi pi-shopping-cart"></i> Agregar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  }
+
+</div>

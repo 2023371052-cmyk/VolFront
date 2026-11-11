@@ -1,0 +1,71 @@
+<aside class="sidebar-container">
+  
+  <!-- Encabezado indicativo exclusivo para móvil -->
+  <div class="sidebar-header-mobile">
+    <h2>🔍 Filtros de Búsqueda</h2>
+    <p>Refina tu selección técnica</p>
+  </div>
+
+  <!-- Botón desplegable principal -->
+  <button type="button" class="mobile-filter-toggle" (click)="toggleFilters()">
+    <span>⚙️ {{ isFiltersOpen ? 'Ocultar Filtros' : 'Filtrar Catálogo' }}</span>
+    <span class="toggle-arrow">{{ isFiltersOpen ? '▲' : '▼' }}</span>
+  </button>
+
+  <!-- Envoltorio de los filtros (en móvil se oculta y se abre con la variable) -->
+  <div class="filters-wrapper" [class.mobile-open]="isFiltersOpen">
+    
+    <!-- Sección: Tipo de Compresor -->
+    <div class="filter-section">
+      <h3>🏎️ Tipo de Compresor</h3>
+      @for (tipo of tiposCompresor; track tipo) {
+        <div class="filter-option">
+          <label>
+            <input type="checkbox" (change)="onFiltroChange('tipo', tipo, $event)" />
+            <span>{{ tipo }}</span>
+          </label>
+        </div>
+      }
+    </div>
+
+    <!-- Sección: Entrega de Potencia -->
+    <div class="filter-section">
+      <h3>📈 Entrega de Potencia</h3>
+      @for (potencia of entregasPotencia; track potencia) {
+        <div class="filter-option">
+          <label>
+            <input type="checkbox" (change)="onFiltroChange('potencia', potencia, $event)" />
+            <span>{{ potencia }}</span>
+          </label>
+        </div>
+      }
+    </div>
+
+    <!-- Sección: Conexión Mecánica -->
+    <div class="filter-section">
+      <h3>⚙️ Conexión Mecánica</h3>
+      @for (conexion of conexionesMecanicas; track conexion) {
+        <div class="filter-option">
+          <label>
+            <input type="checkbox" (change)="onFiltroChange('conexion', conexion, $event)" />
+            <span>{{ conexion }}</span>
+          </label>
+        </div>
+      }
+    </div>
+
+    <!-- Sección: Espacio Requerido -->
+    <div class="filter-section">
+      <h3>📐 Espacio Requerido</h3>
+      @for (espacio of espaciosRequeridos; track espacio) {
+        <div class="filter-option">
+          <label>
+            <input type="checkbox" (change)="onFiltroChange('espacio', espacio, $event)" />
+            <span>{{ espacio }}</span>
+          </label>
+        </div>
+      }
+    </div>
+
+  </div>
+</aside>

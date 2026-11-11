@@ -1,0 +1,55 @@
+<div class="wishlist-container">
+  
+  <header class="wishlist-header">
+    <button class="btn-back" routerLink="/usuario" type="button">
+      <i class="pi pi-arrow-left"></i> Volver al Panel
+    </button>
+    <h1>LISTA DE DESEOS TÉCNICOS</h1>
+    <p class="subtitle">Componentes guardados en el banco de pruebas de la escudería.</p>
+  </header>
+
+  @if (!wishlist || wishlist.length === 0) {
+    <div class="empty-wishlist">
+      <i class="pi pi-heart-slash empty-icon"></i>
+      <h3>No hay módulos en espera</h3>
+      <p>Tu banco de pruebas está vacío. Explora el catálogo para agregar componentes.</p>
+      <button class="btn-explore" routerLink="/usuario" type="button">Explorar Componentes</button>
+    </div>
+  } @else {
+    <div class="wishlist-grid">
+      @for (item of wishlist; track item.id) {
+        <!-- Tarjeta con navegación al detalle del producto -->
+        <div class="wishlist-card" [routerLink]="['/producto', item.id]">
+          
+          <div class="card-image-wrapper">
+            <span class="badge-category">{{ item.category || item.categoria || 'Karting' }}</span>
+            <img [src]="item.imageUrl || item.image || item.imagen || 'assets/img/supercargador-default.jpg'" [alt]="item.name || item.nombre" class="item-image">
+            
+            <!-- Botón para eliminar (stopPropagation evita que abra el detalle al hacer clic en la papelera) -->
+            <button class="btn-remove" (click)="eliminarDeLista(item.id, $event)" title="Eliminar de deseos">
+              <i class="pi pi-trash"></i>
+            </button>
+          </div>
+
+          <div class="card-info">
+            <h3>{{ item.name || item.nombre }}</h3>
+            <span class="stock-tag" [ngClass]="(item.stock > 0 || item.inStock) ? 'in-stock' : 'out-of-stock'">
+              {{ (item.stock > 0 || item.inStock) ? '● DISPONIBLE PARA ADQUISICIÓN' : '○ EN PRODUCCIÓN' }}
+            </span>
+            
+            <div class="card-footer">
+              <span class="price">{{ (item.price || item.precio) | currency:'MXN' }}</span>
+              
+              <!-- Botón para agregar al carrito (stopPropagation evita que abra el detalle) -->
+              <button class="btn-action-add" (click)="agregarAlCarrito(item, $event)" title="Mandar a carrito">
+                <i class="pi pi-shopping-cart"></i> Agregar
+              </button>
+            </div>
+          </div>
+
+        </div>
+      }
+    </div>
+  }
+
+</div>

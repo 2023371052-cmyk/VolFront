@@ -1,0 +1,274 @@
+/* ==========================================================================
+   ESTILOS DE HISTORIAL DE PEDIDOS Y PITS - 7VOLTEX
+   ========================================================================== */
+.store-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background-color: #0B1D3A;
+  min-height: 100vh;
+  color: #F8FAFC;
+  box-sizing: border-box;
+}
+
+/* Encabezado */
+.store-header {
+  margin-bottom: 35px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(219, 234, 254, 0.1);
+  color: #DBEAFE;
+  border: 1px solid rgba(147, 197, 253, 0.3);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  width: fit-content;
+  transition: all 0.3s ease;
+}
+
+.btn-back:hover {
+  background: rgba(59, 130, 246, 0.3);
+  border-color: #93C5FD;
+  color: #F8FAFC;
+  transform: translateX(-3px);
+}
+
+.store-header h1 {
+  font-size: 2.2rem;
+  font-weight: 900;
+  margin: 0;
+  color: #F8FAFC;
+  letter-spacing: 0.5px;
+}
+
+.store-header p {
+  color: #DBEAFE;
+  font-size: 0.95rem;
+  margin: 0;
+  opacity: 0.85;
+}
+
+/* Estado de Carga y Vacío */
+.loading-state, .empty-state {
+  background: #1E3A8A;
+  border: 1px solid rgba(147, 197, 253, 0.2);
+  border-radius: 16px;
+  padding: 60px 20px;
+  text-align: center;
+  max-width: 600px;
+  margin: 40px auto;
+  box-shadow: 0 15px 35px rgba(11, 29, 58, 0.5);
+  color: #DBEAFE;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  color: #93C5FD;
+  margin-bottom: 20px;
+}
+
+.empty-state h3 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #F8FAFC;
+  margin: 0 0 10px 0;
+}
+
+.empty-state p {
+  color: #DBEAFE;
+  font-size: 0.95rem;
+  margin-bottom: 25px;
+  opacity: 0.9;
+}
+
+.btn-explore {
+  background: linear-gradient(135deg, #3B82B8, #1E3A8A);
+  color: #F8FAFC;
+  border: 1px solid rgba(147, 197, 253, 0.4);
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 900;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(11, 29, 58, 0.4);
+}
+
+.btn-explore:hover {
+  background: linear-gradient(135deg, #93C5FD, #3B82B8);
+  color: #0B1D3A;
+  border-color: #93C5FD;
+  box-shadow: 0 0 20px rgba(147, 197, 253, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Grid de Pedidos */
+.pedidos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 25px;
+}
+
+/* Tarjeta individual de Pedido */
+.pedido-card {
+  background: #1E3A8A;
+  border: 1px solid rgba(147, 197, 253, 0.2);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 25px rgba(11, 29, 58, 0.5);
+  transition: all 0.3s ease;
+}
+
+.pedido-card:hover {
+  border-color: #93C5FD;
+  transform: translateY(-4px);
+  box-shadow: 0 15px 35px rgba(59, 130, 246, 0.25);
+}
+
+.pedido-header {
+  background: rgba(11, 29, 58, 0.6);
+  padding: 18px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(147, 197, 253, 0.15);
+}
+
+.pedido-id {
+  font-weight: 900;
+  color: #93C5FD;
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+}
+
+/* Etiquetas de Estatus de la orden */
+.pedido-status {
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 5px 12px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  border: 1px solid rgba(147, 197, 253, 0.3);
+}
+
+/* Clases dinámicas según el estatus */
+.pedido-status.completado, .pedido-status.entregado {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34D399;
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+.pedido-status.proceso, .pedido-status.pendiente {
+  background: rgba(251, 191, 36, 0.2);
+  color: #FCD34D;
+  border-color: rgba(251, 191, 36, 0.4);
+}
+
+.pedido-status.cancelado {
+  background: rgba(239, 68, 68, 0.2);
+  color: #FCA5A5;
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+/* Cuerpo de la tarjeta de pedido */
+.pedido-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.pedido-fecha, .pedido-total {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #DBEAFE;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pedido-total {
+  font-size: 1.1rem;
+}
+
+.pedido-total strong {
+  color: #93C5FD;
+}
+
+/* Resumen de componentes dentro de la orden */
+.productos-resumen {
+  background: rgba(11, 29, 58, 0.4);
+  border: 1px solid rgba(147, 197, 253, 0.1);
+  border-radius: 10px;
+  padding: 12px 15px;
+  margin-top: 5px;
+}
+
+.productos-resumen h4 {
+  font-size: 0.85rem;
+  color: #93C5FD;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.productos-resumen ul {
+  margin: 0;
+  padding-left: 18px;
+  color: #F8FAFC;
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+.productos-resumen li {
+  margin-bottom: 4px;
+}
+
+/* Botón de Descargar PDF */
+.btn-pdf {
+  background: rgba(219, 234, 254, 0.08);
+  color: #93C5FD;
+  border: 1px solid rgba(147, 197, 253, 0.3);
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.btn-pdf:hover {
+  background: rgba(59, 130, 246, 0.3);
+  border-color: #93C5FD;
+  color: #F8FAFC;
+  box-shadow: 0 0 15px rgba(147, 197, 253, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .store-container {
+    padding: 15px;
+  }
+  .pedidos-grid {
+    grid-template-columns: 1fr;
+  }
+}
