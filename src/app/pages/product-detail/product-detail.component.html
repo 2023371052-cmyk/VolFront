@@ -1,79 +1,204 @@
 <div class="product-detail-container">
-  
+
   <!-- BOTÓN DE VOLVER INTELIGENTE -->
   <button class="btn-back" (click)="volverSegunSesion()" type="button">
     <i class="pi pi-arrow-left"></i> Volver
   </button>
 
   @if (producto) {
-    <div class="detail-grid">
+  @let p = $any(producto);
+  <div class="detail-grid">
+
+    <!-- COLUMNA IZQUIERDA: IMAGEN Y FICHA RÁPIDA -->
+    <div class="detail-media-col">
       <div class="detail-image-box">
-        <img [src]="producto.image || producto.imageUrl || producto.imagen || 'assets/img/supercargador-default.jpg'" [alt]="producto.name || producto.nombre" class="detail-img" />
-        <span class="card-badge" [style.background-color]="producto.colorEtiqueta || '#00D4FF'">
-          {{ producto.category || producto.categoria || producto.etiqueta || 'karting' }}
+        <img [src]="imagenActual" [alt]="p.name || p.nombre || 'Componente 7VOLTEX'" class="detail-img"
+          (error)="onImageError($event)" 
+          />
+        <span class="card-badge" [style.background-color]="p.colorEtiqueta || '#93C5FD'">
+          {{ p.category || p.categoria || p.etiqueta || 'Supercargadores' }}
         </span>
       </div>
 
-      <div class="detail-content">
-        <span class="card-brand">{{ producto.marca || 'Voltex Pro' }}</span>
-        <h1 class="detail-title">{{ producto.name || producto.nombre }}</h1>
-        <p class="detail-subtitle">{{ producto.subtitulo || producto.description || 'Componente de alto rendimiento para escudería' }}</p>
-
-        <!-- PRECIO UNIFICADO A MXN -->
-        <div class="price-box-large">
-          <span class="price-amount">{{ (producto.price || producto.precio) | currency:'MXN' }}</span>
+      <div class="quick-meta-card">
+        <div class="meta-kv">
+          <span class="meta-k">SKU / No. Parte</span>
+          <strong class="meta-v">{{ p.sku || 'N/A' }}</strong>
         </div>
-
-        <div class="specs-box">
-          <h3>Especificaciones Técnicas</h3>
-          <div class="spec-row">
-            <span class="spec-label">Presión Boost:</span>
-            <span class="spec-value highlight-cyan">{{ producto.presionBoost || '35 PSI' }}</span>
-          </div>
-          <div class="spec-row">
-            <span class="spec-label">Stock Disponible:</span>
-            <span class="spec-value">{{ producto.stock ?? 10 }} pzas</span>
-          </div>
-          <div class="spec-row">
-            <span class="spec-label">Modalidad:</span>
-            <span class="spec-value">{{ producto.modalidad || 'Inducción Forzada' }}</span>
-          </div>
+        <div class="meta-kv">
+          <span class="meta-k">Disponibilidad</span>
+          <strong class="meta-v">{{ p.disponibilidad || 'En Stock MX' }}</strong>
         </div>
-
-        <div class="action-box">
-          <button class="buy-btn-large" (click)="agregarAlCarrito(producto)" type="button">
-            <i class="pi pi-shopping-cart"></i> Añadir a la Línea de Ensamblaje
-          </button>
-          
-          <button class="btn-favorite" (click)="agregarAFavoritos(producto)" type="button">
-           <i class="pi pi-heart"></i> Favoritos
-          </button>
-
-          <!-- 🌐 URL PREASIGNADA (Proveedor externo) -->
-          <div class="external-supplier-box">
-            <a [href]="producto.urlExterna || 'https://www.procharger.com/racing-supercharger/'" 
-               target="_blank" 
-               rel="noopener noreferrer" 
-               class="btn-external-link">
-              <i class="pi pi-external-link"></i> Comprar con Proveedor Externo (Procharger)
-            </a>
-          </div>
-
-          <!-- TOAST DE NOTIFICACIÓN FLOTANTE -->
-          @if (mostrarToast) {
-            <div class="voltex-toast">
-              <i class="pi pi-check-circle"></i>
-              <span>{{ mensajeToast }}</span>
-            </div>
-          }
+        <div class="meta-kv">
+          <span class="meta-k">Tiempo de Entrega</span>
+          <strong class="meta-v">{{ p.tiempo_entrega || 'Por confirmar' }}</strong>
         </div>
       </div>
     </div>
-  } @else {
-    <div class="loading-state">
-      <i class="pi pi-spin pi-spinner"></i>
-      <p>Sincronizando especificaciones del módulo con el servidor de Pits...</p>
+
+    <!-- COLUMNA DERECHA: INFORMACIÓN COMPLETA Y ACCIONES -->
+    <div class="detail-content">
+      <div class="brand-sku-row">
+        <span class="card-brand">{{ p.marca || 'Voltex Pro' }}</span>
+        @if (p.sku) {
+        <span class="sku-tag">SKU: {{ p.sku }}</span>
+        }
+      </div>
+
+      <h1 class="detail-title">{{ p.name || p.nombre }}</h1>
+
+      <p class="detail-subtitle">
+        {{ p.description || p.subtitulo || 'Componente de inducción forzada de alta competición.' }}
+      </p>
+
+      <!-- PRECIO Y STOCK -->
+      <div class="price-stock-bar">
+        <div class="price-box-large">
+          <span class="price-label">Precio</span>
+          <span class="price-amount">{{ (p.price ?? p.precio ?? 0) | currency:'MXN':'symbol':'1.2-2' }}</span>
+        </div>
+
+        <div class="stock-badge" [class.sin-stock]="(p.stock ?? 0) <= 0">
+          @if ((p.stock ?? 0) > 0) {
+          ✅ {{ p.stock }} piezas disponibles
+          } @else {
+          🚫 Agotado / Sin stock
+          }
+        </div>
+      </div>
+
+      <!-- ESPECIFICACIONES TÉCNICAS -->
+      <div class="specs-box">
+        <h3>⚙️ Especificaciones Técnicas</h3>
+
+        <div class="specs-grid">
+          @if (p.tipo_supercargador) {
+          <div class="spec-row">
+            <span class="spec-label">Tecnología:</span>
+            <span class="spec-value highlight-cyan">{{ p.tipo_supercargador }}</span>
+          </div>
+          }
+
+          @if (p.nivel_kit) {
+          <div class="spec-row">
+            <span class="spec-label">Nivel de Kit:</span>
+            <span class="spec-value">{{ p.nivel_kit }}</span>
+          </div>
+          }
+
+          @if (p.plataforma_motor && p.plataforma_motor !== 'N/A') {
+          <div class="spec-row">
+            <span class="spec-label">Plataforma / Motor:</span>
+            <span class="spec-value highlight-cyan">{{ p.plataforma_motor }}</span>
+          </div>
+          }
+
+          @if (p.rango_anio && p.rango_anio !== 'N/A') {
+          <div class="spec-row">
+            <span class="spec-label">Rango de Año:</span>
+            <span class="spec-value">{{ p.rango_anio }}</span>
+          </div>
+          }
+
+          @if (p.potencia_max && p.potencia_max !== 'N/A') {
+          <div class="spec-row">
+            <span class="spec-label">Potencia Máxima:</span>
+            <span class="spec-value highlight-mint">{{ p.potencia_max }}</span>
+          </div>
+          }
+
+          <div class="spec-row">
+            <span class="spec-label">Boost Base / Presión:</span>
+            <span class="spec-value highlight-cyan">
+              {{ p.boost_base && p.boost_base !== 'N/A' ? p.boost_base : (p.presionBoost || '35 PSI') }}
+            </span>
+          </div>
+
+          @if (p.enfriamiento && p.enfriamiento !== 'N/A') {
+          <div class="spec-row">
+            <span class="spec-label">Enfriamiento:</span>
+            <span class="spec-value">{{ p.enfriamiento }}</span>
+          </div>
+          }
+
+          <div class="spec-row">
+            <span class="spec-label">Modalidad:</span>
+            <span class="spec-value">{{ p.modalidad || 'Inducción Forzada' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- DETALLES ADICIONALES: CONTENIDO DE CAJA Y NOTAS -->
+      @if (p.incluye_caja || p.notas_instalacion) {
+      <div class="details-notes-box">
+        @if (p.incluye_caja) {
+        <div class="detail-note-card">
+          <h4>📦 ¿Qué incluye la caja?</h4>
+          <p>{{ p.incluye_caja }}</p>
+        </div>
+        }
+
+        @if (p.notas_instalacion) {
+        <div class="detail-note-card warning">
+          <h4>⚠️ Notas de Instalación / Requisitos</h4>
+          <p>{{ p.notas_instalacion }}</p>
+        </div>
+        }
+      </div>
+      }
+
+      <!-- MANUAL DE USO ENLAZADO (SI EXISTE) -->
+      @if (p.manualUrl || p.manual_url) {
+      <div class="manual-box">
+        <div class="manual-info">
+          <span class="manual-k">📘 Manual de Uso Disponible</span>
+          @if (p.manualTitulo || p.manual_titulo) {
+          <strong class="manual-title">{{ p.manualTitulo || p.manual_titulo }}</strong>
+          }
+        </div>
+        <a [href]="p.manualUrl || p.manual_url" target="_blank" rel="noopener noreferrer" class="btn-manual-link">
+          <i class="pi pi-file-pdf"></i> Abrir Manual
+        </a>
+      </div>
+      }
+
+      <!-- ACCIONES DE COMPRA Y PROVEEDOR -->
+      <div class="action-box">
+        <div class="primary-actions-row">
+          <button class="buy-btn-large" [disabled]="(p.stock ?? 0) <= 0" (click)="agregarAlCarrito(producto)"
+            type="button">
+            <i class="pi pi-shopping-cart"></i>
+            {{ (p.stock ?? 0) > 0 ? 'Añadir a la Línea de Ensamblaje' : 'Sin Stock Disponible' }}
+          </button>
+
+          <button class="btn-favorite" (click)="agregarAFavoritos(producto)" type="button">
+            <i class="pi pi-heart"></i> Favoritos
+          </button>
+        </div>
+
+        <div class="external-supplier-box">
+          <a [href]="p.urlExterna || 'https://www.procharger.com/racing-supercharger/'" target="_blank"
+            rel="noopener noreferrer" class="btn-external-link">
+            <i class="pi pi-external-link"></i> Ver con Proveedor Externo
+          </a>
+        </div>
+
+        <!-- TOAST DE NOTIFICACIÓN FLOTANTE -->
+        @if (mostrarToast) {
+        <div class="voltex-toast">
+          <i class="pi pi-check-circle"></i>
+          <span>{{ mensajeToast }}</span>
+        </div>
+        }
+      </div>
     </div>
+
+  </div>
+  } @else {
+  <div class="loading-state">
+    <i class="pi pi-spin pi-spinner"></i>
+    <p>Sincronizando especificaciones del módulo con el servidor de Pits...</p>
+  </div>
   }
 
 </div>

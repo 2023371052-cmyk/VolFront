@@ -1,0 +1,144 @@
+<section class="qr-page">
+
+  <!-- Barra superior de navegación -->
+  <div class="qr-top-actions">
+    <a routerLink="/usuario" class="qr-back-btn">
+      <i class="pi pi-arrow-left"></i>
+      <span>Volver al Panel del Piloto</span>
+    </a>
+  </div>
+
+  <!-- Contenedor principal del escáner -->
+  <div class="qr-card">
+
+    <!-- Encabezado y controles de cámara -->
+    <div class="qr-header">
+      <div>
+        <span class="qr-badge">
+          <i class="pi pi-qrcode"></i> MANUALES TÉCNICOS 7VOLTEX
+        </span>
+        <h2>Escáner QR de Manuales</h2>
+        <p>Elige cámara trasera o frontal, concede permiso y enfoca el código QR de tu componente.</p>
+      </div>
+
+      <div class="qr-controls">
+        <select
+          [(ngModel)]="facingMode"
+          [disabled]="camaraActiva"
+          class="qr-select"
+          aria-label="Seleccionar cámara"
+        >
+          <option value="environment">Cámara Trasera</option>
+          <option value="user">Cámara Frontal</option>
+        </select>
+
+        <button
+          *ngIf="!camaraActiva"
+          type="button"
+          (click)="iniciarCamaraQr()"
+          class="qr-btn qr-btn-primary"
+        >
+          <i class="pi pi-video"></i>
+          <span>Solicitar Cámara y Escanear</span>
+        </button>
+
+        <button
+          *ngIf="camaraActiva"
+          type="button"
+          (click)="detenerCamaraQr()"
+          class="qr-btn qr-btn-danger"
+        >
+          <i class="pi pi-stop-circle"></i>
+          <span>Detener Cámara</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Estado de permiso y lectura QR -->
+    <div
+      *ngIf="estadoMensaje"
+      class="qr-status"
+      [class.qr-status-success]="estadoTipo === 'success'"
+      [class.qr-status-error]="estadoTipo === 'error'"
+      [class.qr-status-info]="estadoTipo === 'info'"
+    >
+      <i
+        class="pi"
+        [class.pi-check-circle]="estadoTipo === 'success'"
+        [class.pi-times-circle]="estadoTipo === 'error'"
+        [class.pi-info-circle]="estadoTipo === 'info'"
+      ></i>
+      <span>{{ estadoMensaje }}</span>
+    </div>
+
+    <!-- Visor en vivo de la cámara -->
+    <div *ngIf="camaraActiva" class="qr-video-box">
+      <video #qrVideo class="qr-video" autoplay playsinline muted></video>
+      <canvas #qrCanvas class="qr-canvas"></canvas>
+      <div class="qr-frame">
+        <span>Alinea el código QR dentro del marco</span>
+      </div>
+    </div>
+
+    <!-- Ingreso manual o prueba de código QR -->
+    <div class="qr-manual-input">
+      <label for="codigoQr">Código QR detectado o ingreso manual (ID, SKU o nombre):</label>
+      <div class="qr-input-row">
+        <input
+          id="codigoQr"
+          type="text"
+          [(ngModel)]="codigoIngresado"
+          placeholder="Ej. VOLTEX-SC-01, 1 o Twin-Screw"
+        />
+        <button
+          type="button"
+          (click)="procesarCodigo(codigoIngresado)"
+          class="qr-btn qr-btn-secondary"
+        >
+          <i class="pi pi-book"></i>
+          <span>Consultar Manual</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Manual técnico del producto encontrado -->
+    <div *ngIf="manualActual" class="manual-card">
+      <div class="manual-head">
+        <div>
+          <span class="manual-pill">QR LEÍDO CORRECTAMENTE</span>
+          <h3>{{ manualActual.productoNombre }}</h3>
+          <p class="manual-sku">
+            Código: {{ manualActual.codigo }} · {{ manualActual.version }}
+          </p>
+        </div>
+
+        <div class="qr-controls">
+          <a
+            *ngIf="manualActual.manualUrl"
+            [href]="manualActual.manualUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="qr-btn qr-btn-secondary"
+          >
+            <i class="pi pi-file-pdf"></i>
+            <span>Abrir Manual ({{ manualActual.fileName || 'PDF / Enlace' }})</span>
+          </a>
+
+          <a [routerLink]="['/producto', manualActual.productoId]" class="qr-btn qr-btn-primary">
+            <i class="pi pi-eye"></i>
+            <span>Ver Producto</span>
+          </a>
+        </div>
+      </div>
+
+      <p class="manual-desc">{{ manualActual.resumen }}</p>
+
+      <h4>Instrucciones de uso e instalación:</h4>
+      <ol class="manual-list">
+        <li *ngFor="let paso of manualActual.pasos">{{ paso }}</li>
+      </ol>
+    </div>
+
+  </div>
+
+</section>

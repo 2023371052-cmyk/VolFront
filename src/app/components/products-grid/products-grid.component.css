@@ -1,11 +1,20 @@
 /* ==========================================================================
    GRID DE PRODUCTOS Y TARJETAS TÉCNICAS - 7VOLTEX MOTORSPORT
    ========================================================================== */
+
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-  gap: 25px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
   width: 100%;
+  box-sizing: border-box;
+  overflow-x: clip;
+}
+
+.grid-container *,
+.grid-container *::before,
+.grid-container *::after {
+  box-sizing: border-box;
 }
 
 .product-card {
@@ -15,6 +24,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  min-width: 0;
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 10px 30px rgba(11, 29, 58, 0.5);
 }
@@ -28,20 +38,22 @@
 /* Contenedor de la imagen del producto */
 .card-image-box {
   position: relative;
-  height: 210px;
+  height: clamp(175px, 22vw, 210px);
   background: #0B1D3A;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .card-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
   transition: transform 0.5s ease;
 }
 
 .product-card:hover .card-img {
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 
 /* Badge o etiqueta flotante sobre la imagen */
@@ -49,6 +61,7 @@
   position: absolute;
   top: 12px;
   right: 12px;
+  max-width: calc(50% - 16px);
   color: #0B1D3A;
   font-size: 0.7rem;
   font-weight: 900;
@@ -56,7 +69,29 @@
   border-radius: 6px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.stock-overlay {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  max-width: calc(50% - 16px);
+  background: rgba(11, 29, 58, 0.88);
+  color: #F8FAFC;
+  border: 1px solid rgba(147, 197, 253, 0.45);
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Contenido de la tarjeta */
@@ -65,6 +100,16 @@
   display: flex;
   flex-direction: column;
   flex: 1;
+  min-width: 0;
+}
+
+.card-top-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+  margin-bottom: 6px;
 }
 
 .card-brand {
@@ -73,22 +118,43 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 1px;
-  margin-bottom: 4px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.card-sku {
+  color: #DBEAFE;
+  font-size: 0.72rem;
+  opacity: 0.82;
+  white-space: nowrap;
 }
 
 .card-title {
   color: #F8FAFC;
-  font-size: 1.2rem;
+  font-size: clamp(1.05rem, 1.4vw, 1.2rem);
   font-weight: 900;
-  margin: 0 0 4px 0;
+  margin: 0 0 6px 0;
+  line-height: 1.3;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+  transition: color 0.25s ease;
+}
+
+.card-title:hover {
+  color: #93C5FD;
 }
 
 .card-subtitle {
   color: #DBEAFE;
   font-size: 0.85rem;
-  opacity: 0.8;
-  margin-bottom: 15px;
-  min-height: 2.4em;
+  opacity: 0.85;
+  margin: 0 0 14px 0;
+  line-height: 1.45;
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* Caja de especificaciones técnicas estilo panel de pits */
@@ -97,27 +163,34 @@
   border: 1px solid rgba(147, 197, 253, 0.15);
   border-radius: 10px;
   padding: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  min-width: 0;
 }
 
 .spec-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: baseline;
+  gap: 10px;
   font-size: 0.82rem;
+  min-width: 0;
 }
 
 .spec-label {
   color: #DBEAFE;
-  opacity: 0.75;
+  opacity: 0.78;
+  flex-shrink: 0;
 }
 
 .spec-value {
   color: #F8FAFC;
   font-weight: 700;
+  text-align: right;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .highlight-cyan {
@@ -125,11 +198,41 @@
   text-shadow: 0 0 8px rgba(147, 197, 253, 0.4);
 }
 
+.highlight-mint {
+  color: #DBEAFE !important;
+  font-weight: 800;
+}
+
+/* Enlace de manual dentro de la tarjeta */
+.card-manual-row {
+  margin-bottom: 14px;
+}
+
+.card-manual-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  color: #93C5FD;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  transition: color 0.2s ease;
+}
+
+.card-manual-link:hover {
+  color: #F8FAFC;
+  text-decoration: underline;
+}
+
 /* Pie de tarjeta (Precio y Botón) */
 .card-footer-box {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
   margin-top: auto;
   padding-top: 15px;
   border-top: 1px solid rgba(147, 197, 253, 0.15);
@@ -139,18 +242,21 @@
   display: flex;
   align-items: baseline;
   gap: 4px;
+  min-width: 0;
 }
 
 .price-currency {
   font-size: 0.7rem;
   font-weight: 800;
   color: #93C5FD;
+  white-space: nowrap;
 }
 
 .price-amount {
-  font-size: 1.25rem;
+  font-size: clamp(1.1rem, 1.5vw, 1.25rem);
   font-weight: 900;
   color: #F8FAFC;
+  white-space: nowrap;
 }
 
 /* Botón de compra / añadir */
@@ -158,19 +264,21 @@
   background: linear-gradient(135deg, #3B82B8, #1E3A8A);
   color: #F8FAFC;
   border: 1px solid rgba(147, 197, 253, 0.4);
-  padding: 8px 16px;
+  padding: 8px 15px;
   border-radius: 8px;
-  font-size: 0.85rem;
+  font-size: 0.84rem;
   font-weight: 800;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
+  white-space: nowrap;
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(11, 29, 58, 0.4);
 }
 
-.buy-btn:hover {
+.buy-btn:hover:not(:disabled) {
   background: linear-gradient(135deg, #93C5FD, #3B82B8);
   color: #0B1D3A;
   border-color: #93C5FD;
@@ -178,11 +286,61 @@
   transform: translateY(-2px);
 }
 
+.buy-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Estado vacío del grid */
+.empty-grid-state {
+  grid-column: 1 / -1;
+  background: rgba(11, 29, 58, 0.72);
+  border: 1px solid rgba(147, 197, 253, 0.25);
+  border-radius: 16px;
+  padding: 36px 20px;
+  text-align: center;
+  color: #DBEAFE;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
 /* ==========================================================================
-   ADAPTACIÓN MÓVIL RESPONSIVA
+   ADAPTACIÓN TABLET (768px a 1024px)
    ========================================================================== */
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 1024px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
+    gap: 18px;
+  }
+
+  .card-content {
+    padding: 17px;
+  }
+}
+
+/* ==========================================================================
+   ADAPTACIÓN MÓVIL RESPONSIVA (hasta 640px)
+   ========================================================================== */
+@media screen and (max-width: 640px) {
   .grid-container {
     grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .card-content {
+    padding: 15px;
+  }
+
+  .card-footer-box {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .price-box {
+    justify-content: space-between;
+  }
+
+  .buy-btn {
+    width: 100%;
   }
 }

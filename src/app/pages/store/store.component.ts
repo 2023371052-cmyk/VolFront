@@ -24,30 +24,90 @@ export class StoreComponent implements OnInit, OnDestroy {
 
   // ==========================================
   // CONFIGURACIÓN DEL CARRUSEL HERO DINÁMICO
+  // Coloca tus archivos dentro de `public/assets/...` y úsalos como `'assets/...'`
   // ==========================================
-slides: SlideHero[] = [
+  slides: SlideHero[] = [
     {
       badge: '⚡ Tecnología de Alto Flujo',
       titulo: 'Kits de Supercargadores 7VOLTEX',
       subtitulo: 'Potencia extrema y respuesta inmediata para modalidades Karting, Rally, Fórmula y Drifting.',
-      imagen: 'src/app/assets/prueba.jpg'
+      imagen: 'assets/carro2.jpg'
     },
     {
       badge: '🏎️ Ingeniería de Precisión',
       titulo: 'Compresores de Grado de Carreras',
       subtitulo: 'Twin-Screw y Centrífugos Pro-Mod diseñados para maximizar el rendimiento de tu motor.',
-      imagen: 'assets/prueba2.jpg'
+      imagen: 'assets/carro1.png'
     },
     {
       badge: '⚙️ Conexión Mecánica Eficiente',
       titulo: 'Sistemas de Transmisión Directa y Correa',
       subtitulo: 'Optimización de espacio interno y externo con adaptabilidad superior.',
-      imagen: 'assets/prueba.jpg'
+      imagen: 'assets/carro3.jpeg'
     }
   ];
 
   currentIndex: number = 0;
-  intervalo: any;
+  private intervalo: ReturnType<typeof setInterval> | null = null;
+  private readonly tiempoAutoplayMs = 5000;
+
+  // ==========================================
+  // ESTADO DE FILTROS DEL SIDEBAR + BUSCADOR
+  // ==========================================
+  private _productosFiltrados: any[] = [];
+  hayFiltrosActivos: boolean = false;
+
+  get productosFiltrados(): any[] {
+    return this._productosFiltrados;
+  }
+
+  set productosFiltrados(lista: any[]) {
+    this._productosFiltrados = Array.isArray(lista) ? lista : [];
+  }
+
+  private normalizarTexto(valor: any): string {
+    return String(valor || '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .trim()
+      .toLowerCase();
+  }
+
+  private obtenerTextoBusquedaActual(): string {
+    const estadoGlobal: any = this.state;
+    if (typeof estadoGlobal.busqueda === 'function') {
+      return String(estadoGlobal.busqueda() || '');
+    }
+    return String(estadoGlobal.busqueda ?? estadoGlobal.terminoBusqueda ?? '');
+  }
+
+  get productosVisibles(): any[] {
+    const todos = this.state.productos() || [];
+    const base = !this.hayFiltrosActivos && this._productosFiltrados.length === 0
+      ? todos
+      : this._productosFiltrados;
+
+    const query = this.normalizarTexto(this.obtenerTextoBusquedaActual());
+    if (!query) {
+      return base;
+    }
+
+    return base.filter((p: any) => {
+      const campos = [
+        p.nombre, p.name,
+        p.sku,
+        p.marca,
+        p.plataforma_motor,
+        p.tipo_supercargador,
+        p.nivel_kit,
+        p.enfriamiento,
+        p.disponibilidad,
+        p.categoria, p.category,
+        p.descripcion, p.description
+      ];
+      return campos.some((campo) => this.normalizarTexto(campo).includes(query));
+    });
+  }
 
   constructor(
     public state: VoltexStateService,
@@ -58,30 +118,63 @@ slides: SlideHero[] = [
 
   ngOnInit(): void {
     this.cargarProductosReales();
-    
-    // Inicia el movimiento automático del carrusel cada 5 segundos
-    this.intervalo = setInterval(() => {
-      this.currentIndex = (this.currentIndex + 1) % this.slides.length;
-    }, 5000);
+    this.iniciarAutoplay();
   }
 
   ngOnDestroy(): void {
-    // Limpia el intervalo al salir del componente para evitar fugas de memoria
-    if (this.intervalo) {
+    this.detenerAutoplay();
+  }
+
+  iniciarAutoplay(): void {
+    this.detenerAutoplay();
+    if (this.slides.length <= 1) return;
+
+    this.intervalo = setInterval(() => {
+      this.siguienteSlide(false);
+    }, this.tiempoAutoplayMs);
+  }
+
+  detenerAutoplay(): void {
+    if (this.intervalo !== null) {
       clearInterval(this.intervalo);
+      this.intervalo = null;
     }
   }
 
   // Cambiar manualmente de slide con los puntos indicadores
-  irASlide(index: number) {
-    this.currentIndex = index;
+  irASlide(index: number): void {
+    if (this.slides.length === 0) return;
+    this.currentIndex = ((index % this.slides.length) + this.slides.length) % this.slides.length;
+    this.iniciarAutoplay();
+  }
+
+  siguienteSlide(reiniciarTimer = true): void {
+    if (this.slides.length === 0) return;
+    this.currentIndex = (this.currentIndex + 1) % this.slides.length;
+    if (reiniciarTimer) {
+      this.iniciarAutoplay();
+    }
+  }
+
+  anteriorSlide(): void {
+    if (this.slides.length === 0) return;
+    this.currentIndex = (this.currentIndex - 1 + this.slides.length) % this.slides.length;
+    this.iniciarAutoplay();
+  }
+
+  onFiltrosSidebarChange(filtros: any) {
+    this.hayFiltrosActivos =
+      (filtros?.potencia?.length || 0) > 0 ||
+      (filtros?.conexion?.length || 0) > 0 ||
+      (filtros?.espacio?.length || 0) > 0 ||
+      (filtros?.disponibilidad?.length || 0) > 0;
   }
 
   cargarProductosReales() {
     this.voltexApi.getProductos().subscribe({
       next: (data: any) => {
         const lista = Array.isArray(data) ? data : (data.productos || data.data || []);
-        this.state.setProductos(lista); 
+        this.state.setProductos(lista);
       },
       error: (err: any) => {
         console.error('Error al sincronizar inventario de Pits:', err);

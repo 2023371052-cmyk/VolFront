@@ -1,47 +1,135 @@
-<div class="container mx-auto p-6">
-  <h2 class="text-2xl font-bold mb-4 text-gray-800">Comparativa de Supercargadores (Side-by-Side)</h2>
+<section class="compare-page">
+  <div class="compare-container">
 
-  <!-- Mensaje si no hay productos con botón estilizado -->
-  <div *ngIf="productosParaComparar.length === 0" class="text-center py-12 bg-white rounded-xl border border-gray-200 shadow-sm">
-    <p class="text-gray-500 mb-4 text-base font-medium">Selecciona de 2 a 3 supercargadores desde el catálogo para compararlos cara a cara.</p>
-    <a routerLink="/tienda" class="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-lg text-sm font-semibold hover:from-blue-700 hover:to-indigo-700 shadow-md hover:shadow-lg transition-all duration-200">
-      <i class="pi pi-shopping-bag text-base"></i> Ir al Catálogo de Pits
-    </a>
-  </div>
+    <!-- Barra superior: regresar y sesión activa -->
+    <div class="compare-topbar">
+      <button type="button" class="btn-compare-back" (click)="regresar()">
+        <i class="pi pi-arrow-left"></i> Volver al Panel
+      </button>
 
-  <!-- Tabla comparativa en columnas paralelas -->
-  <div *ngIf="productosParaComparar.length > 0" class="overflow-x-auto">
-    <table class="min-w-full bg-white border border-gray-200 shadow-md rounded-lg">
-      <thead>
-        <tr class="bg-gray-100 border-b">
-          <th class="p-4 text-left font-semibold text-gray-700 w-1/4">Atributo Técnico</th>
-          <th *ngFor="let prod of productosParaComparar" class="p-4 text-center w-1/4 relative border-l">
-            <button (click)="eliminarDeLista(prod.id)" class="absolute top-2 right-2 text-red-500 hover:text-red-700 font-bold px-2 py-1" title="Quitar de la comparativa">✕</button>
-            <img [src]="prod.imageUrl || prod.imagen || 'assets/img/supercargador-default.jpg'" alt="{{ prod.name || prod.nombre }}" class="h-24 mx-auto object-contain mb-2">
-            <h3 class="font-bold text-lg text-gray-800">{{ prod.name || prod.nombre }}</h3>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="border-b">
-          <td class="p-4 font-medium bg-gray-50">Precio</td>
-          <td *ngFor="let prod of productosParaComparar" class="p-4 text-center text-green-600 font-bold border-l">
-            ${{ prod.price || prod.precio }} USD
-          </td>
-        </tr>
-        <tr class="border-b">
-          <td class="p-4 font-medium bg-gray-50">Categoría / Motor</td>
-          <td *ngFor="let prod of productosParaComparar" class="p-4 text-center text-sm text-gray-600 border-l">
-            {{ prod.category || prod.categoria }}
-          </td>
-        </tr>
-        <tr class="border-b">
-          <td class="p-4 font-medium bg-gray-50">Descripción Técnica</td>
-          <td *ngFor="let prod of productosParaComparar" class="p-4 text-center text-sm text-gray-600 border-l">
-            {{ prod.description || prod.descripcion || 'Componente de alto rendimiento para escudería.' }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+      <div *ngIf="sesionActiva && usuarioActual" class="session-pill">
+        <span class="session-dot"></span>
+        <span>Piloto activo: <strong>{{ usuarioActual.email || usuarioActual.nombre || usuarioActual.name }}</strong></span>
+      </div>
+    </div>
+
+    <!-- Encabezado de la vista -->
+    <header class="compare-header">
+      <div>
+        <h2>Comparativa de Supercargadores (Side-by-Side)</h2>
+        <p class="compare-subtitle">
+          Compara especificaciones clave entre 2 y 3 componentes antes de armar tu orden.
+        </p>
+      </div>
+
+      <div *ngIf="productosParaComparar.length > 0" class="compare-header-actions">
+        <span class="compare-counter-badge">
+          {{ productosParaComparar.length }} / 3 seleccionados
+        </span>
+
+        <button type="button" (click)="regresar()" class="btn-compare-primary">
+          <i class="pi pi-plus"></i> Agregar más
+        </button>
+      </div>
+    </header>
+
+    <!-- Aviso cuando solo hay 1 producto -->
+    <div *ngIf="productosParaComparar.length === 1" class="compare-warning-banner">
+      <i class="pi pi-info-circle"></i>
+      <span>
+        Tienes <strong>1</strong> supercargador seleccionado. Agrega al menos <strong>1 más</strong> (hasta 3) desde el catálogo para comparar cara a cara.
+      </span>
+    </div>
+
+    <!-- Estado vacío -->
+    <div *ngIf="productosParaComparar.length === 0" class="empty-compare-box">
+      <div class="empty-compare-icon-wrap">
+        <i class="pi pi-sliders-h"></i>
+      </div>
+
+      <h3 class="empty-compare-title">Sin supercargadores en la mesa de comparación</h3>
+
+      <p class="empty-compare-text">
+        Selecciona de 2 a 3 supercargadores desde el catálogo para compararlos cara a cara.
+      </p>
+
+      <button type="button" (click)="regresar()" class="btn-ir-catalogo">
+        <i class="pi pi-shopping-bag"></i>
+        <span>Ir al Catálogo de Pits</span>
+      </button>
+    </div>
+
+    <!-- Tabla comparativa en columnas paralelas -->
+    <div *ngIf="productosParaComparar.length > 0" class="compare-table-wrapper">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th class="attr-header">Atributo Técnico</th>
+
+            <th *ngFor="let prod of productosParaComparar; trackBy: trackByProducto" class="product-header-col">
+              <button
+                type="button"
+                (click)="eliminarDeLista(prod.id ?? prod._id)"
+                class="btn-remove-col"
+                title="Quitar de la comparativa"
+                aria-label="Quitar de la comparativa"
+              >
+                ✕
+              </button>
+
+              <div class="compare-img-box">
+                <img
+                  [src]="prod.imageUrl || prod.imagen || prod.image || 'assets/img/supercargador-default.jpg'"
+                  [alt]="prod.name || prod.nombre || 'Supercargador'"
+                  class="compare-product-img"
+                >
+              </div>
+
+              <h3 class="compare-product-title">
+                {{ prod.name || prod.nombre }}
+              </h3>
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td class="attr-cell">Precio</td>
+            <td *ngFor="let prod of productosParaComparar" class="value-cell price-cell">
+              {{ (prod.price ?? prod.precio ?? 0) | currency:'MXN':'symbol':'1.2-2' }}
+            </td>
+          </tr>
+
+          <tr>
+            <td class="attr-cell">Categoría / Motor</td>
+            <td *ngFor="let prod of productosParaComparar" class="value-cell">
+              {{ prod.category || prod.categoria || prod.plataforma_motor || 'No especificado' }}
+            </td>
+          </tr>
+
+          <tr>
+            <td class="attr-cell">Tecnología / Enfriamiento</td>
+            <td *ngFor="let prod of productosParaComparar" class="value-cell">
+              {{ prod.tipo_supercargador || prod.enfriamiento || prod.nivel_kit || 'Estándar de competencia' }}
+            </td>
+          </tr>
+
+          <tr>
+            <td class="attr-cell">Disponibilidad</td>
+            <td *ngFor="let prod of productosParaComparar" class="value-cell">
+              {{ prod.disponibilidad || ((prod.stock ?? 0) > 0 ? 'En Stock MX' : 'Consultar stock') }}
+            </td>
+          </tr>
+
+          <tr>
+            <td class="attr-cell align-top">Descripción Técnica</td>
+            <td *ngFor="let prod of productosParaComparar" class="value-cell desc-cell">
+              {{ prod.description || prod.descripcion || 'Componente de alto rendimiento para escudería.' }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
   </div>
-</div>
+</section>

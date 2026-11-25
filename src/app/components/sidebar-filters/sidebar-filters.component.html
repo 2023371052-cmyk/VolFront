@@ -14,19 +14,32 @@
 
   <!-- Envoltorio de los filtros (en móvil se oculta y se abre con la variable) -->
   <div class="filters-wrapper" [class.mobile-open]="isFiltersOpen">
-    
-    <!-- Sección: Tipo de Compresor -->
-    <div class="filter-section">
-      <h3>🏎️ Tipo de Compresor</h3>
-      @for (tipo of tiposCompresor; track tipo) {
-        <div class="filter-option">
-          <label>
-            <input type="checkbox" (change)="onFiltroChange('tipo', tipo, $event)" />
-            <span>{{ tipo }}</span>
-          </label>
+
+    <!-- FILTROS SELECCIONADOS ACTIVOS -->
+    @if (obtenerTodosSeleccionados().length > 0) {
+      <div class="active-filters-box">
+        <div class="active-filters-header">
+          <span>Filtros activos ({{ obtenerTodosSeleccionados().length }})</span>
+          <button type="button" class="btn-clear-all" (click)="limpiarFiltros()">
+            Limpiar todo
+          </button>
         </div>
-      }
-    </div>
+
+        <div class="active-chips">
+          @for (item of obtenerTodosSeleccionados(); track item.categoria + '-' + item.valor) {
+            <button
+              type="button"
+              class="filter-chip"
+              (click)="quitarFiltro(item.categoria, item.valor)"
+              title="Quitar filtro"
+            >
+              <span>{{ item.valor }}</span>
+              <i class="pi pi-times"></i>
+            </button>
+          }
+        </div>
+      </div>
+    }
 
     <!-- Sección: Entrega de Potencia -->
     <div class="filter-section">
@@ -34,7 +47,11 @@
       @for (potencia of entregasPotencia; track potencia) {
         <div class="filter-option">
           <label>
-            <input type="checkbox" (change)="onFiltroChange('potencia', potencia, $event)" />
+            <input
+              type="checkbox"
+              [checked]="estaSeleccionado('potencia', potencia)"
+              (change)="onFiltroChange('potencia', potencia, $event)"
+            />
             <span>{{ potencia }}</span>
           </label>
         </div>
@@ -47,7 +64,11 @@
       @for (conexion of conexionesMecanicas; track conexion) {
         <div class="filter-option">
           <label>
-            <input type="checkbox" (change)="onFiltroChange('conexion', conexion, $event)" />
+            <input
+              type="checkbox"
+              [checked]="estaSeleccionado('conexion', conexion)"
+              (change)="onFiltroChange('conexion', conexion, $event)"
+            />
             <span>{{ conexion }}</span>
           </label>
         </div>
@@ -60,8 +81,29 @@
       @for (espacio of espaciosRequeridos; track espacio) {
         <div class="filter-option">
           <label>
-            <input type="checkbox" (change)="onFiltroChange('espacio', espacio, $event)" />
+            <input
+              type="checkbox"
+              [checked]="estaSeleccionado('espacio', espacio)"
+              (change)="onFiltroChange('espacio', espacio, $event)"
+            />
             <span>{{ espacio }}</span>
+          </label>
+        </div>
+      }
+    </div>
+
+    <!-- Sección: Disponibilidad -->
+    <div class="filter-section">
+      <h3>📦 Disponibilidad</h3>
+      @for (disp of disponibilidades; track disp) {
+        <div class="filter-option">
+          <label>
+            <input
+              type="checkbox"
+              [checked]="estaSeleccionado('disponibilidad', disp)"
+              (change)="onFiltroChange('disponibilidad', disp, $event)"
+            />
+            <span>{{ disp }}</span>
           </label>
         </div>
       }

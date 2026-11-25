@@ -1,19 +1,20 @@
 /* ==========================================================================
-   ESTILOS DE LISTA DE DESEOS - 7VOLTEX
+   ESTILOS DE LISTA DE DESEOS - 7VOLTEX (ADAPTABLE POR DISPOSITIVO)
    ========================================================================== */
 .wishlist-container {
   max-width: 1300px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 36px 28px 56px;
   background-color: #0B1D3A;
   min-height: 100vh;
   color: #F8FAFC;
   box-sizing: border-box;
+  overflow-x: clip;
 }
 
 /* Encabezado */
 .wishlist-header {
-  margin-bottom: 35px;
+  margin-bottom: 32px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -26,7 +27,7 @@
   background: rgba(219, 234, 254, 0.1);
   color: #DBEAFE;
   border: 1px solid rgba(147, 197, 253, 0.3);
-  padding: 8px 16px;
+  padding: 9px 16px;
   border-radius: 8px;
   font-weight: 700;
   font-size: 0.85rem;
@@ -43,40 +44,43 @@
 }
 
 .wishlist-header h1 {
-  font-size: 2.2rem;
+  font-size: clamp(1.5rem, 2.6vw, 2.2rem);
   font-weight: 900;
   margin: 0;
   color: #F8FAFC;
   letter-spacing: 0.5px;
+  line-height: 1.2;
 }
 
 .subtitle {
   color: #DBEAFE;
-  font-size: 0.95rem;
+  font-size: clamp(0.88rem, 1.2vw, 0.98rem);
   margin: 0;
-  opacity: 0.85;
+  opacity: 0.88;
+  line-height: 1.5;
+  max-width: 72ch;
 }
 
-/* Estado Vacío */
+/* Estado Vacío / Cargando */
 .empty-wishlist {
   background: #1E3A8A;
   border: 1px solid rgba(147, 197, 253, 0.2);
   border-radius: 16px;
-  padding: 60px 20px;
+  padding: 52px 24px;
   text-align: center;
   max-width: 600px;
-  margin: 60px auto;
+  margin: 40px auto;
   box-shadow: 0 15px 35px rgba(11, 29, 58, 0.5);
 }
 
 .empty-icon {
-  font-size: 4rem;
+  font-size: clamp(2.8rem, 5vw, 4rem);
   color: #93C5FD;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .empty-wishlist h3 {
-  font-size: 1.5rem;
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
   font-weight: 800;
   color: #F8FAFC;
   margin: 0 0 10px 0;
@@ -84,9 +88,10 @@
 
 .empty-wishlist p {
   color: #DBEAFE;
-  font-size: 0.95rem;
-  margin-bottom: 25px;
+  font-size: 0.92rem;
+  margin-bottom: 24px;
   opacity: 0.9;
+  line-height: 1.5;
 }
 
 .btn-explore {
@@ -96,7 +101,7 @@
   padding: 12px 24px;
   border-radius: 10px;
   font-weight: 900;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(11, 29, 58, 0.4);
@@ -113,8 +118,8 @@
 /* Grid de Deseos */
 .wishlist-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 25px;
+  grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
+  gap: 24px;
 }
 
 /* Tarjeta de Producto */
@@ -129,18 +134,19 @@
   transition: all 0.3s ease;
   box-shadow: 0 10px 25px rgba(11, 29, 58, 0.5);
   cursor: pointer;
+  min-width: 0;
 }
 
 .wishlist-card:hover {
   border-color: #93C5FD;
-  transform: translateY(-6px);
+  transform: translateY(-5px);
   box-shadow: 0 15px 35px rgba(59, 130, 246, 0.25);
 }
 
 .card-image-wrapper {
   position: relative;
   width: 100%;
-  height: 200px;
+  height: 195px;
   background: #0B1D3A;
   overflow: hidden;
 }
@@ -159,6 +165,10 @@
   text-transform: uppercase;
   z-index: 2;
   backdrop-filter: blur(4px);
+  max-width: calc(100% - 70px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .item-image {
@@ -169,7 +179,7 @@
 }
 
 .wishlist-card:hover .item-image {
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 
 /* Botón flotante para eliminar (Papelera) */
@@ -179,8 +189,8 @@
   right: 12px;
   width: 38px;
   height: 38px;
-  background: rgba(239, 68, 68, 0.2);
-  border: 1px solid rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.22);
+  border: 1px solid rgba(239, 68, 68, 0.45);
   color: #FCA5A5;
   border-radius: 50%;
   display: flex;
@@ -196,28 +206,31 @@
   background: #EF4444;
   color: #F8FAFC;
   box-shadow: 0 0 15px rgba(239, 68, 68, 0.6);
-  transform: scale(1.1);
+  transform: scale(1.08);
 }
 
 /* Información de la tarjeta */
 .card-info {
-  padding: 20px;
+  padding: 18px;
   display: flex;
   flex-direction: column;
   flex: 1;
+  min-width: 0;
 }
 
 .card-info h3 {
   color: #F8FAFC;
-  font-size: 1.15rem;
+  font-size: 1.12rem;
   font-weight: 800;
   margin: 0 0 8px 0;
+  line-height: 1.35;
+  word-break: break-word;
 }
 
 .stock-tag {
-  font-size: 0.75srem;
+  font-size: 0.76rem;
   font-weight: 700;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .in-stock {
@@ -233,14 +246,17 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 15px;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-top: 14px;
   border-top: 1px solid rgba(147, 197, 253, 0.15);
 }
 
 .price {
   font-weight: 900;
   color: #93C5FD;
-  font-size: 1.2rem;
+  font-size: 1.18rem;
+  white-space: nowrap;
 }
 
 /* Botón de acción Agregar al carrito */
@@ -248,16 +264,17 @@
   background: linear-gradient(135deg, #3B82B8, #1E3A8A);
   color: #F8FAFC;
   border: 1px solid rgba(147, 197, 253, 0.4);
-  padding: 10px 16px;
+  padding: 10px 14px;
   border-radius: 8px;
   font-weight: 800;
-  font-size: 0.85rem;
+  font-size: 0.84rem;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   transition: all 0.3s ease;
+  white-space: nowrap;
 }
 
 .btn-action-add:hover {
@@ -268,8 +285,55 @@
   transform: translateY(-2px);
 }
 
-@media screen and (max-width: 768px) {
+/* TABLET (hasta 1024px) */
+@media screen and (max-width: 1024px) {
   .wishlist-container {
-    padding: 15px;
+    padding: 28px 20px 48px;
+  }
+
+  .wishlist-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 18px;
+  }
+}
+
+/* MÓVIL (hasta 640px) */
+@media screen and (max-width: 640px) {
+  .wishlist-container {
+    padding: 18px 14px 40px;
+  }
+
+  .wishlist-header {
+    margin-bottom: 24px;
+    gap: 10px;
+  }
+
+  .empty-wishlist {
+    padding: 36px 18px;
+    margin: 24px auto;
+    border-radius: 14px;
+  }
+
+  .wishlist-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .card-image-wrapper {
+    height: 175px;
+  }
+
+  .card-info {
+    padding: 16px;
+  }
+
+  .card-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .btn-action-add {
+    width: 100%;
   }
 }

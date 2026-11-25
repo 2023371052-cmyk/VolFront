@@ -9,7 +9,8 @@ import { environment } from '../../environments/environment';
 })
 export class VoltexApiService {
   
-private apiUrl = 'https://volback-production.up.railway.app/api';
+// private apiUrl = 'https://volback-production.up.railway.app/api';
+private apiUrl = 'http://localhost:3000/api';
 
   constructor(private http: HttpClient) {}
 
@@ -52,6 +53,11 @@ private apiUrl = 'https://volback-production.up.railway.app/api';
     return this.http.post<any>(`${this.apiUrl}/register`, userData);
   }
 
+   // 🌟 Actualizar perfil de usuario (¡Nuevo!)
+  actualizarPerfil(userId: number, datos: { name: string; email: string; password?: string }) {
+  return this.http.post(`${this.apiUrl}/usuarios/actualizar/${userId}`, datos);
+}
+
   // ==================== ÓRDENES Y COMPRAS ====================
 
   // Crear/Registrar una orden de compra desde el Checkout
@@ -83,13 +89,72 @@ private apiUrl = 'https://volback-production.up.railway.app/api';
 
   // ==================== NOTIFICACIONES PUSH ====================
 
-  // Obtener todas las notificaciones push desde el backend
-  getNotificaciones(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/notifications`);
+ // ==================== NOTIFICACIONES PUSH ====================
+
+  // Obtener notificaciones (filtradas por hora en usuario, o todas en admin con todas = true)
+  getNotificaciones(todas: boolean = false): Observable<any> {
+    const query = todas ? '?todas=true' : '';
+    return this.http.get<any>(`${this.apiUrl}/notifications${query}`);
   }
 
   // Enviar / Programar una nueva notificación push a la BD
-  enviarNotificacion(notif: { titulo: string; mensaje: string; horaProgramada: string; tipo: string }): Observable<any> {
+  enviarNotificacion(notif: {
+    titulo: string;
+    mensaje: string;
+    horaProgramada: string;
+    fechaHoraProgramada?: string;
+    tipo: string;
+  }): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/notifications`, notif);
   }
+
+  // Editar una notificación existente desde el panel de Admin
+  editarNotificacion(
+    id: number | string,
+    data: { titulo: string; mensaje: string; horaProgramada: string; tipo?: string }
+  ): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/notifications/editar/${id}`, data);
+  }
+
+  // Marcar una notificación como leída
+  marcarNotificacionLeida(id: number | string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/notifications/leer/${id}`, {});
+  }
+
+  // Eliminar una notificación
+  eliminarNotificacion(id: number | string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/notifications/eliminar/${id}`, {});
+  }
+
+  // ==================== MANUALES DE PRODUCTO (QR) ====================
+
+  getManuales(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/manuals`);
+  }
+
+  getManualPorProducto(productId: number | string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/manuals/product/${productId}`);
+  }
+
+  guardarManualProducto(data: {
+    productId: number;
+    title: string;
+    manualUrl: string;
+    fileName?: string;
+    notes?: string;
+  }): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/manuals`, data);
+  }
+
+  eliminarManualProducto(productId: number | string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/manuals/eliminar/${productId}`, {});
+  }
+
+  subirManualArchivo(formData: FormData): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/manuals/upload`, formData);
+  }
+
+  getAvatars() {
+  return this.http.get<any[]>(`${this.apiUrl}/avatars`);
+}
 }

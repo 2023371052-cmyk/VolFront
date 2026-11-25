@@ -1,112 +1,506 @@
-/* Contenedor principal de la vista de comparación */
-.container {
-  max-width: 1300px;
-  margin: 0 auto;
-  color: #fff;
-  font-family: inherit;
-}
-
-/* Estilo futurista para el título */
-h2 {
-  color: #fff;
-  font-size: 1.8rem;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  border-left: 4px solid #00D4FF;
-  padding-left: 12px;
-  margin-bottom: 25px;
-}
-
-/* Mensaje cuando no hay elementos */
-.bg-gray-50 {
-  background: rgba(15, 23, 42, 0.8) !important;
-  border: 1px dashed rgba(0, 212, 255, 0.3);
-  border-radius: 12px;
-  padding: 40px;
-}
-
-.text-gray-500 {
-  color: #94a3b8 !important;
-}
-
-/* Estilo futurista para la tabla comparativa */
-table {
+:host {
+  display: block;
   width: 100%;
-  background: rgba(15, 23, 42, 0.95);
-  border: 1px solid rgba(0, 212, 255, 0.2);
-  border-radius: 12px;
-  border-collapse: collapse;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
 }
 
-/* Cabecera de la tabla */
-th {
-  background: rgba(30, 41, 59, 0.9);
-  color: #fff;
-  padding: 20px;
-  border-bottom: 2px solid rgba(0, 212, 255, 0.3);
-  vertical-align: middle;
+.compare-page {
+  min-height: 100vh;
+  width: 100%;
+  padding: 16px 12px 36px;
+  background: linear-gradient(180deg, #061021 0%, #0b1d3a 55%, #071327 100%);
+  color: #f8fafc;
+  box-sizing: border-box;
 }
 
-/* Celdas de la tabla */
-td {
-  padding: 16px 20px;
-  color: #e2e8f0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  vertical-align: middle;
+.compare-container {
+  max-width: 1320px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-/* Primera columna fija con los nombres de los atributos */
-td:first-child, th:first-child {
-  background: rgba(15, 23, 42, 1);
-  font-weight: 700;
-  color: #00D4FF;
-  width: 220px;
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-/* Líneas divisorias entre columnas de productos */
-.border-l {
-  border-left: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-/* Imágenes de los supercargadores en la tabla */
-th img {
-  max-height: 100px;
-  object-fit: contain;
-  margin-bottom: 10px;
-  filter: drop-shadow(0 4px 8px rgba(0, 212, 255, 0.2));
-}
-
-/* Botón flotante para eliminar un producto de la comparativa */
-th button {
-  background: rgba(239, 68, 68, 0.2);
-  color: #ef4444;
-  border: 1px solid rgba(239, 68, 68, 0.4);
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
+/* Barra superior */
+.compare-topbar {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.btn-compare-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px;
+  border-radius: 10px;
+  background: rgba(30, 58, 138, 0.45);
+  border: 1px solid rgba(58, 190, 249, 0.35);
+  color: #e0f2fe;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-compare-back:hover {
+  background: rgba(30, 58, 138, 0.75);
+  border-color: #3abef9;
+  color: #ffffff;
+}
+
+.session-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #d1fae5;
+  font-size: 0.82rem;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.session-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #10b981;
+  flex-shrink: 0;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.8);
+}
+
+/* Encabezado */
+.compare-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding-left: 14px;
+  border-left: 4px solid #3abef9;
+}
+
+.compare-header h2 {
+  margin: 0 0 6px;
+  font-size: clamp(1.25rem, 3.2vw, 1.95rem);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.compare-subtitle {
+  margin: 0;
+  color: #94a3b8;
+  font-size: clamp(0.85rem, 1.7vw, 0.98rem);
+  line-height: 1.45;
+}
+
+.compare-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.compare-counter-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 13px;
+  border-radius: 999px;
+  background: rgba(58, 190, 249, 0.14);
+  border: 1px solid rgba(58, 190, 249, 0.4);
+  color: #7dd3fc;
+  font-size: 0.84rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.btn-compare-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 15px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #0284c7, #3abef9);
+  color: #041024;
+  font-weight: 700;
+  font-size: 0.86rem;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-compare-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(58, 190, 249, 0.35);
+}
+
+/* Aviso de 1 producto */
+.compare-warning-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  margin-bottom: 18px;
+  border-radius: 12px;
+  background: rgba(14, 165, 233, 0.12);
+  border: 1px solid rgba(58, 190, 249, 0.35);
+  color: #e0f2fe;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.compare-warning-banner i {
+  color: #3abef9;
+  font-size: 1rem;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+/* Estado vacío */
+.empty-compare-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 36px 18px;
+  border-radius: 18px;
+  background: rgba(11, 29, 58, 0.72);
+  border: 1px dashed rgba(58, 190, 249, 0.35);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+.empty-compare-icon-wrap {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+  background: rgba(58, 190, 249, 0.14);
+  border: 1px solid rgba(58, 190, 249, 0.35);
+  color: #3abef9;
+  font-size: 1.5rem;
+}
+
+.empty-compare-title {
+  margin: 0 0 8px;
+  font-size: clamp(1.1rem, 2.4vw, 1.4rem);
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.empty-compare-text {
+  margin: 0 0 22px;
+  max-width: 440px;
+  color: #94a3b8;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.btn-ir-catalogo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 290px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #0284c7, #0ea5e9);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.92rem;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(2, 132, 199, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-ir-catalogo:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(14, 165, 233, 0.45);
+}
+
+/* Contenedor de tabla responsivo */
+.compare-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 16px;
+  background: rgba(11, 29, 58, 0.82);
+  border: 1px solid rgba(58, 190, 249, 0.25);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.4);
+}
+
+.compare-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: auto;
+}
+
+/* Primera columna fija al hacer scroll horizontal en pantallas chicas */
+.attr-header,
+.attr-cell {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  width: 125px;
+  min-width: 125px;
+  max-width: 145px;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.attr-header {
+  padding: 14px 10px;
+  text-align: left;
+  vertical-align: bottom;
+  background: #071327;
+  color: #7dd3fc;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid rgba(58, 190, 249, 0.25);
+  border-right: 1px solid rgba(58, 190, 249, 0.2);
+}
+
+.product-header-col {
+  position: relative;
+  min-width: 185px;
+  max-width: 340px;
+  padding: 36px 12px 14px;
+  vertical-align: top;
+  background: rgba(15, 39, 77, 0.85);
+  border-bottom: 1px solid rgba(58, 190, 249, 0.25);
+  border-right: 1px solid rgba(58, 190, 249, 0.14);
+  box-sizing: border-box;
+}
+
+.product-header-col:last-child {
+  border-right: none;
+}
+
+.btn-remove-col {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  border: 1px solid rgba(248, 113, 113, 0.45);
+  background: rgba(239, 68, 68, 0.16);
+  color: #fca5a5;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-th button:hover {
+.btn-remove-col:hover {
   background: #ef4444;
-  color: #fff;
+  border-color: #ef4444;
+  color: #ffffff;
 }
 
-/* Precios destacados */
-td.text-green-600 {
-  color: #00D4FF !important;
-  font-weight: bold;
-  font-size: 1.1rem;
+.compare-img-box {
+  width: 100%;
+  height: 115px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(6, 16, 33, 0.9);
+  border: 1px solid rgba(58, 190, 249, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
 }
 
-/* Efecto hover en las filas para mejor lectura */
-tbody tr:hover {
-  background: rgba(0, 212, 255, 0.03);
+.compare-product-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background-color: #091830;
+}
+
+.compare-product-title {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.3;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+/* Filas y celdas */
+.compare-table tbody tr td {
+  border-bottom: 1px solid rgba(58, 190, 249, 0.12);
+  transition: background-color 0.15s ease;
+}
+
+.compare-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.compare-table tbody tr:hover .value-cell {
+  background: rgba(58, 190, 249, 0.05);
+}
+
+.attr-cell {
+  padding: 12px 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #bae6fd;
+  background: #071327;
+  border-right: 1px solid rgba(58, 190, 249, 0.2);
+  vertical-align: middle;
+}
+
+.attr-cell.align-top {
+  vertical-align: top;
+}
+
+.value-cell {
+  min-width: 185px;
+  padding: 12px;
+  font-size: 0.84rem;
+  color: #e2e8f0;
+  border-right: 1px solid rgba(58, 190, 249, 0.12);
+  vertical-align: middle;
+  overflow-wrap: break-word;
+  word-break: normal;
+  box-sizing: border-box;
+}
+
+.value-cell:last-child {
+  border-right: none;
+}
+
+.price-cell {
+  font-weight: 800;
+  font-size: 0.92rem;
+  color: #3abef9;
+  white-space: nowrap;
+}
+
+.desc-cell {
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #cbd5e1;
+}
+
+/* Tablet (768px en adelante) */
+@media (min-width: 768px) {
+  .compare-page {
+    padding: 24px 20px 44px;
+  }
+
+  .compare-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 18px;
+  }
+
+  .compare-header-actions {
+    width: auto;
+  }
+
+  .empty-compare-box {
+    padding: 48px 28px;
+  }
+
+  .btn-ir-catalogo {
+    width: auto;
+  }
+
+  .attr-header,
+  .attr-cell {
+    width: 175px;
+    min-width: 175px;
+    max-width: 190px;
+    padding: 14px 14px;
+    font-size: 0.84rem;
+  }
+
+  .product-header-col,
+  .value-cell {
+    min-width: 210px;
+    padding: 16px;
+  }
+
+  .product-header-col {
+    padding-top: 34px;
+  }
+
+  .compare-img-box {
+    height: 140px;
+  }
+
+  .compare-product-title {
+    font-size: 0.98rem;
+  }
+
+  .value-cell {
+    font-size: 0.9rem;
+  }
+
+  .price-cell {
+    font-size: 1rem;
+  }
+}
+
+/* Escritorio (1024px en adelante) */
+@media (min-width: 1024px) {
+  .compare-page {
+    padding: 32px 28px 56px;
+  }
+
+  .attr-header,
+  .attr-cell {
+    position: static;
+    width: 215px;
+    min-width: 215px;
+    max-width: 230px;
+    padding: 16px 18px;
+    font-size: 0.86rem;
+  }
+
+  .product-header-col,
+  .value-cell {
+    min-width: 240px;
+    padding: 18px;
+  }
+
+  .product-header-col {
+    padding-top: 36px;
+  }
+
+  .compare-img-box {
+    height: 155px;
+  }
+
+  .compare-product-title {
+    font-size: 1.02rem;
+  }
 }

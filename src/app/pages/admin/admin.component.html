@@ -1,243 +1,769 @@
 <div class="admin-wrapper">
-  
-  <section class="metrics-grid">
-    <div class="metric-card">
-      <span class="m-label">🎯 CATEGORÍA LÍDER</span>
-      <h3 class="m-value" style="color: #00D4FF;">Centrífugos (90%)</h3>
-      <p class="m-desc">Mayor índice de descarga en pits.</p>
-    </div>
-    <div class="metric-card">
-      <span class="m-label">💳 TRANSACCIONES SIMULADAS</span>
-      <h3 class="m-value" style="color: #00FFCC;">$45,800 USD</h3>
-      <p class="m-desc">Pasarela de pagos PayPal activa.</p>
-    </div>
-    <div class="metric-card">
-      <span class="m-label">📢 ALERTAS EMITIDAS</span>
-      <h3 class="m-value">{{ state.notificaciones().length }} Push</h3>
-      <p class="m-desc">Sincronizado con Apple Watch 44mm.</p>
-    </div>
-  </section>
+  <!-- Navegación por apartados -->
+  <nav class="tabs-bar" aria-label="Secciones del panel de administración">
+    <button
+      type="button"
+      class="tab-btn"
+      [class.active]="apartadoActivo === 'inventario'"
+      (click)="cambiarApartado('inventario')"
+    >
+      📦 Inventario ({{ state.productos().length }})
+    </button>
 
-  <div class="admin-grid">
-    
-    <!-- COLUMNA IZQUIERDA: FORMULARIOS -->
-    <div class="left-column-admin">
-      
-      <!-- INYECTAR COMPRESOR AL STOCK -->
-      <section class="admin-card">
+    <button
+      type="button"
+      class="tab-btn"
+      [class.active]="apartadoActivo === 'nuevo-kit'"
+      (click)="cambiarApartado('nuevo-kit')"
+    >
+      🔧 Inyectar Kit
+    </button>
+
+    <button
+      type="button"
+      class="tab-btn"
+      [class.active]="apartadoActivo === 'notificaciones'"
+      (click)="cambiarApartado('notificaciones')"
+    >
+      📢 Notificaciones ({{ state.notificaciones().length }})
+    </button>
+
+    <button
+      type="button"
+      class="tab-btn"
+      [class.active]="apartadoActivo === 'manuales'"
+      (click)="cambiarApartado('manuales')"
+    >
+      📘 Manuales ({{ manuales.length }})
+    </button>
+  </nav>
+
+  <!-- APARTADO 1: INVENTARIO -->
+  @if (apartadoActivo === 'inventario') {
+    <section class="admin-card">
+      <div class="card-header inventory-header">
+        <div>
+          <h3>📦 INVENTARIO ACTUAL DE LA ESCUDERÍA</h3>
+          <span class="card-subtitle">
+            Mostrando {{ productosFiltrados().length }} de {{ state.productos().length }} productos
+          </span>
+        </div>
+        <button
+          type="button"
+          class="quick-add-btn"
+          (click)="cambiarApartado('nuevo-kit')"
+        >
+          + Nuevo Kit
+        </button>
+      </div>
+
+      <!-- Buscador de productos -->
+      <div class="search-toolbar">
+        <div class="search-input-wrap">
+          <input
+            type="text"
+            class="search-input"
+            [(ngModel)]="terminoBusqueda"
+            name="terminoBusqueda"
+            placeholder="Buscar por nombre, SKU, marca, categoría o motor..."
+          />
+          @if (terminoBusqueda) {
+            <button
+              type="button"
+              class="clear-search-btn"
+              (click)="limpiarBusqueda()"
+              title="Limpiar búsqueda"
+            >
+              ✕
+            </button>
+          }
+        </div>
+      </div>
+
+      @if (productosFiltrados().length === 0) {
+        <p class="empty-state">
+          @if (terminoBusqueda.trim()) {
+            No se encontraron productos que coincidan con "{{ terminoBusqueda }}".
+          } @else {
+            No hay productos registrados en el inventario por el momento.
+          }
+        </p>
+      } @else {
+        <div class="inventory-list">
+          @for (prod of productosFiltrados(); track prod.id) {
+            <article class="inventory-item">
+              <img
+                [src]="$any(prod).imageUrl || 'assets/img/supercargador-default.jpg'"
+                class="item-thumb"
+                alt="compresor"
+              />
+
+              <div class="item-body">
+                <div class="item-meta-top">
+                  <span class="item-brand">{{ $any(prod).marca || 'Sin marca' }}</span>
+                  <span class="item-sep">•</span>
+                  <span class="item-sku">SKU: {{ $any(prod).sku || 'N/A' }}</span>
+                  <span class="item-category">{{ $any(prod).category }}</span>
+                </div>
+
+                <h4 class="item-title">{{ $any(prod).name }}</h4>
+
+                @if ($any(prod).description) {
+                  <p class="item-desc">{{ $any(prod).description }}</p>
+                }
+
+                <div class="item-pricing-row">
+                  <strong class="item-price">${{ $any(prod).price | number:'1.2-2' }} MXN</strong>
+
+                  <span
+                    class="stock-pill"
+                    [class.out-of-stock]="$any(prod).stock <= 0"
+                  >
+                    Stock: {{ $any(prod).stock }} pzas
+                  </span>
+
+                  <span class="delivery-info">
+                    {{ $any(prod).disponibilidad }}
+                    @if ($any(prod).tiempo_entrega) {
+                      · {{ $any(prod).tiempo_entrega }}
+                    }
+                  </span>
+                </div>
+
+                <div class="specs-chips">
+                  @if ($any(prod).tipo_supercargador) {
+                    <span class="spec-chip">⚙️ {{ $any(prod).tipo_supercargador }}</span>
+                  }
+                  @if ($any(prod).nivel_kit) {
+                    <span class="spec-chip">🧰 {{ $any(prod).nivel_kit }}</span>
+                  }
+                  @if ($any(prod).plataforma_motor && $any(prod).plataforma_motor !== 'N/A') {
+                    <span class="spec-chip highlight-cyan">
+                      🏎️ {{ $any(prod).plataforma_motor }}
+                      @if ($any(prod).rango_anio && $any(prod).rango_anio !== 'N/A') {
+                        ({{ $any(prod).rango_anio }})
+                      }
+                    </span>
+                  }
+                  @if ($any(prod).potencia_max && $any(prod).potencia_max !== 'N/A') {
+                    <span class="spec-chip highlight-mint">
+                      ⚡ {{ $any(prod).potencia_max }}
+                      @if ($any(prod).boost_base && $any(prod).boost_base !== 'N/A') {
+                        · {{ $any(prod).boost_base }}
+                      }
+                    </span>
+                  }
+                  @if ($any(prod).enfriamiento && $any(prod).enfriamiento !== 'N/A') {
+                    <span class="spec-chip">❄️ {{ $any(prod).enfriamiento }}</span>
+                  }
+                </div>
+
+                @if ($any(prod).incluye_caja || $any(prod).notas_instalacion) {
+                  <div class="extra-notes">
+                    @if ($any(prod).incluye_caja) {
+                      <div class="note-box">
+                        <strong>📦 Incluye:</strong> {{ $any(prod).incluye_caja }}
+                      </div>
+                    }
+                    @if ($any(prod).notas_instalacion) {
+                      <div class="note-box warning">
+                        <strong>⚠️ Notas:</strong> {{ $any(prod).notas_instalacion }}
+                      </div>
+                    }
+                  </div>
+                }
+
+                <div class="item-actions">
+                  <button
+                    type="button"
+                    class="action-btn btn-edit"
+                    (click)="abrirModalEdicion(prod)"
+                  >
+                    ✏️ Editar
+                  </button>
+
+                  <button
+                    type="button"
+                    class="action-btn"
+                    [class.btn-disable]="$any(prod).stock > 0"
+                    [class.btn-enable]="$any(prod).stock <= 0"
+                    (click)="alternarEstadoKit(prod)"
+                  >
+                    {{ $any(prod).stock > 0 ? '🚫 Deshabilitar' : '✅ Habilitar' }}
+                  </button>
+
+                  <button
+                    type="button"
+                    class="action-btn btn-delete"
+                    (click)="confirmarEliminar(prod)"
+                  >
+                    🗑️ Eliminar
+                  </button>
+                </div>
+              </div>
+            </article>
+          }
+        </div>
+      }
+    </section>
+  }
+
+  <!-- APARTADO 2: INYECTAR COMPRESOR AL STOCK -->
+  @if (apartadoActivo === 'nuevo-kit') {
+    <section class="admin-card form-section-card">
+      <div class="card-header">
         <h3>🔧 INYECTAR COMPRESOR AL STOCK</h3>
-        <form (ngSubmit)="crearProducto()">
-          <div class="form-row">
-            <div class="form-group">
-              <label>Modelo del Supercargador</label>
-              <input type="text" [(ngModel)]="nuevoNombre" name="nombre" placeholder="Ej. ProCharger F-4X" required />
-            </div>
-            <div class="form-group">
-              <label>Marca Fabricante</label>
-              <input type="text" [(ngModel)]="nuevaMarca" name="marca" placeholder="Ej. ProCharger" required />
-            </div>
-          </div>
+        <span class="card-subtitle">Completa los datos técnicos del kit o refacción</span>
+      </div>
 
-          <!-- CATEGORÍA Y PRECIO -->
-          <div class="form-row">
+      <form (ngSubmit)="crearProducto()" class="admin-form">
+        <div class="form-section-title">Identificación</div>
+        <div class="form-row cols-2">
           <div class="form-group">
-  <label>Categoría de Escudería</label>
-  <select [(ngModel)]="nuevaCategoria" name="categoria" required style="width: 100%; background: #1f2937; border: 1px solid #374151; border-radius: 8px; padding: 12px 15px; color: #fff;">
-    <option value="" disabled selected style="background: #111827; color: #9ca3af;">Selecciona una categoría</option>
-    <option value="karting" style="background: #111827; color: #fff;">Karting</option>
-    <option value="rally" style="background: #111827; color: #fff;">Rally</option>
-    <option value="formula" style="background: #111827; color: #fff;">Fórmula</option>
-    <option value="drifting" style="background: #111827; color: #fff;">Drifting</option>
-  </select>
-</div>
-            <div class="form-group">
-              <label>Precio de Lista ($ MXN)</label>
-              <input type="number" [(ngModel)]="nuevoPrecio" name="precio" placeholder="6500" required />
-            </div>
+            <label>Nombre / Modelo del Producto *</label>
+            <input
+              type="text"
+              [(ngModel)]="nuevoNombre"
+              name="name"
+              placeholder="Ej. Kit Whipple Gen 6 3.8L"
+              required
+            />
           </div>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label>Presión Máxima (Boost)</label>
-              <input type="text" [(ngModel)]="nuevoBoost" name="boost" placeholder="Ej. 45 PSI" required />
-            </div>
-            <div class="form-group">
-              <label>Stock Inicial</label>
-              <input type="number" [(ngModel)]="nuevoStock" name="stock" placeholder="10" required />
-            </div>
+          <div class="form-group">
+            <label>SKU / No. de Parte *</label>
+            <input
+              type="text"
+              [(ngModel)]="nuevoSku"
+              name="sku"
+              placeholder="Ej. WK-2015-38G6"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-row cols-2">
+          <div class="form-group">
+            <label>Marca Fabricante *</label>
+            <input
+              type="text"
+              [(ngModel)]="nuevaMarca"
+              name="marca"
+              placeholder="Ej. Whipple, ProCharger, Vortech"
+              required
+            />
           </div>
 
-          <div class="form-row">
-            <div class="form-group" style="grid-column: span 2;">
-              <label>URL de la Imagen</label>
-              <input type="text" [(ngModel)]="nuevaImagen" name="imagen" placeholder="assets/img/supercargador.jpg" />
-            </div>
+          <div class="form-group">
+            <label>Categoría *</label>
+            <select [(ngModel)]="nuevaCategoria" name="category" required>
+              <option value="" disabled selected>Selecciona una categoría</option>
+              <option value="Supercargadores">Supercargadores</option>
+              <option value="Cabezales">Cabezales Universales</option>
+              <option value="Poleas y Bandas">Poleas y Bandas</option>
+              <option value="Valvulas">Válvulas Bypass / Blow-off</option>
+              <option value="Consumibles">Consumibles y Aceites</option>
+              <option value="Refacciones">Refacciones</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-section-title">Especificaciones técnicas</div>
+        <div class="form-row cols-2">
+          <div class="form-group">
+            <label>Tipo de Tecnología</label>
+            <select [(ngModel)]="nuevoTipo" name="tipo_supercargador">
+              <option value="Centrifugo">Centrífugo</option>
+              <option value="Twin-Screw">Twin-Screw (Doble tornillo)</option>
+              <option value="Roots (TVS)">Roots / TVS</option>
+              <option value="Consumible">Consumible</option>
+              <option value="Refaccion">Refacción</option>
+            </select>
           </div>
 
-          <div class="form-group" style="margin-top: 12px;">
-            <label>Descripción del Kit</label>
-            <input type="text" [(ngModel)]="nuevoDescripcion" name="descripcion" placeholder="Ej. Kit de inducción forzada..." />
+          <div class="form-group">
+            <label>Nivel de Kit</label>
+            <select [(ngModel)]="nuevoNivelKit" name="nivel_kit">
+              <option value="Complete Kit">Complete Kit (Con electrónica)</option>
+              <option value="Tuner Kit">Tuner Kit (Solo hardware)</option>
+              <option value="Refaccion">Refacción / Accesorio</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row cols-2">
+          <div class="form-group">
+            <label>Plataforma / Motor</label>
+            <input
+              type="text"
+              [(ngModel)]="nuevaPlataforma"
+              name="plataforma_motor"
+              placeholder="Ej. Ford Coyote 5.0L / Universal"
+            />
           </div>
 
-          <button type="submit" class="admin-btn cyan-glow" style="margin-top: 15px;">Subir Kit al Sistema</button>
-        </form>
-      </section>
-        
-      <!-- PROGRAMAR NOTIFICACIÓN PUSH -->
-      <section class="admin-card" style="margin-top: 30px;">
-        <h3>📢 PROGRAMAR NOTIFICACIÓN PUSH</h3>
-        <form (ngSubmit)="enviarAlertaPush()">
+          <div class="form-group">
+            <label>Rango de Año</label>
+            <input
+              type="text"
+              [(ngModel)]="nuevoRangoAnio"
+              name="rango_anio"
+              placeholder="Ej. 2018-2023 o N/A"
+            />
+          </div>
+        </div>
+
+        <div class="form-row cols-3">
+          <div class="form-group">
+            <label>Potencia Máxima</label>
+            <input
+              type="text"
+              [(ngModel)]="nuevaPotencia"
+              name="potencia_max"
+              placeholder="Ej. 850+ HP"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Boost Base (PSI)</label>
+            <input
+              type="text"
+              [(ngModel)]="nuevoBoost"
+              name="boost_base"
+              placeholder="Ej. 10-12 PSI"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Enfriamiento</label>
+            <select [(ngModel)]="nuevoEnfriamiento" name="enfriamiento">
+              <option value="Aire-Aire">Aire-Aire</option>
+              <option value="Aire-Agua">Aire-Agua</option>
+              <option value="No incluye">No incluye</option>
+              <option value="N/A">N/A</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-section-title">Inventario y logística</div>
+        <div class="form-row cols-2">
+          <div class="form-group">
+            <label>Precio ($ MXN) *</label>
+            <input
+              type="number"
+              step="0.01"
+              [(ngModel)]="nuevoPrecio"
+              name="price"
+              placeholder="165000.00"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Stock Inicial *</label>
+            <input
+              type="number"
+              [(ngModel)]="nuevoStock"
+              name="stock"
+              placeholder="2"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-row cols-2">
+          <div class="form-group">
+            <label>Disponibilidad</label>
+            <select [(ngModel)]="nuevaDisponibilidad" name="disponibilidad">
+              <option value="En Stock MX">En Stock MX</option>
+              <option value="Sobre Pedido">Sobre Pedido</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Tiempo de Entrega</label>
+            <input
+              type="text"
+              [(ngModel)]="nuevoTiempoEntrega"
+              name="tiempo_entrega"
+              placeholder="Ej. 2-4 dias habiles"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>URL de la Imagen</label>
+          <input
+            type="text"
+            [(ngModel)]="nuevaImagen"
+            name="imageUrl"
+            placeholder="assets/img/supercargador.jpg"
+          />
+        </div>
+
+        <div class="form-section-title">Detalles adicionales</div>
+        <div class="form-group">
+          <label>Descripción Comercial</label>
+          <textarea
+            [(ngModel)]="nuevoDescripcion"
+            name="description"
+            rows="2"
+            placeholder="Gancho comercial del kit..."
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>¿Qué incluye la caja?</label>
+          <textarea
+            [(ngModel)]="nuevoIncluyeCaja"
+            name="incluye_caja"
+            rows="2"
+            placeholder="Cabezal, intercooler, inyectores, banda..."
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Notas de Instalación / Requisitos</label>
+          <textarea
+            [(ngModel)]="nuevasNotas"
+            name="notas_instalacion"
+            rows="2"
+            placeholder="Requiere gasolina 93 octanos, ECU programable..."
+          ></textarea>
+        </div>
+
+        <button type="submit" class="admin-btn cyan-glow">Subir Kit al Sistema</button>
+      </form>
+    </section>
+  }
+
+  <!-- APARTADO 3: NOTIFICACIONES PUSH -->
+  @if (apartadoActivo === 'notificaciones') {
+    <div class="notifications-layout">
+      <section class="admin-card">
+        <div class="card-header">
+          <h3>📢 PROGRAMAR NOTIFICACIÓN PUSH</h3>
+          <span class="card-subtitle">Envía avisos rápidos a dispositivos vinculados</span>
+        </div>
+
+        <form (ngSubmit)="enviarAlertaPush()" class="admin-form">
           <div class="form-group">
             <label>Título de la Alerta</label>
-            <input type="text" [(ngModel)]="notifTitulo" name="ntitulo" placeholder="Ej. ¡VENTA NOCTURNA DE PITS!" required />
+            <input
+              type="text"
+              [(ngModel)]="notifTitulo"
+              name="ntitulo"
+              placeholder="Ej. ¡VENTA NOCTURNA DE PITS!"
+              required
+            />
           </div>
-          <div class="form-row">
-            <div class="form-group" style="flex: 2;">
-              <label>Cuerpo del Mensaje (Se verá en el Reloj)</label>
-              <input type="text" [(ngModel)]="notifMensaje" name="nmensaje" placeholder="Descuento del 15%..." required />
-            </div>
-            <div class="form-group" style="flex: 1;">
-              <label>Hora de Envío</label>
-              <input type="text" [(ngModel)]="notifHora" name="nhora" placeholder="10:30" required />
-            </div>
+
+          <div class="form-group">
+            <label>Cuerpo del Mensaje (Se verá en el Reloj)</label>
+            <input
+              type="text"
+              [(ngModel)]="notifMensaje"
+              name="nmensaje"
+              placeholder="Descuento del 15%..."
+              required
+            />
           </div>
-          <button type="submit" class="admin-btn green-glow">Programar Alerta Inalámbrica</button>
+
+          <div class="form-group">
+            <label>Hora de Envío</label>
+            <input
+              type="time"
+              [(ngModel)]="notifHora"
+              name="nhora"
+              required
+            />
+            <small class="form-hint">
+              Se disparará a la hora indicada (si ya pasó hoy, se agenda para mañana).
+            </small>
+          </div>
+
+          <button type="submit" class="admin-btn cyan-glow">Programar Alerta Inalámbrica</button>
         </form>
       </section>
 
-    </div>
+      <section class="admin-card">
+        <div class="card-header inventory-header">
+          <div>
+            <h3>🕒 ALERTAS REGISTRADAS</h3>
+            <span class="card-subtitle">Historial sincronizado con el backend</span>
+          </div>
+          <button
+            type="button"
+            class="quick-add-btn"
+            (click)="cargarNotificaciones()"
+          >
+            🔄 Actualizar
+          </button>
+        </div>
 
-    <!-- COLUMNA DERECHA: INVENTARIO Y CONSOLA -->
-    <div class="right-column-admin">
-      
-      <section class="admin-card visual-inventory">
-        <h3>📦 INVENTARIO ACTUAL DE LA ESCUDERÍA ({{ state.productos().length }})</h3>
-        
-        <div class="inventory-scroll">
-          @for (prod of state.productos(); track prod.id) {
-            <div class="inventory-item-card" style="display: flex; flex-direction: column; gap: 10px; background: rgba(15,23,42,0.6); border: 1px solid rgba(0,212,255,0.15); border-radius: 10px; padding: 12px; margin-bottom: 10px;">
-              
-              <div style="display: flex; align-items: center; gap: 12px; justify-content: space-between;">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                  <img [src]="$any(prod).imageUrl || 'assets/img/supercargador-default.jpg'" class="item-thumb" alt="compresor" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;" />
-                  <div class="item-info">
-                    <span class="item-brand" style="font-size: 0.7rem; color: #00D4FF; text-transform: uppercase;">{{ $any(prod).marca }}</span>
-                    <h4 style="margin: 0; font-size: 0.95rem; color: #fff;">{{ $any(prod).name }}</h4>
-                    <p style="font-size: 0.75rem; color: #a0aec0; margin: 2px 0;">{{ $any(prod).description }}</p>
+        @if (mensajeNotif) {
+          <div class="feedback-banner">{{ mensajeNotif }}</div>
+        }
+
+        @if (state.notificaciones().length === 0) {
+          <p class="empty-state">Aún no hay notificaciones registradas o cargadas.</p>
+        } @else {
+          <div class="notif-list">
+            @for (n of state.notificaciones(); track $any(n).id || $index) {
+              <div class="notif-item" [class.is-read]="$any(n).leida">
+                @if (editandoNotifId === $any(n).id) {
+                  <div class="admin-form">
+                    <div class="form-group">
+                      <label>Título</label>
+                      <input
+                        type="text"
+                        [(ngModel)]="editNotifTitulo"
+                        [name]="'editTitulo_' + $any(n).id"
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label>Mensaje</label>
+                      <input
+                        type="text"
+                        [(ngModel)]="editNotifMensaje"
+                        [name]="'editMensaje_' + $any(n).id"
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label>Hora Programada</label>
+                      <input
+                        type="time"
+                        [(ngModel)]="editNotifHora"
+                        [name]="'editHora_' + $any(n).id"
+                      />
+                    </div>
+
+                    <div class="item-actions">
+                      <button
+                        type="button"
+                        class="action-btn btn-enable"
+                        (click)="guardarEdicionNotif(n)"
+                      >
+                        💾 Guardar
+                      </button>
+                      <button
+                        type="button"
+                        class="action-btn btn-disable"
+                        (click)="cancelarEdicionNotif()"
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                  </div>
+                } @else {
+                  <div class="notif-top">
+                    <strong>{{ $any(n).titulo }}</strong>
+                    <div class="notif-meta-right">
+                      <span class="notif-time">⏰ {{ $any(n).horaProgramada }}</span>
+                      <span class="notif-status">
+                        {{ $any(n).leida ? 'Leída' : 'Pendiente' }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <p class="notif-msg">{{ $any(n).mensaje }}</p>
+
+                  <div class="item-actions">
+                    <button
+                      type="button"
+                      class="action-btn btn-edit"
+                      (click)="iniciarEdicionNotif(n)"
+                    >
+                      ✏️ Editar
+                    </button>
+
+                    @if (!$any(n).leida) {
+                      <button
+                        type="button"
+                        class="action-btn btn-edit"
+                        (click)="marcarNotificacionLeida(n)"
+                      >
+                        ✓ Marcar leída
+                      </button>
+                    }
+
+                    <button
+                      type="button"
+                      class="action-btn btn-delete"
+                      (click)="eliminarNotificacion(n)"
+                    >
+                      🗑️ Eliminar
+                    </button>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+      </section>
+    </div>
+  }
+
+  <!-- APARTADO 4: MANUALES POR ID DE PRODUCTO (QR) -->
+  @if (apartadoActivo === 'manuales') {
+    <div class="notifications-layout">
+      <section class="admin-card">
+        <div class="card-header">
+          <h3>📘 SUBIR / ENLAZAR MANUAL DE USO</h3>
+          <span class="card-subtitle">Asocia un manual al ID del producto para abrirlo al escanear su QR</span>
+        </div>
+
+        <form (ngSubmit)="guardarManualProducto()" class="admin-form">
+          <div class="form-group">
+            <label>Producto (ID) *</label>
+            <select [(ngModel)]="manualProductoId" name="manualProductoId" required>
+              <option [ngValue]="null" disabled selected>Selecciona un producto</option>
+              @for (prod of state.productos(); track prod.id) {
+                <option [ngValue]="prod.id">
+                  #{{ prod.id }} — {{ $any(prod).name }} ({{ $any(prod).sku || 'Sin SKU' }})
+                </option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Título del Manual *</label>
+            <input
+              type="text"
+              [(ngModel)]="manualTitulo"
+              name="manualTitulo"
+              placeholder="Ej. Manual de Instalación y Uso Whipple Gen 6"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Subir Archivo PDF desde tu laptop (recomendado)</label>
+            <input
+              type="file"
+              accept=".pdf,application/pdf"
+              (change)="onManualArchivoSeleccionado($event)"
+            />
+            @if (manualArchivoNombre) {
+              <small class="form-hint">Archivo seleccionado: {{ manualArchivoNombre }}</small>
+            }
+          </div>
+
+          <div class="form-group">
+            <label>URL o Ruta del Manual (opcional si subes PDF)</label>
+            <input
+              type="text"
+              [(ngModel)]="manualUrl"
+              name="manualUrl"
+              placeholder="https://... o enlace directo"
+            />
+            <small class="form-hint">
+              Si subes un PDF de tu laptop, se guardará automáticamente en el servidor.
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label>Notas / Instrucciones para el Usuario</label>
+            <textarea
+              [(ngModel)]="manualNotas"
+              name="manualNotas"
+              rows="2"
+              placeholder="Torque recomendado, precauciones de primer arranque..."
+            ></textarea>
+          </div>
+
+          <button type="submit" class="admin-btn cyan-glow">Vincular Manual al Producto</button>
+        </form>
+      </section>
+
+      <section class="admin-card">
+        <div class="card-header inventory-header">
+          <div>
+            <h3>📄 MANUALES VINCULADOS</h3>
+            <span class="card-subtitle">Acceso rápido por ID de producto, descarga de QR y enlace</span>
+          </div>
+        </div>
+
+        @if (mensajeManual) {
+          <div class="feedback-banner">{{ mensajeManual }}</div>
+        }
+
+        @if (manuales.length === 0) {
+          <p class="empty-state">Aún no hay manuales vinculados a ningún producto.</p>
+        } @else {
+          <div class="notif-list">
+            @for (m of manuales; track m.productoId) {
+              <div class="notif-item">
+                <div class="notif-top">
+                  <strong>{{ m.titulo }}</strong>
+                  <div class="notif-meta-right">
+                    <span class="notif-time">ID Producto: #{{ m.productoId }}</span>
+                    <span class="notif-status">{{ m.nombreProducto }}</span>
                   </div>
                 </div>
 
-                <div style="text-align: right;">
-                  <span class="badge-meta b-price" style="display: block; font-weight: bold; color: #00FFCC; font-size: 0.9rem;">${{ $any(prod).price | number }} USD</span>
-                  <span class="badge-meta" [style.background]="$any(prod).stock > 0 ? 'rgba(0,212,255,0.1)' : 'rgba(255,77,77,0.1)'" [style.color]="$any(prod).stock > 0 ? '#00D4FF' : '#ff4d4d'" style="padding: 2px 6px; border-radius: 4px; font-size: 0.7rem;">
-                    Stock: {{ $any(prod).stock }} pzas
-                  </span>
+                @if (m.notas) {
+                  <p class="notif-msg">{{ m.notas }}</p>
+                }
+
+                <p class="notif-msg">
+                  <strong>URL QR:</strong> {{ getUrlQrManual(m.productoId) }}
+                </p>
+
+                @if (getQrDataUrl(m.productoId); as qrSrc) {
+                  <div style="margin: 10px 0; display: flex; align-items: center; gap: 12px;">
+                    <img
+                      [src]="qrSrc"
+                      [alt]="'QR del manual de producto #' + m.productoId"
+                      style="width: 105px; height: 105px; border-radius: 8px; background: #fff; padding: 6px;"
+                    />
+                    <small class="form-hint">
+                      Escanea o descarga este QR para pegarlo en el producto #{{ m.productoId }}.
+                    </small>
+                  </div>
+                }
+
+                <div class="item-actions">
+                  <a
+                    [href]="m.url"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="action-btn btn-edit"
+                  >
+                    📖 Abrir Manual
+                  </a>
+
+                  <button
+                    type="button"
+                    class="action-btn btn-enable"
+                    (click)="descargarQrManual(m.productoId, m.titulo)"
+                  >
+                    📥 Descargar QR
+                  </button>
+
+                  <button
+                    type="button"
+                    class="action-btn btn-edit"
+                    (click)="copiarEnlaceQrManual(m.productoId)"
+                  >
+                    🔗 Copiar Link QR
+                  </button>
+
+                  <button
+                    type="button"
+                    class="action-btn btn-delete"
+                    (click)="eliminarManualProducto(m.productoId)"
+                  >
+                    🗑️ Quitar
+                  </button>
                 </div>
               </div>
-
-              <!-- Botones de Acción Horizontal -->
-              <div style="display: flex; gap: 8px; justify-content: flex-end; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px;">
-                <button (click)="abrirModalEdicion(prod)" style="background: rgba(0,212,255,0.1); color: #00D4FF; border: 1px solid rgba(0,212,255,0.3); padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold;">
-                  ✏️ Editar
-                </button>
-                
-                <button (click)="alternarEstadoKit(prod)" [style.background]="$any(prod).stock > 0 ? 'rgba(255,165,0,0.1)' : 'rgba(0,255,204,0.1)'" [style.color]="$any(prod).stock > 0 ? '#ffa500' : '#00FFCC'" [style.border]="$any(prod).stock > 0 ? '1px solid rgba(255,165,0,0.3)' : '1px solid rgba(0,255,204,0.3)'" style="padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold;">
-                  {{ $any(prod).stock > 0 ? '🚫 Deshabilitar' : '✅ Habilitar' }}
-                </button>
-
-                <button (click)="confirmarEliminacion($any(prod).id)" style="background: rgba(255,77,77,0.1); color: #ff4d4d; border: 1px solid rgba(255,77,77,0.3); padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold;">
-                  🗑️ Eliminar
-                </button>
-              </div>
-
-            </div>
-          }
-        </div>
+            }
+          </div>
+        }
       </section>
-
-      <section class="admin-card logs-card" style="margin-top: 25px;">
-        <h3>📊 CONSOLA DE ALERTAS EMITIDAS</h3>
-        <div class="logs-container">
-          @for (alert of state.notificaciones(); track alert.id) {
-            <div class="log-item" [className]="'log-item ' + alert.tipo">
-              <span class="log-time">[{{ alert.horaProgramada }}]</span>
-              <strong>{{ alert.titulo }}:</strong>
-              <span class="log-text">{{ alert.mensaje }}</span>
-            </div>
-          }
-        </div>
-      </section>
-
     </div>
-
-  </div>
+  }
 </div>
-
-<!-- MODAL FLOTANTE DE EDICIÓN (ACTUALIZADO CON TODOS LOS CAMPOS) -->
-@if (editando) {
-  <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 1000;">
-    <div style="background: #111827; border: 1px solid #00D4FF; border-radius: 12px; padding: 25px; width: 450px; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,212,255,0.2);">
-      <h3 style="color: #00D4FF; margin-top: 0;">✏️ EDITAR COMPONENTE DE PITS</h3>
-      
-      <div class="form-group" style="margin-bottom: 12px;">
-        <label style="font-size: 0.8rem; color: #a0aec0;">Modelo</label>
-        <input type="text" [(ngModel)]="editNombre" style="width: 100%; padding: 8px; background: #1f2937; border: 1px solid #374151; color: #fff; border-radius: 6px;" />
-      </div>
-
-      <div class="form-group" style="margin-bottom: 12px;">
-        <label style="font-size: 0.8rem; color: #a0aec0;">Marca Fabricante</label>
-        <input type="text" [(ngModel)]="editMarca" style="width: 100%; padding: 8px; background: #1f2937; border: 1px solid #374151; color: #fff; border-radius: 6px;" />
-      </div>
-
-      <div class="form-group" style="margin-bottom: 12px;">
-        <label style="font-size: 0.8rem; color: #a0aec0;">Categoría de Escudería</label>
-        <select [(ngModel)]="editCategoria" style="width: 100%; padding: 8px; background: #1f2937; border: 1px solid #374151; color: #fff; border-radius: 6px;">
-          <option value="karting">Karting</option>
-          <option value="rally">Rally</option>
-          <option value="formula">Fórmula</option>
-          <option value="drifting">Drifting</option>
-        </select>
-      </div>
-
-      <div class="form-group" style="margin-bottom: 12px;">
-        <label style="font-size: 0.8rem; color: #a0aec0;">Precio (USD)</label>
-        <input type="number" [(ngModel)]="editPrecio" style="width: 100%; padding: 8px; background: #1f2937; border: 1px solid #374151; color: #fff; border-radius: 6px;" />
-      </div>
-
-      <div class="form-group" style="margin-bottom: 12px;">
-        <label style="font-size: 0.8rem; color: #a0aec0;">Stock</label>
-        <input type="number" [(ngModel)]="editStock" style="width: 100%; padding: 8px; background: #1f2937; border: 1px solid #374151; color: #fff; border-radius: 6px;" />
-      </div>
-
-      <div class="form-group" style="margin-bottom: 12px;">
-        <label style="font-size: 0.8rem; color: #a0aec0;">URL de la Imagen</label>
-        <input type="text" [(ngModel)]="editImagen" style="width: 100%; padding: 8px; background: #1f2937; border: 1px solid #374151; color: #fff; border-radius: 6px;" />
-      </div>
-
-      <div class="form-group" style="margin-bottom: 15px;">
-        <label style="font-size: 0.8rem; color: #a0aec0;">Descripción</label>
-        <input type="text" [(ngModel)]="editDescripcion" style="width: 100%; padding: 8px; background: #1f2937; border: 1px solid #374151; color: #fff; border-radius: 6px;" />
-      </div>
-
-      <div style="display: flex; gap: 10px; justify-content: flex-end;">
-        <button (click)="cancelarEdicion()" style="background: #374151; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer;">Cancelar</button>
-        <button (click)="guardarEdicion()" style="background: #00D4FF; color: #000; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: bold;">Guardar Cambios</button>
-      </div>
-    </div>
-  </div>
-}
-
-<!-- MODAL DE CONFIRMACIÓN DE ELIMINACIÓN -->
-@if (mostrandoConfirmacion) {
-  <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 1000;">
-    <div style="background: #111827; border: 1px solid #ff4d4d; border-radius: 12px; padding: 25px; width: 350px; text-align: center; box-shadow: 0 10px 25px rgba(255,77,77,0.2);">
-      <h3 style="color: #ff4d4d; margin-top: 0;">⚠️ BAJA PERMANENTE</h3>
-      <p style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 20px;">¿Estás segura de dar de baja este kit del inventario de Pits?</p>
-      
-      <div style="display: flex; gap: 10px; justify-content: center;">
-        <button (click)="cancelarEliminacion()" style="background: #374151; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer;">Cancelar</button>
-        <button (click)="ejecutarEliminacion()" style="background: #ff4d4d; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: bold;">Sí, Eliminar</button>
-      </div>
-    </div>
-  </div>
-}

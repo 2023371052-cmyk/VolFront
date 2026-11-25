@@ -1,50 +1,111 @@
 <div class="grid-container">
   @for (item of listaProductos; track item.id) {
-    <div class="product-card">
-      
-      <div class="card-image-box">
-        <img [src]="item.imagen" [alt]="item.nombre" class="card-img" />
-        <span class="card-badge" [style.background-color]="item.colorEtiqueta">
-          {{ item.etiqueta }}
+    @let p = $any(item);
+    <article class="product-card">
+
+      <div class="card-image-box" (click)="verDetalle(item)">
+        <img
+          [src]="p.imageUrl || p.imagen || p.image || fallbackImg"
+          [alt]="p.name || p.nombre || 'Componente 7VOLTEX'"
+          class="card-img"
+          (error)="onImageError($event)"
+        />
+        <span
+          class="card-badge"
+          [style.background-color]="p.colorEtiqueta || '#93C5FD'"
+        >
+          {{ p.category || p.etiqueta || p.categoria || 'Supercargadores' }}
         </span>
+
+        @if ((p.stock ?? 10) <= 0) {
+          <span class="stock-overlay">Sin Stock</span>
+        }
       </div>
 
       <div class="card-content">
-        <span class="card-brand">{{ item.marca }}</span>
-        <h3 class="card-title">{{ item.nombre }}</h3>
-        <p class="card-subtitle">{{ item.subtitulo }}</p>
+        <div class="card-top-meta">
+          <span class="card-brand">{{ p.marca || 'Voltex Pro' }}</span>
+          @if (p.sku) {
+            <span class="card-sku">{{ p.sku }}</span>
+          }
+        </div>
+
+        <h3 class="card-title" (click)="verDetalle(item)">
+          {{ p.name || p.nombre }}
+        </h3>
+
+        <p class="card-subtitle">
+          {{ p.description || p.subtitulo || 'Componente de inducción forzada de alto rendimiento.' }}
+        </p>
 
         <div class="specs-box">
           <div class="spec-row">
             <span class="spec-label">Presión Boost:</span>
-            <span class="spec-value highlight-cyan">{{ item.presionBoost }}</span>
+            <span class="spec-value highlight-cyan">
+              {{ p.boost_base && p.boost_base !== 'N/A' ? p.boost_base : (p.presionBoost || '35 PSI') }}
+            </span>
           </div>
+
           <div class="spec-row">
-            <span class="spec-label">Entrega Potencia:</span>
-            <span class="spec-value">{{ item.entregaPotencia }}</span>
+            <span class="spec-label">Entrega / Potencia:</span>
+            <span class="spec-value highlight-mint">
+              {{ p.potencia_max && p.potencia_max !== 'N/A' ? p.potencia_max : (p.entregaPotencia || 'Progresiva') }}
+            </span>
           </div>
+
           <div class="spec-row">
-            <span class="spec-label">Conexión:</span>
-            <span class="spec-value">{{ item.conexionMecanica }}</span>
+            <span class="spec-label">Plataforma / Conexión:</span>
+            <span class="spec-value">
+              {{ p.plataforma_motor && p.plataforma_motor !== 'N/A' ? p.plataforma_motor : (p.conexionMecanica || 'Banda / Polea') }}
+            </span>
           </div>
+
           <div class="spec-row">
-            <span class="spec-label">Espacio Capó:</span>
-            <span class="spec-value">{{ item.espacioRequerido }}</span>
+            <span class="spec-label">Tecnología / Espacio:</span>
+            <span class="spec-value">
+              {{ p.tipo_supercargador || p.espacioRequerido || 'Estándar Pits' }}
+            </span>
           </div>
         </div>
 
+        @if (p.manualUrl || p.manual_url) {
+          <div class="card-manual-row">
+            <a
+              [href]="p.manualUrl || p.manual_url"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="card-manual-link"
+              (click)="$event.stopPropagation()"
+            >
+              📘 Manual de uso
+            </a>
+          </div>
+        }
+
         <div class="card-footer-box">
           <div class="price-box">
-            <span class="price-currency">USD</span>
-            <span class="price-amount">${{ item.precio | number }}</span>
+            <span class="price-currency">MXN</span>
+            <span class="price-amount">
+              ${{ (p.price ?? p.precio ?? 0) | number:'1.2-2' }}
+            </span>
           </div>
-          <!-- Añadimos el evento click para la lógica de añadir al carrito -->
-          <button class="buy-btn" (click)="agregarAlCarrito(item)" type="button">
-            <i class="pi pi-plus"></i> Añadir
+
+          <button
+            class="buy-btn"
+            [disabled]="(p.stock ?? 10) <= 0"
+            (click)="agregarAlCarrito(item); $event.stopPropagation()"
+            type="button"
+          >
+            <i class="pi pi-plus"></i>
+            {{ (p.stock ?? 10) > 0 ? 'Añadir' : 'Agotado' }}
           </button>
         </div>
       </div>
 
+    </article>
+  } @empty {
+    <div class="empty-grid-state">
+      <p>No hay componentes disponibles para mostrar en este momento.</p>
     </div>
   }
 </div>

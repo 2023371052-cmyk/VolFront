@@ -1,18 +1,32 @@
 <div class="voltex-app">
-  
   <app-the-navbar *ngIf="!esRutaAuth()"></app-the-navbar>
 
   <!-- Banner global de estado de red PWA -->
-  <div class="pwa-status-banner" *ngIf="mensajeConexion">
-    <span>⚠️ {{ mensajeConexion }}</span>
+  <div
+    class="pwa-status-banner"
+    *ngIf="!networkSync.enLinea() || networkSync.estadoSync()"
+  >
+    <span>
+      {{ !networkSync.enLinea() ? '📡' : '🔄' }}
+      {{
+        !networkSync.enLinea()
+          ? 'Sin conexión a internet — Puedes seguir navegando; tus acciones se guardarán y enviarán al volver la red.'
+          : networkSync.estadoSync()
+      }}
+      <strong *ngIf="networkSync.pendientesCount() > 0">
+        ({{ networkSync.pendientesCount() }} pendiente(s))
+      </strong>
+    </span>
   </div>
 
   <div class="router-viewport" style="min-height: 75vh;">
-    <div class="pwa-wrapper" [ngClass]="{'offline-mode': !isOnline}">
+    <div
+      class="pwa-wrapper"
+      [ngClass]="{ 'offline-mode': !networkSync.enLinea() }"
+    >
       <router-outlet></router-outlet>
     </div>
   </div>
 
-<app-the-footer *ngIf="!esRutaAuth()"></app-the-footer>
-
+  <app-the-footer *ngIf="!esRutaAuth()"></app-the-footer>
 </div>

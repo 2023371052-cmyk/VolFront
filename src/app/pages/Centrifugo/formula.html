@@ -1,0 +1,66 @@
+<div class="category-container">
+
+  <!-- BOTÓN DE VOLVER INTELIGENTE -->
+  <button class="btn-back" (click)="volverSegunSesion()" type="button">
+    <i class="pi pi-arrow-left"></i> Volver
+  </button>
+
+  <!-- Banner principal de Centrífugo -->
+  <section class="category-header">
+    <span class="badge">CENTRIFUGAL POWER INDUCTION</span>
+    <h1>SUPERCARGADORES CENTRÍFUGOS</h1>
+    <p>Sistemas de compresión radial de alta velocidad para entrega progresiva de potencia y máxima eficiencia en altas RPM.</p>
+  </section>
+
+  <!-- ESTADOS DE CARGA / VACÍO -->
+  @if (cargando) {
+    <div class="loading-state">
+      <i class="pi pi-spin pi-spinner"></i>
+      <p>Sincronizando telemetría de módulos Centrífugos...</p>
+    </div>
+  } @else if (productosFormula.length === 0) {
+    <div class="empty-state">
+      <i class="pi pi-info-circle"></i>
+      <h3>No hay módulos Centrífugos registrados</h3>
+      <p>Aún no se han dado de alta componentes con tipo Centrifugo en la base de datos.</p>
+    </div>
+  } @else {
+    <!-- GRID DINÁMICO DE PRODUCTOS REALES -->
+    <section class="products-grid">
+      @for (product of productosFormula; track product.id) {
+        <div class="product-card">
+          <div class="card-badge">{{ product.tipo_supercargador || 'Centrifugo' }}</div>
+          
+          <div class="card-image" [routerLink]="['/producto', product.id]">
+            <img
+              [src]="product.imageUrl || product.image || product.imagen || fallbackImg"
+              [alt]="product.name || product.nombre || 'Supercargador Centrífugo'"
+              (error)="onImageError($event)"
+            />
+          </div>
+
+          <div class="card-content">
+            <span class="category-tag">{{ product.marca || 'CENTRIFUGAL SPEC' }}</span>
+            <h3>{{ product.name || product.nombre }}</h3>
+            <p>{{ product.description || product.descripcion }}</p>
+            
+            <div class="card-footer">
+              <span class="price">{{ (product.price || product.precio) | currency:'MXN' }}</span>
+              
+              <!-- Contenedor para alinear el botón de detalle y el de agregar -->
+              <div class="actions">
+                <button class="btn-detail" [routerLink]="['/producto', product.id]" title="Ver detalles" type="button">
+                  <i class="pi pi-eye"></i>
+                </button>
+                <button class="cart-btn-card" (click)="agregarAlCarrito(product)" type="button">
+                  <i class="pi pi-shopping-cart"></i> Agregar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </section>
+  }
+
+</div>

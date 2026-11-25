@@ -1,0 +1,109 @@
+<section class="notif-page">
+  <div class="notif-container">
+
+    <div class="notif-topbar">
+      <button type="button" class="btn-notif-back" routerLink="/usuario">
+        <i class="pi pi-arrow-left"></i> Volver al Panel
+      </button>
+
+      <div *ngIf="sesionActiva" class="session-badge">
+        <span class="dot-live"></span>
+        <span>Sesión activa: <strong>{{ usuarioLabel }}</strong></span>
+      </div>
+    </div>
+
+    <header class="notif-header">
+      <div>
+        <h2>NOTIFICACIONES</h2>
+        <p class="notif-subtitle">
+          Consulta las alertas emitidas por el sistema a su hora programada. Mientras tu sesión siga iniciada, te avisaremos incluso si cierras la PWA.
+        </p>
+      </div>
+
+      <div class="notif-actions">
+        <button
+          *ngIf="permisoNotificacion !== 'granted'"
+          type="button"
+          class="btn-notif-primary"
+          (click)="solicitarPermiso()"
+        >
+          <i class="pi pi-bell"></i> Permitir Notificaciones
+        </button>
+
+        <button
+          type="button"
+          class="btn-notif-secondary"
+          (click)="actualizarNotificaciones()"
+          [disabled]="cargando"
+        >
+          <i class="pi pi-refresh" [class.pi-spin]="cargando"></i> Actualizar
+        </button>
+
+        <button
+          *ngIf="notificaciones.length > 0"
+          type="button"
+          class="btn-notif-secondary"
+          (click)="marcarTodas()"
+        >
+          Marcar todas leídas
+        </button>
+      </div>
+    </header>
+
+    <div *ngIf="estadoPermisoMsg" class="permission-banner">
+      <i class="pi pi-info-circle"></i>
+      <span>{{ estadoPermisoMsg }}</span>
+    </div>
+
+    <div *ngIf="!sesionActiva" class="permission-banner warning">
+      <i class="pi pi-exclamation-triangle"></i>
+      <span>No se detecta sesión iniciada. Inicia sesión para recibir alertas en tu dispositivo.</span>
+    </div>
+
+    <!-- Estado vacío -->
+    <div *ngIf="notificaciones.length === 0 && !cargando" class="empty-notif-box">
+      <h3>Sin notificaciones por el momento</h3>
+      <p>Aquí se mostrarán las notificaciones enviadas desde el panel administrativo cuando llegue su hora.</p>
+      <button type="button" class="btn-notif-primary" (click)="actualizarNotificaciones()">
+        Consultar ahora
+      </button>
+    </div>
+
+    <!-- Listado de notificaciones ya liberadas por horario -->
+    <div *ngIf="notificaciones.length > 0" class="notif-list">
+      <article
+        *ngFor="let item of notificaciones"
+        class="notif-card"
+        [class.unread]="!item.leida"
+      >
+        <div class="notif-card-icon">
+          <i class="pi pi-bell"></i>
+        </div>
+
+        <div class="notif-card-content">
+          <div class="notif-card-top">
+            <div class="notif-title-group">
+              <h4>{{ item.titulo }}</h4>
+              <span class="notif-tag">{{ item.tipo || 'push' }}</span>
+            </div>
+            <span class="notif-date">{{ item.horaProgramada || item.fecha }}</span>
+          </div>
+          <p>{{ item.mensaje }}</p>
+        </div>
+
+        <div class="notif-card-btns">
+          <button
+            *ngIf="!item.leida"
+            type="button"
+            class="btn-mini"
+            (click)="marcarLeida(item.id)"
+            title="Marcar como leída"
+          >
+            <i class="pi pi-check"></i>
+          </button>
+        </div>
+      </article>
+    </div>
+
+  </div>
+</section>

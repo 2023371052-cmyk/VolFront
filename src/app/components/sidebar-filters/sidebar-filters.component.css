@@ -1,11 +1,24 @@
+/* ==========================================================================
+   ESTILOS DE BARRA LATERAL DE FILTROS - 7VOLTEX (ADAPTABLE POR DISPOSITIVO)
+   ========================================================================== */
 :host {
   display: block;
   width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow-x: clip;
 }
 
 .sidebar-container {
   display: block;
   width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.sidebar-container *,
+.sidebar-container *::before,
+.sidebar-container *::after {
   box-sizing: border-box;
 }
 
@@ -13,6 +26,78 @@
 .sidebar-header-mobile,
 .mobile-filter-toggle {
   display: none;
+}
+
+/* Tarjeta de filtros seleccionados activos */
+.active-filters-box {
+  background-color: #1E3A8A;
+  border: 1px solid rgba(147, 197, 253, 0.3);
+  padding: 14px 16px;
+  border-radius: 12px;
+  margin-bottom: 18px;
+  box-shadow: 0 8px 20px rgba(11, 29, 58, 0.45);
+  min-width: 0;
+}
+
+.active-filters-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #93C5FD;
+}
+
+.btn-clear-all {
+  background: transparent;
+  border: none;
+  color: #DBEAFE;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.btn-clear-all:hover {
+  color: #F8FAFC;
+}
+
+.active-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  background: linear-gradient(135deg, #3B82B8, #1E3A8A);
+  color: #F8FAFC;
+  border: 1px solid #93C5FD;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.filter-chip:hover {
+  background: #93C5FD;
+  color: #0B1D3A;
 }
 
 /* Secciones de filtros con diseño de tarjeta en azul profundo */
@@ -23,7 +108,12 @@
   border-radius: 12px;
   margin-bottom: 18px;
   box-shadow: 0 8px 20px rgba(11, 29, 58, 0.4);
+  min-width: 0;
   transition: all 0.3s ease;
+}
+
+.filter-section:last-child {
+  margin-bottom: 0;
 }
 
 .filter-section:hover {
@@ -41,6 +131,8 @@
   border-bottom: 1px solid rgba(147, 197, 253, 0.2);
   padding-bottom: 8px;
   font-weight: 800;
+  line-height: 1.3;
+  word-break: break-word;
 }
 
 .filter-option {
@@ -49,6 +141,7 @@
   color: #DBEAFE;
   display: flex;
   align-items: center;
+  min-width: 0;
 }
 
 .filter-option:last-child {
@@ -56,11 +149,12 @@
 }
 
 .filter-option input[type="checkbox"] {
-  margin-right: 12px;
+  margin: 0 12px 0 0;
   accent-color: #3B82B8;
   cursor: pointer;
   width: 16px;
   height: 16px;
+  flex-shrink: 0;
   border-radius: 4px;
 }
 
@@ -69,7 +163,10 @@
   display: flex;
   align-items: center;
   width: 100%;
+  min-width: 0;
   user-select: none;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
   transition: color 0.2s ease;
 }
 
@@ -78,67 +175,53 @@
 }
 
 /* ==========================================================================
-   COMPORTAMIENTO PARA COMPUTADORA (ESCRITORIO - min 992px)
+   ESCRITORIO (min 1025px)
    ========================================================================== */
-@media screen and (min-width: 992px) {
+@media screen and (min-width: 1025px) {
   :host {
     width: 280px;
     min-width: 280px;
     flex-shrink: 0;
   }
+
   .sidebar-container {
     width: 280px;
   }
+
   .sidebar-header-mobile,
   .mobile-filter-toggle {
     display: none !important;
   }
+
   .filters-wrapper {
     display: block !important;
   }
 }
 
 /* ==========================================================================
-   COMPORTAMIENTO PARA DISPOSITIVOS MÓVILES (max 991px)
+   TABLET (769px a 1024px)
    ========================================================================== */
-@media screen and (max-width: 991px) {
+@media screen and (min-width: 769px) and (max-width: 1024px) {
   :host {
-    width: 100% !important;
-    min-width: 100% !important;
+    width: 100%;
+    min-width: 0;
   }
 
   .sidebar-container {
-    width: 100% !important;
-    padding: 0 5px !important;
-    box-sizing: border-box !important;
+    width: 100%;
+    padding: 0;
   }
 
   .sidebar-header-mobile {
-    display: block !important;
-    margin-bottom: 12px;
-    padding: 0 4px;
+    display: block;
+    margin-bottom: 10px;
   }
 
-  .sidebar-header-mobile h2 {
-    font-size: 1.1rem;
-    color: #F8FAFC;
-    margin: 0 0 2px 0;
-    font-weight: 900;
-    text-transform: uppercase;
-  }
-
-  .sidebar-header-mobile p {
-    font-size: 0.85rem;
-    color: #DBEAFE;
-    opacity: 0.8;
-    margin: 0;
-  }
-
-  /* Botón desplegable moderno con cristal azul */
   .mobile-filter-toggle {
-    display: flex !important;
+    display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 12px;
     width: 100%;
     background: linear-gradient(135deg, #1E3A8A, #0B1D3A);
     border: 1px solid #3B82B8;
@@ -150,7 +233,86 @@
     cursor: pointer;
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-bottom: 15px;
+    margin-bottom: 14px;
+    box-shadow: 0 4px 15px rgba(11, 29, 58, 0.4);
+    transition: all 0.3s ease;
+  }
+
+  .filters-wrapper {
+    display: none;
+  }
+
+  .filters-wrapper.mobile-open {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    align-items: start;
+    animation: fadeIn 0.35s ease-in-out;
+  }
+
+  .filters-wrapper.mobile-open .active-filters-box {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+  }
+
+  .filters-wrapper.mobile-open .filter-section {
+    margin-bottom: 0;
+  }
+}
+
+/* ==========================================================================
+   MÓVIL (max 768px)
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+  :host {
+    width: 100% !important;
+    min-width: 100% !important;
+  }
+
+  .sidebar-container {
+    width: 100% !important;
+    padding: 0 4px !important;
+  }
+
+  .sidebar-header-mobile {
+    display: block !important;
+    margin-bottom: 10px;
+    padding: 0 2px;
+  }
+
+  .sidebar-header-mobile h2 {
+    font-size: 1.05rem;
+    color: #F8FAFC;
+    margin: 0 0 2px 0;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .sidebar-header-mobile p {
+    font-size: 0.82rem;
+    color: #DBEAFE;
+    opacity: 0.8;
+    margin: 0;
+  }
+
+  /* Botón desplegable moderno con cristal azul */
+  .mobile-filter-toggle {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    background: linear-gradient(135deg, #1E3A8A, #0B1D3A);
+    border: 1px solid #3B82B8;
+    color: #93C5FD;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: 0.84rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 14px;
     box-shadow: 0 4px 15px rgba(11, 29, 58, 0.4);
     transition: all 0.3s ease;
   }
@@ -161,17 +323,28 @@
     border-color: #93C5FD;
   }
 
+  .filter-section {
+    padding: 15px;
+    margin-bottom: 14px;
+  }
+
   .filters-wrapper {
     display: none !important;
   }
 
   .filters-wrapper.mobile-open {
     display: block !important;
-    animation: fadeIn 0.4s ease-in-out;
+    animation: fadeIn 0.35s ease-in-out;
   }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

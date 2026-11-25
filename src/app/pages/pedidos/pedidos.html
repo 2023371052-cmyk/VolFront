@@ -32,23 +32,25 @@
 
         <div class="pedido-body">
           <p class="pedido-fecha">
-            <i class="pi pi-calendar"></i> Fecha: {{ (pedido.fecha || pedido.createdAt || pedido.created_at) | date:'medium' }}
+            <i class="pi pi-calendar"></i> Fecha: {{ formatearFechaHora(pedido.fecha || pedido.createdAt || pedido.created_at) }}
           </p>
           <p class="pedido-total">
-            <strong>Total:</strong> {{ (pedido.total || pedido.precioTotal || pedido.totalAmount || 0) | currency:'MXN' }}
+            <strong>Total:</strong> {{ (pedido.total ?? pedido.precioTotal ?? pedido.totalAmount ?? pedido.total_amount ?? 0) | currency:'MXN' }}
           </p>
           
-          <!-- Productos o detalles internos de la orden -->
-          <div class="productos-resumen" *ngIf="(pedido.productos && pedido.productos.length > 0) || (pedido.items && pedido.items.length > 0)">
+          <div
+            class="productos-resumen"
+            *ngIf="(pedido.orderDetails && pedido.orderDetails.length > 0) || (pedido.productos && pedido.productos.length > 0) || (pedido.items && pedido.items.length > 0)"
+          >
             <h4>Componentes en esta orden:</h4>
             <ul>
-              <li *ngFor="let item of (pedido.productos || pedido.items)">
-                {{ item.nombre || item.name || item.product?.name }} (x{{ item.cantidad || item.quantity || 1 }})
+              <li *ngFor="let item of (pedido.orderDetails || pedido.productos || pedido.items)">
+                {{ item.product?.name || item.product?.nombre || item.nombre || item.name || ('Componente #' + item.productId) }}
+                (x{{ item.quantity || item.cantidad || 1 }})
               </li>
             </ul>
           </div>
 
-          <!-- 🌟 Botón para descargar el Ticket en PDF individual -->
           <div class="pedido-actions" style="margin-top: 15px; text-align: right;">
             <button class="btn-pdf" (click)="descargarTicketPdf(pedido)">
               <i class="pi pi-file-pdf"></i> Descargar Ticket PDF

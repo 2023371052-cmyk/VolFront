@@ -1,9 +1,9 @@
 <div class="store-container">
-  
-  <!-- CONTENEDOR RETRÁCTIL (Se oculta al hacer scroll hacia abajo) -->
-  <div class="dashboard-collapsible-wrapper" [class.collapsed]="isScrolled">
-    
-    <div class="welcome-banner" *ngIf="usuarioEmail">
+
+  <!-- CONTENEDOR SUPERIOR (Se compacta al hacer scroll sin ocultar tus opciones) -->
+  <div class="dashboard-collapsible-wrapper" [class.compact-mode]="isScrolled">
+
+    <div class="welcome-banner" *ngIf="usuarioEmail && !isScrolled">
       <div class="banner-content">
         <h2>¡Bienvenido de vuelta, Piloto!</h2>
         <p>Sesión activa: <span class="user-badge">{{ usuarioEmail }}</span></p>
@@ -11,30 +11,68 @@
       <div class="banner-status-pulse"></div>
     </div>
 
-    <section class="store-header">
+    <section class="store-header" *ngIf="!isScrolled">
       <h1>Panel de Control del Piloto</h1>
       <p>Gestiona tus configuraciones, revisa tu historial de escudería y consulta tus componentes guardados.</p>
     </section>
 
-    <!-- TARJETAS DE ACCESOS DIRECTOS -->
-    <div class="user-dashboard-grid">
-      
+    <!-- TARJETAS DE ACCESOS DIRECTOS (Siempre accesibles) -->
+    <div class="user-dashboard-grid" [class.sticky-bar]="isScrolled">
+
       <div class="dashboard-card" routerLink="/pedidos">
         <div class="card-icon"><i class="pi pi-box"></i></div>
         <div class="card-info">
           <h3>Historial de Pedidos y Pits</h3>
-          <p>Consulta el estatus de tus órdenes y entregas pasadas.</p>
+          <p *ngIf="!isScrolled">Consulta el estatus de tus órdenes y entregas pasadas.</p>
         </div>
-        <i class="pi pi-chevron-right arrow-icon"></i>
+        <i class="pi pi-chevron-right arrow-icon" *ngIf="!isScrolled"></i>
       </div>
 
       <div class="dashboard-card" routerLink="/deseos">
         <div class="card-icon"><i class="pi pi-heart"></i></div>
         <div class="card-info">
           <h3>Lista de Deseos</h3>
-          <p>Administra los supercargadores y kits guardados en la mira.</p>
+          <p *ngIf="!isScrolled">Administra los supercargadores y kits guardados en la mira.</p>
         </div>
-        <i class="pi pi-chevron-right arrow-icon"></i>
+        <i class="pi pi-chevron-right arrow-icon" *ngIf="!isScrolled"></i>
+      </div>
+
+      <div class="dashboard-card" routerLink="/checkout">
+        <div class="card-icon"><i class="pi pi-shopping-cart"></i></div>
+        <div class="card-info">
+          <h3>Carrito / Checkout</h3>
+          <p *ngIf="!isScrolled">Revisa tu orden técnica actual y finaliza tu compra.</p>
+        </div>
+        <i class="pi pi-chevron-right arrow-icon" *ngIf="!isScrolled"></i>
+      </div>
+
+      <div class="dashboard-card" routerLink="/comparar">
+        <div class="card-icon"><i class="pi pi-sliders-h"></i></div>
+        <div class="card-info">
+          <h3>Comparar Componentes</h3>
+          <p *ngIf="!isScrolled">Enfrenta especificaciones, potencia y precios lado a lado.</p>
+        </div>
+        <span class="card-badge" *ngIf="compareIds.length">{{ compareIds.length }}</span>
+        <i class="pi pi-chevron-right arrow-icon" *ngIf="!isScrolled"></i>
+      </div>
+
+      <div class="dashboard-card" routerLink="/notificaciones">
+        <div class="card-icon"><i class="pi pi-bell"></i></div>
+        <div class="card-info">
+          <h3>Notificaciones en Tiempo Real</h3>
+          <p *ngIf="!isScrolled">Alertas de pits, estatus de órdenes y stock en vivo.</p>
+        </div>
+        <span class="card-badge alert-badge" *ngIf="notificacionesNoLeidas > 0">{{ notificacionesNoLeidas }}</span>
+        <i class="pi pi-chevron-right arrow-icon" *ngIf="!isScrolled"></i>
+      </div>
+
+      <div class="dashboard-card" routerLink="/qr-scanner">
+        <div class="card-icon"><i class="pi pi-qrcode"></i></div>
+        <div class="card-info">
+          <h3>Escáner QR de Manuales</h3>
+          <p *ngIf="!isScrolled">Abre el lector QR para consultar el manual de tu componente.</p>
+        </div>
+        <i class="pi pi-chevron-right arrow-icon" *ngIf="!isScrolled"></i>
       </div>
 
     </div>
@@ -64,17 +102,26 @@
         <div class="product-card">
           <div class="badge">{{ product.category || product.categoria }}</div>
           <img [src]="product.image || product.imageUrl || product.imagen" [alt]="product.name || product.nombre" class="product-image">
-          
+
           <div class="product-info">
             <h3>{{ product.name || product.nombre }}</h3>
             <p class="description">{{ product.description || product.descripcion }}</p>
-            
+
             <div class="product-footer">
               <span class="price">{{ (product.price || product.precio) | currency:'MXN' }}</span>
-              
+
               <div class="actions">
                 <button class="btn-detail" [routerLink]="['/producto', product.id]" title="Ver detalles">
                   <i class="pi pi-eye"></i>
+                </button>
+                <button
+                  type="button"
+                  class="btn-compare"
+                  [class.active]="estaEnComparacion(product.id)"
+                  (click)="toggleComparar(product)"
+                  title="Comparar componente"
+                >
+                  <i class="pi pi-sliders-h"></i>
                 </button>
                 <button class="btn-add" (click)="agregarAlCarrito(product)">
                   <i class="pi pi-shopping-cart"></i> Agregar

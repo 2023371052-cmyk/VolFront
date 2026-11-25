@@ -1,19 +1,21 @@
 /* ==========================================================================
-   ESTILOS DE HISTORIAL DE PEDIDOS Y PITS - 7VOLTEX
+   ESTILOS DE HISTORIAL DE PEDIDOS Y PITS - 7VOLTEX (ADAPTABLE POR DISPOSITIVO)
    ========================================================================== */
+
 .store-container {
   max-width: 1300px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 36px 28px 56px;
   background-color: #0B1D3A;
   min-height: 100vh;
   color: #F8FAFC;
   box-sizing: border-box;
+  overflow-x: clip;
 }
 
 /* Encabezado */
 .store-header {
-  margin-bottom: 35px;
+  margin-bottom: 32px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -26,13 +28,13 @@
   background: rgba(219, 234, 254, 0.1);
   color: #DBEAFE;
   border: 1px solid rgba(147, 197, 253, 0.3);
-  padding: 8px 16px;
+  padding: 9px 16px;
   border-radius: 8px;
   font-weight: 700;
   font-size: 0.85rem;
   cursor: pointer;
   width: fit-content;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
 }
 
 .btn-back:hover {
@@ -43,41 +45,45 @@
 }
 
 .store-header h1 {
-  font-size: 2.2rem;
+  font-size: clamp(1.5rem, 2.6vw, 2.2rem);
   font-weight: 900;
   margin: 0;
   color: #F8FAFC;
   letter-spacing: 0.5px;
+  line-height: 1.2;
 }
 
 .store-header p {
   color: #DBEAFE;
-  font-size: 0.95rem;
+  font-size: clamp(0.88rem, 1.2vw, 0.98rem);
   margin: 0;
-  opacity: 0.85;
+  opacity: 0.88;
+  line-height: 1.5;
+  max-width: 72ch;
 }
 
 /* Estado de Carga y Vacío */
-.loading-state, .empty-state {
+.loading-state,
+.empty-state {
   background: #1E3A8A;
   border: 1px solid rgba(147, 197, 253, 0.2);
   border-radius: 16px;
-  padding: 60px 20px;
+  padding: 52px 24px;
   text-align: center;
   max-width: 600px;
-  margin: 40px auto;
+  margin: 32px auto;
   box-shadow: 0 15px 35px rgba(11, 29, 58, 0.5);
   color: #DBEAFE;
 }
 
 .empty-icon {
-  font-size: 4rem;
+  font-size: clamp(2.8rem, 5vw, 4rem);
   color: #93C5FD;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .empty-state h3 {
-  font-size: 1.5rem;
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
   font-weight: 800;
   color: #F8FAFC;
   margin: 0 0 10px 0;
@@ -85,49 +91,50 @@
 
 .empty-state p {
   color: #DBEAFE;
-  font-size: 0.95rem;
-  margin-bottom: 25px;
+  font-size: 0.92rem;
+  margin-bottom: 24px;
   opacity: 0.9;
+  line-height: 1.5;
 }
 
 .btn-explore {
-  background: linear-gradient(135deg, #3B82B8, #1E3A8A);
+  background: linear-gradient(135deg, #3B82F6, #2563EB);
   color: #F8FAFC;
-  border: 1px solid rgba(147, 197, 253, 0.4);
+  border: 1px solid rgba(147, 197, 253, 0.45);
   padding: 12px 24px;
   border-radius: 10px;
-  font-weight: 900;
-  font-size: 0.95rem;
+  font-weight: 800;
+  font-size: 0.92rem;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(11, 29, 58, 0.4);
+  transition: all 0.25s ease;
+  box-shadow: 0 6px 16px rgba(11, 29, 58, 0.45);
 }
 
 .btn-explore:hover {
-  background: linear-gradient(135deg, #93C5FD, #3B82B8);
+  background: linear-gradient(135deg, #93C5FD, #3B82F6);
   color: #0B1D3A;
   border-color: #93C5FD;
-  box-shadow: 0 0 20px rgba(147, 197, 253, 0.5);
   transform: translateY(-2px);
 }
 
-/* Grid de Pedidos */
+/* Grid de Pedidos (Escritorio: columnas adaptables) */
 .pedidos-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 25px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
 }
 
 /* Tarjeta individual de Pedido */
 .pedido-card {
   background: #1E3A8A;
-  border: 1px solid rgba(147, 197, 253, 0.2);
+  border: 1px solid rgba(147, 197, 253, 0.22);
   border-radius: 16px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   box-shadow: 0 10px 25px rgba(11, 29, 58, 0.5);
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
+  min-width: 0;
 }
 
 .pedido-card:hover {
@@ -137,39 +144,47 @@
 }
 
 .pedido-header {
-  background: rgba(11, 29, 58, 0.6);
-  padding: 18px 20px;
+  background: rgba(11, 29, 58, 0.65);
+  padding: 16px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
   border-bottom: 1px solid rgba(147, 197, 253, 0.15);
 }
 
 .pedido-id {
   font-weight: 900;
   color: #93C5FD;
-  font-size: 1.05rem;
-  letter-spacing: 0.5px;
+  font-size: 1.02rem;
+  letter-spacing: 0.4px;
+  word-break: break-word;
 }
 
 /* Etiquetas de Estatus de la orden */
 .pedido-status {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 800;
-  padding: 5px 12px;
+  padding: 5px 11px;
   border-radius: 6px;
   text-transform: uppercase;
   border: 1px solid rgba(147, 197, 253, 0.3);
+  color: #DBEAFE;
+  background: rgba(59, 130, 246, 0.2);
+  white-space: nowrap;
 }
 
-/* Clases dinámicas según el estatus */
-.pedido-status.completado, .pedido-status.entregado {
+.pedido-status.completado,
+.pedido-status.completed,
+.pedido-status.entregado {
   background: rgba(16, 185, 129, 0.2);
   color: #34D399;
   border-color: rgba(16, 185, 129, 0.4);
 }
 
-.pedido-status.proceso, .pedido-status.pendiente {
+.pedido-status.proceso,
+.pedido-status.pendiente {
   background: rgba(251, 191, 36, 0.2);
   color: #FCD34D;
   border-color: rgba(251, 191, 36, 0.4);
@@ -190,17 +205,19 @@
   flex: 1;
 }
 
-.pedido-fecha, .pedido-total {
+.pedido-fecha,
+.pedido-total {
   margin: 0;
   font-size: 0.9rem;
   color: #DBEAFE;
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
 .pedido-total {
-  font-size: 1.1rem;
+  font-size: 1.08rem;
 }
 
 .pedido-total strong {
@@ -209,15 +226,15 @@
 
 /* Resumen de componentes dentro de la orden */
 .productos-resumen {
-  background: rgba(11, 29, 58, 0.4);
-  border: 1px solid rgba(147, 197, 253, 0.1);
+  background: rgba(11, 29, 58, 0.45);
+  border: 1px solid rgba(147, 197, 253, 0.14);
   border-radius: 10px;
   padding: 12px 15px;
-  margin-top: 5px;
+  margin-top: 4px;
 }
 
 .productos-resumen h4 {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: #93C5FD;
   font-weight: 800;
   margin: 0 0 8px 0;
@@ -230,11 +247,13 @@
   padding-left: 18px;
   color: #F8FAFC;
   font-size: 0.85rem;
-  opacity: 0.9;
+  opacity: 0.92;
 }
 
 .productos-resumen li {
-  margin-bottom: 4px;
+  margin-bottom: 5px;
+  line-height: 1.4;
+  word-break: break-word;
 }
 
 /* Botón de Descargar PDF */
@@ -242,7 +261,7 @@
   background: rgba(219, 234, 254, 0.08);
   color: #93C5FD;
   border: 1px solid rgba(147, 197, 253, 0.3);
-  padding: 10px 16px;
+  padding: 11px 16px;
   border-radius: 8px;
   font-weight: 800;
   font-size: 0.85rem;
@@ -251,24 +270,80 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
   width: 100%;
+  margin-top: auto;
 }
 
 .btn-pdf:hover {
   background: rgba(59, 130, 246, 0.3);
   border-color: #93C5FD;
   color: #F8FAFC;
-  box-shadow: 0 0 15px rgba(147, 197, 253, 0.4);
   transform: translateY(-2px);
 }
 
-/* Responsive */
-@media screen and (max-width: 768px) {
+/* TABLET (hasta 1024px) */
+@media screen and (max-width: 1024px) {
   .store-container {
-    padding: 15px;
+    padding: 28px 20px 48px;
   }
+
+  .pedidos-grid {
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 18px;
+  }
+}
+
+/* MÓVIL (hasta 640px) */
+@media screen and (max-width: 640px) {
+  .store-container {
+    padding: 18px 14px 40px;
+  }
+
+  .store-header {
+    margin-bottom: 24px;
+    gap: 10px;
+  }
+
+  .loading-state,
+  .empty-state {
+    padding: 36px 18px;
+    margin: 20px auto;
+    border-radius: 14px;
+  }
+
   .pedidos-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .pedido-header {
+    padding: 14px 16px;
+  }
+
+  .pedido-body {
+    padding: 16px;
+    gap: 10px;
+  }
+}
+
+/* Impresión / Guardar como PDF: muestra solo el ticket limpio */
+@media print {
+  .store-header,
+  .loading-state,
+  .empty-state,
+  .pedidos-grid,
+  .btn-back,
+  .btn-pdf,
+  .btn-explore {
+    display: none !important;
+  }
+
+  .store-container {
+    background: #FFFFFF !important;
+    color: #0B1D3A !important;
+    min-height: auto !important;
+    padding: 0 !important;
+    max-width: 100% !important;
   }
 }

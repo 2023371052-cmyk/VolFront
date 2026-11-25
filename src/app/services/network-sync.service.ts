@@ -1,53 +1,122 @@
-import { Injectable, inject } from '@angular/core';
-import { VoltexApiService } from './voltex-api.service';
+import { Injectable, signal, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, firstValueFrom } from 'rxjs';
+import { LocalStorageService } from './local-storage.service';
+
+export type ManejadorSincronizacion = (payload: any) => Observable<any>;
 
 @Injectable({
   providedIn: 'root'
 })
 export class NetworkSyncService {
-  private voltexApi = inject(VoltexApiService);
-  private OFFLINE_ORDERS_KEY = 'voltex_pedidos_offline';
+  private storage = inject(LocalStorageService);
+  private http = inject(HttpClient);
+  private manejadores = new Map<string, ManejadorSincronizacion>();
+  private sincronizando = false;
+
+  readonly enLinea = signal<boolean>(
+    typeof navigator !== 'undefined' ? navigator.onLine : true
+  );
+
+  readonly pendientesCount = signal<number>(0);
+  readonly estadoSync = signal<string>('');
 
   constructor() {
+    this.refrescarContadorPendientes();
     this.initNetworkListeners();
   }
 
   private initNetworkListeners(): void {
-    // Escuchar cuando el navegador recupera la conexión
+    if (typeof window === 'undefined') return;
+
     window.addEventListener('online', () => {
-      console.log('🌐 Conexión de red restablecida. Iniciando sincronización automática de Pits...');
-      this.sincronizarPedidosPendientes();
+      this.enLinea.set(true);
+      this.estadoSync.set('Conexión restablecida. Sincronizando cambios pendientes...');
+      void this.sincronizarPedidosPendientes();
     });
 
     window.addEventListener('offline', () => {
-      console.warn('⚠️ Se perdió la conexión a internet. Modo offline activo.');
+      this.enLinea.set(false);
+      this.estadoSync.set('Sin conexión a internet. Tus cambios se guardarán localmente.');
     });
   }
 
-  // Método público para disparar la sincronización manual o automática
-  public sincronizarPedidosPendientes(): void {
-    const pedidosRaw = localStorage.getItem(this.OFFLINE_ORDERS_KEY);
-    if (!pedidosRaw) return;
+  public registrarManejador(tipo: string, handler: ManejadorSincronizacion): void {
+    this.manejadores.set(tipo, handler);
+  }
 
-    const pedidosPendientes: any[] = JSON.parse(pedidosRaw);
-    if (pedidosPendientes.length === 0) return;
+  public refrescarContadorPendientes(): void {
+    const acciones = this.storage.obtenerAccionesPendientes().length;
+    const httpPendientes = this.storage.obtenerPeticionesHttpPendientes().length;
+    this.pendientesCount.set(acciones + httpPendientes);
+  }
 
-    console.log(`📦 Encontrados ${pedidosPendientes.length} pedidos pendientes de sincronización.`);
+  public encolarOperacion(tipo: string, payload: any): void {
+    this.storage.encolarAccion(tipo, payload);
+    this.refrescarContadorPendientes();
+    this.estadoSync.set('Acción guardada sin conexión; se enviará al recuperar internet.');
+  }
 
-    // Iterar y enviar cada pedido pendiente al backend
-    pedidosPendientes.forEach((pedido, index) => {
-      // Aquí asumiendo que tu API tiene un endpoint para crear pedidos
-      this.voltexApi.login({ email: pedido.usuario?.email, password: '' }).subscribe({
-        next: () => {
-          // Si el servidor responde, eliminamos el pedido de la cola local
-          pedidosPendientes.splice(index, 1);
-          localStorage.setItem(this.OFFLINE_ORDERS_KEY, JSON.stringify(pedidosPendientes));
-          console.log(`✅ Pedido ${pedido.id_pedido} sincronizado exitosamente con la nube.`);
-        },
-        error: (err) => {
-          console.warn(`⏳ No se pudo sincronizar el pedido ${pedido.id_pedido}. Reintentando más tarde...`, err);
+  public async sincronizarPedidosPendientes(): Promise<void> {
+    if (this.sincronizando) return;
+    if (typeof navigator !== 'undefined' && !navigator.onLine) {
+      this.enLinea.set(false);
+      return;
+    }
+
+    this.refrescarContadorPendientes();
+    const pendientes = this.storage.obtenerAccionesPendientes();
+    const httpCola = this.storage.obtenerPeticionesHttpPendientes();
+
+    if (pendientes.length === 0 && httpCola.length === 0) return;
+
+    this.sincronizando = true;
+    try {
+      for (const accion of [...pendientes]) {
+        const handler = this.manejadores.get(accion.tipo);
+        if (!handler) {
+          console.warn(`No hay manejador registrado para la acción offline "${accion.tipo}".`);
+          continue;
         }
-      });
-    });
+
+        try {
+          await firstValueFrom(handler(accion.payload));
+          this.storage.quitarAccionPendiente(accion.id);
+          this.refrescarContadorPendientes();
+        } catch (err) {
+          console.warn(`Reintentará más tarde la acción "${accion.tipo}" (${accion.id}):`, err);
+        }
+      }
+
+      for (const reqItem of [...httpCola]) {
+        try {
+          await firstValueFrom(
+            this.http.request(reqItem.method, reqItem.url, {
+              body: reqItem.body,
+              headers: { 'X-Offline-Replay': 'true' }
+            })
+          );
+          this.storage.quitarPeticionHttpPendiente(reqItem.id);
+          this.refrescarContadorPendientes();
+        } catch (err) {
+          console.warn(`Reintentará más tarde ${reqItem.method} ${reqItem.url}:`, err);
+        }
+      }
+
+      const restantes = this.pendientesCount();
+      if (restantes === 0) {
+        this.estadoSync.set('Todos los cambios pendientes se sincronizaron correctamente.');
+        setTimeout(() => {
+          if (this.enLinea() && this.pendientesCount() === 0) {
+            this.estadoSync.set('');
+          }
+        }, 4000);
+      } else {
+        this.estadoSync.set(`Quedan ${restantes} acción(es) pendiente(s) por sincronizar.`);
+      }
+    } finally {
+      this.sincronizando = false;
+      this.refrescarContadorPendientes();
+    }
   }
 }
