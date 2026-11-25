@@ -9,8 +9,8 @@ import { environment } from '../../environments/environment';
 })
 export class VoltexApiService {
   
-// private apiUrl = 'https://volback-production.up.railway.app/api';
-private apiUrl = 'http://localhost:3000/api';
+private apiUrl = 'https://volback-production.up.railway.app/api';
+//private apiUrl = 'http://localhost:3000/api';
 
   constructor(private http: HttpClient) {}
 
